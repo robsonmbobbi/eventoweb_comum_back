@@ -11,15 +11,15 @@ namespace EventoWeb.Comum.Testes.Negocio
                 new CPF("05506427654"),
                 EnumSexo.Masculino,
                 new DataAniversario(new DateTime(1990, 5, 20)),
-                "Nome da Pessoa",
+                new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
-                new Celular("37991925134")
+                new Telefone("37991925134")
             );
 
             Assert.Equal("05506427654", p.CPF.Numero);
             Assert.Equal(EnumSexo.Masculino, p.Masculino);
             Assert.Equal(new DateTime(1990, 5, 20), p.DataNascimento.Data);
-            Assert.Equal("Nome da Pessoa", p.Nome);
+            Assert.Equal("Nome da Pessoa", p.Nome.Nome);
             Assert.Equal("joao@uol.com.br", p.Email.Endereco);
             Assert.Equal("37991925134", p.CelularWP.Numero);
         }
@@ -31,31 +31,22 @@ namespace EventoWeb.Comum.Testes.Negocio
                 null, // CPF inválido
                 EnumSexo.Masculino,
                 new DataAniversario(new DateTime(1990, 5, 20)),
-                "Nome da Pessoa",
+                new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
-                new Celular("37991925134")
+                new Telefone("37991925134")
             ));
         }
 
         [Fact]
-        public void CriarPessoaComNomeVazioOuNulo()
+        public void CriarPessoaComNomeNulo()
         {
-            Assert.Throws<ArgumentException>(() => new Pessoa(
-                new CPF("05506427654"),
-                EnumSexo.Masculino,
-                new DataAniversario(new DateTime(1990, 5, 20)),
-                "",
-                new EMail("joao@uol.com.br"),
-                new Celular("37991925134")
-            ));
-
-            Assert.Throws<ArgumentException>(() => new Pessoa(
+            Assert.Throws<ArgumentNullException>(() => new Pessoa(
                 new CPF("05506427654"),
                 EnumSexo.Masculino,
                 new DataAniversario(new DateTime(1990, 5, 20)),
                 null,
                 new EMail("joao@uol.com.br"),
-                new Celular("37991925134")
+                new Telefone("37991925134")
             ));            
         }
 
@@ -66,9 +57,9 @@ namespace EventoWeb.Comum.Testes.Negocio
                 new CPF("05506427654"),
                 EnumSexo.Masculino,
                 new DataAniversario(new DateTime(1990, 5, 20)),
-                "Nome da Pessoa",
+                new ("Nome da Pessoa"),
                 null,
-                new Celular("37991925134")
+                new Telefone("37991925134")
             ));
         }
 
@@ -79,7 +70,7 @@ namespace EventoWeb.Comum.Testes.Negocio
                 new CPF("05506427654"),
                 EnumSexo.Masculino,
                 new DataAniversario(new DateTime(1990, 5, 20)),
-                "Nome da Pessoa",
+                new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
                 null // número inválido
             ));
@@ -92,9 +83,9 @@ namespace EventoWeb.Comum.Testes.Negocio
                 new CPF("05506427654"),
                 EnumSexo.Masculino,
                 null,
-                "Nome da Pessoa",
+                new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
-                new Celular("37991925134")
+                new Telefone("37991925134")
             ));
         }
 
@@ -105,18 +96,18 @@ namespace EventoWeb.Comum.Testes.Negocio
                 new CPF("05506427654"),
                 EnumSexo.Masculino,
                 new DataAniversario(new DateTime(1990, 5, 20)),
-                "Nome da Pessoa",
+                new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
-                new Celular("37991925134")
+                new Telefone("37991925134")
             );
 
             var pessoa2 = new Pessoa(
                 new CPF("05506427654"),
                 EnumSexo.Masculino,
                 new DataAniversario(new DateTime(1990, 5, 20)),
-                "Nome da Pessoa",
+                new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
-                new Celular("37991925134")
+                new Telefone("37991925134")
             );
 
             Assert.NotEqual(pessoa1, pessoa2);

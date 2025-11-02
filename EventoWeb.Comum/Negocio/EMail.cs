@@ -1,18 +1,28 @@
+using System.Net.Mail;
+
 namespace EventoWeb.Comum.Negocio
 {
-    public class EMail
+    public partial class EMail
     {
-        public string Endereco { get; }
+        public virtual string Endereco { get; }
 
         public EMail(string endereco)
         {
-            // Validação simples de e-mail
-            if (string.IsNullOrWhiteSpace(endereco) || !endereco.Contains("@"))
-            {
-                throw new ArgumentException("Endereço de e-mail inválido.", nameof(endereco));
-            }
+            if (string.IsNullOrWhiteSpace(endereco))
+                throw new ArgumentException("O endereço de e-mail não pode estar em branco");
+
+            if (endereco.Length > 300)
+                throw new ArgumentException("O endereço de e-mail não pode ter mais de 300 caracteres");
+
+            if (!MyRegex().IsMatch(endereco))
+                throw new ArgumentException("O endereço de e-mail informado não é válido");                              
 
             Endereco = endereco;
         }
+
+        protected EMail() { }
+
+        [System.Text.RegularExpressions.GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
+        private static partial System.Text.RegularExpressions.Regex MyRegex();
     }
 }

@@ -1,0 +1,22 @@
+namespace EventoWeb.Comum.Negocio
+{
+    public class NomeCompleto
+    {
+        public virtual string Nome { get; }
+
+        public NomeCompleto(string nome)
+        {
+            // Validação simples de e-mail
+            if (string.IsNullOrWhiteSpace(nome) || nome.Length > 200)
+            {
+                throw new ArgumentException(
+                    "Nome não pode ser vazio ou nulo e deve ter no máximo 200 caracteres",
+                    nameof(nome));
+            }
+
+            Nome = nome;
+        }
+
+        protected NomeCompleto() { }
+    }
+}
