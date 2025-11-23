@@ -17,6 +17,7 @@
             PeriodoInscricaoOnLine = periodoInscricaoOnline;
             PeriodoRealizacaoEvento = periodoRealizacaoEvento;
             m_DataRegistro = DateTime.Today;
+            IdadeMinimaInscricaoAdulto = 13;
         }
 
         public virtual NomeCompleto Nome 
@@ -41,6 +42,7 @@
 
         public virtual DateTime DataRegistro { get { return m_DataRegistro; } }
 
-        public virtual ArquivoBinario Logotipo { get; set; }      
+        public virtual ArquivoBinario Logotipo { get; set; }
+        public virtual int IdadeMinimaInscricaoAdulto { get; set; }
     }
 }
