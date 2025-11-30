@@ -1,6 +1,6 @@
-namespace EventoWeb.Comum.Negocio;
+using System.Reflection.Emit;
 
-public enum EnumFormaPagamento { Credito, Debito, PIX, Desconto, Isencao }
+namespace EventoWeb.Comum.Negocio.Entidades;
 
 public class Pedido : Entidade
 {
@@ -17,6 +17,8 @@ public class Pedido : Entidade
         m_Inscricoes = new List<Inscricao>(inscricoes);
         Valor = valor;
         FormaPagamento = formaPagamento;
+
+        Pagamento = new Pagamento(this, valor);
     }
 
     protected Pedido()
@@ -26,4 +28,16 @@ public class Pedido : Entidade
     public virtual IEnumerable<Inscricao> Inscricoes => m_Inscricoes;
     public virtual double Valor { get; }
     public virtual EnumFormaPagamento FormaPagamento { get; }
+    public virtual Pagamento Pagamento { get; }
+
+    public virtual void AplicarDesconto(double valorDesconto)
+    {
+        Pagamento.Desconto = valorDesconto;
+    }
+
+    public virtual void AplicarIsencao()
+    {
+        Pagamento.Desconto = Pagamento.Valor;
+        Pagamento.Concluir(0, DateTime.Now, EnumMeioPagamento.Dinheiro);
+    }
 }

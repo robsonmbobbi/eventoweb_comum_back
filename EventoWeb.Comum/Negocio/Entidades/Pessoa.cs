@@ -1,5 +1,5 @@
 
-namespace EventoWeb.Comum.Negocio
+namespace EventoWeb.Comum.Negocio.Entidades
 {
     public enum EnumSexo { Masculino, Feminino }
     public class Pessoa : Entidade

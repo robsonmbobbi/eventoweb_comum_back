@@ -1,4 +1,4 @@
-namespace EventoWeb.Comum.Negocio;
+namespace EventoWeb.Comum.Negocio.Entidades;
 
 public enum EnumTipoPagamentoLog { Info, Erro, Conclusao }
 

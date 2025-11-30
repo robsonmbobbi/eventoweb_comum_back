@@ -1,5 +1,6 @@
 using System;
 using EventoWeb.Comum.Negocio;
+using EventoWeb.Comum.Negocio.Entidades;
 using Xunit;
 
 namespace EventoWeb.Comum.Testes.Negocio

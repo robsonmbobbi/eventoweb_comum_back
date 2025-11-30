@@ -1,4 +1,5 @@
 using EventoWeb.Comum.Negocio;
+using EventoWeb.Comum.Negocio.Entidades;
 
 namespace EventoWeb.Comum.Testes.Negocio
 {

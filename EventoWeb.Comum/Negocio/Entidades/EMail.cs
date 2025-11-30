@@ -1,6 +1,4 @@
-using System.Net.Mail;
-
-namespace EventoWeb.Comum.Negocio
+namespace EventoWeb.Comum.Negocio.Entidades
 {
     public partial class EMail
     {
