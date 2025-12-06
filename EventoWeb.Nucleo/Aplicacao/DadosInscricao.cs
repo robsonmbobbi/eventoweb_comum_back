@@ -193,7 +193,7 @@ namespace EventoWeb.Nucleo.Aplicacao
 
     public class DTOPagamento
     {
-        public EnumPagamento? Forma { get; set; }
+        //public EnumPagamento? Forma { get; set; }
         public IList<DTOComprovantePagamento> Comprovantes { get; set; }
         public string Observacao { get; set; }
     }

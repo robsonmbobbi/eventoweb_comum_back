@@ -1,6 +1,8 @@
 using System.Reflection.Emit;
 
-namespace EventoWeb.Comum.Negocio.Entidades;
+namespace EventoWeb.Nucleo.Negocio.Entidades;
+
+public enum EnumFormaPagamento { DebitoAplicado, SolicitacaoDesconto, SolicitacaoIsencao, DescontoAplicado, IsencaoAplicada }
 
 public class Pedido : Entidade
 {

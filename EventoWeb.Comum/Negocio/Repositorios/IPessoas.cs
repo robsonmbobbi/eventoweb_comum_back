@@ -4,5 +4,5 @@ namespace EventoWeb.Comum.Negocio.Repositorios;
 
 public interface IPessoas : IPersistencia<Pessoa>
 {
-    Pessoa ObterPorCPF(string cpf);
+    Pessoa? ObterPorCPF(string cpf);
 }

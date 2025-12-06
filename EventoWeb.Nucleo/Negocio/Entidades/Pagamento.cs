@@ -1,63 +1,115 @@
-﻿using EventoWeb.Nucleo.Negocio.Excecoes;
-using System.Collections.Generic;
-using System.Linq;
+namespace EventoWeb.Nucleo.Negocio.Entidades;
 
-namespace EventoWeb.Nucleo.Negocio.Entidades
+public enum EnumMeioPagamento { Credito, Debito, PIX, Dinheiro }
+public enum EnumSituacaoPagamento { Pendente, Concluido, Erro }
+
+public class Pagamento
 {
-    public enum EnumPagamento { Comprovante, ComprovanteOutraInscricao, Outro }
+    private IList<PagamentoLog> m_Logs = [];
+    private double m_Desconto = 0;
+    private double m_Valor = 0;
+    private int? m_NumeroParcelas;
+    private EnumMeioPagamento? m_MeioPagamento;
 
-    public enum TipoSituacaoPagamento { Pago, Pagar, Isento }
-
-    public class Pagamento
+    public Pagamento(Pedido pedido, double valor)
     {
-        private EnumPagamento? m_Forma;
-        private IList<ComprovantePagamento> m_Comprovantes;
-        private Inscricao m_Inscricao;
+        Pedido = pedido ??  throw new ArgumentNullException(nameof(pedido));
+        Valor = valor;
+        SituacaoPagamento = EnumSituacaoPagamento.Pendente;
+        DataRegistro = DateTime.Now;
+    }
+    
+    protected Pagamento(){}
+    
+    public virtual Pedido Pedido { get; }
 
-        public Pagamento(Inscricao inscricao)
+    public virtual double Valor
+    {
+        get => m_Valor;
+        set
         {
-            m_Inscricao = inscricao ?? throw new ExcecaoNegocioAtributo("Pagamento", "Inscricao", "Inscrição é obrigatório");
-            m_Comprovantes = new List<ComprovantePagamento>();
-        }
+            ValidarSeConcluido();
+            
+            if (value < 0)
+                throw new Exception($"{nameof(Valor)} não pode ser negativo.");
+            
+            if (value < m_Desconto)
+                throw new Exception($"{nameof(Desconto)} tem valor maior que o nova valor do pagamento.");
 
-        protected Pagamento() { }
-
-        public virtual Inscricao Inscricao { get => m_Inscricao; }
-        public virtual EnumPagamento? Forma { get => m_Forma; }
-        public virtual IEnumerable<ComprovantePagamento> Comprovantes { get => m_Comprovantes; }
-        public virtual string Observacao { get; set; }
-
-        public virtual void AtribuirFormaPagamento(EnumPagamento forma, IEnumerable<ArquivoBinario> comprovantes)
-        {
-            if (forma != EnumPagamento.Comprovante && comprovantes != null && comprovantes.Count() > 0)
-                throw new ExcecaoNegocioAtributo("Pagamento", "Forma", "Apenas a forma de pagamento por comprovante pode receber comprovantes");
-
-            if (forma == EnumPagamento.Comprovante && (comprovantes == null || comprovantes.Count() == 0))
-                throw new ExcecaoNegocioAtributo("Pagamento", "Forma", "A forma de pagamento por comprovante precisa de comprovantes");
-
-            m_Forma = forma;
-            m_Comprovantes.Clear();
-            if (comprovantes != null)
-            {
-                foreach (var item in comprovantes)
-                    m_Comprovantes.Add(new ComprovantePagamento(m_Inscricao, item));
-            }
+            m_Valor = value;
         }
     }
 
-    public class ComprovantePagamento : Entidade
+    public virtual double Desconto
     {
-        private ArquivoBinario m_ArquivoComprovante;
-        private Inscricao m_Inscricao;
-
-        public ComprovantePagamento(Inscricao inscricao, ArquivoBinario arquivoComprovante)
+        get => m_Desconto;
+        set
         {
-            m_Inscricao = inscricao ?? throw new ExcecaoNegocioAtributo("ComprovantePagamento", "Inscricao", "Inscrição é obrigatório");
-            m_ArquivoComprovante = arquivoComprovante ?? throw new ExcecaoNegocioAtributo("ComprovantePagamento", "ArquivoComprovante", "ArquivoComprovante é obrigatório");
-        }
-        protected ComprovantePagamento() { }
+            ValidarSeConcluido();
+            
+            if (value < 0)
+                throw new Exception($"{nameof(Desconto)} não pode ser negativo."); 
+            
+            if (value > Valor)
+                throw new Exception($"{nameof(Desconto)} não pode ser maior que o valor do pagamento.");
 
-        public virtual Inscricao Inscricao { get => m_Inscricao; }
-        public virtual ArquivoBinario ArquivoComprovante { get => m_ArquivoComprovante; }
+            m_Desconto = value;
+        }
+    }
+    public virtual double ValorPagar => Valor - Desconto;
+    public virtual double? ValorPago { get; protected set; }
+    public virtual DateTime? DataPago { get; protected set; }
+    public virtual DateTime DataRegistro { get; }
+
+    public virtual EnumMeioPagamento? MeioPagamento { get; protected set; }
+    public virtual EnumSituacaoPagamento SituacaoPagamento { get; protected set;}
+
+    public virtual int? NumeroParcelas
+    {
+        get => m_NumeroParcelas;
+        set
+        {
+            ValidarSeConcluido();
+
+            if (value != null && value <= 0)
+                throw new Exception($"{nameof(NumeroParcelas)} deve ser maior que zero.");
+
+            m_NumeroParcelas = value;
+        }
+    }
+    public virtual IEnumerable<PagamentoLog> Logs => m_Logs;
+
+   
+    public virtual void Concluir(double valorPago, DateTime dataPago, EnumMeioPagamento meio)
+    {
+        ValidarSeConcluido();
+        
+        if (valorPago < 0)
+            throw new Exception($"{nameof(valorPago)} não pode ser negativo.");
+
+        MeioPagamento = meio;
+        ValorPago =  valorPago;
+        DataPago = dataPago;
+        SituacaoPagamento = EnumSituacaoPagamento.Concluido;
+        AdicionarLog(EnumTipoPagamentoLog.Conclusao, "Conclusão");
+    }
+
+    public virtual void Errar(string descricaoErro)
+    {
+        ValidarSeConcluido();
+        
+        SituacaoPagamento = EnumSituacaoPagamento.Erro;
+        AdicionarLog(EnumTipoPagamentoLog.Erro, "Ocorreu um erro!", descricaoErro);
+    }
+    
+    private void ValidarSeConcluido()
+    {
+        if (SituacaoPagamento == EnumSituacaoPagamento.Concluido)
+            throw new Exception("Pagamento já liquidado");
+    }
+
+    public virtual void AdicionarLog(EnumTipoPagamentoLog tipo, string mensagem, string? dados = null)
+    {
+        m_Logs.Add(new PagamentoLog(this, mensagem, tipo, dados));
     }
 }
