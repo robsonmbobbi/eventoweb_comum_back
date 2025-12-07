@@ -2,7 +2,6 @@
 {
     public class InscricaoInfantil : Inscricao
     {
-        private const String MSG_ERRO_RESPONSAVEL = "A inscrição do responsável não pode ser do tipo infantil.";
         private const String MSG_ERRO_INSCRICAO_OUTRO_EVENTO = "A inscrição do responsável deve ser do mesmo evento da inscrição infantil.";
 
         private InscricaoParticipante m_InscricaoResponsavel1;
