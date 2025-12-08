@@ -13,8 +13,11 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             Id(x => x.Id, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("ID_PEDIDO");
-                m.Generator(Generators.Native, g => g.Params(new { sequence = "GEN_PEDIDOS" }));
+                m.Column("ID");
+                m.Generator(Generators.Native, g =>
+                {
+                    g.Params(new { sequence = "GEN_PEDIDO" });
+                });
             });
 
             Property(x => x.Valor, m =>
@@ -41,9 +44,13 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             {
                 m.Access(Accessor.Field);
                 m.Key(k => k.Column("ID_PEDIDO"));
-                m.Inverse(false); // Pedido gerencia a relação
+                m.Table("PEDIDOS_INSCRICOES");
+                m.Inverse(false); 
                 m.Cascade(Cascade.All);
-            }, r => r.OneToMany());
+            }, r => r.ManyToMany(x =>
+            {
+                x.Column("ID_INSCRICAO");
+            }));
         }
     }
 }

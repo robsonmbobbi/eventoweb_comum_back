@@ -8,23 +8,36 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
     {
         public PagamentoMapping()
         {
-            OneToOne(x => x.Pedido, m =>
+            Table("PAGAMENTOS");
+
+            Id(x => x.Id, m =>
+            {
+                m.Access(Accessor.NoSetter);
+                m.Column("ID");
+                m.Generator(Generators.Native, g =>
+                {
+                    g.Params(new { sequence = "GEN_PAGAMENTO" });
+                });
+            });            
+            
+            ManyToOne(x => x.Pedido, m =>
             {
                 m.Access(Accessor.Property);
-                m.Constrained(true);
+                m.Column(("ID_PAGAMENTO"));
+                m.NotNullable(true);
             });
 
             Property(x => x.Valor, m =>
             {
-                m.Access(Accessor.Field); // Acessa campo m_Valor para evitar validações no setter
-                m.Column("PAGAMENTO_VALOR");
+                m.Access(Accessor.Field);
+                m.Column("VALOR");
                 m.NotNullable(true);
             });
 
             Property(x => x.Desconto, m =>
             {
                 m.Access(Accessor.Field); // Acessa campo m_Desconto
-                m.Column("PAGAMENTO_DESCONTO");
+                m.Column("DESCONTO");
                 m.NotNullable(true);
             });
 
@@ -70,11 +83,10 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
 
             Bag(x => x.Logs, m =>
             {
-                m.Access(Accessor.Field); // Acessa m_Logs
-                m.Table("PAGAMENTO_LOGS");
-                m.Key(k => k.Column("ID_PEDIDO")); // FK aponta para a entidade pai (Pedido)
+                m.Access(Accessor.Field);
+                m.Key(k => k.Column("ID_PAGAMENTO")); 
                 m.Cascade(Cascade.All);
-            }, r => r.Component(new PagamentoLog()));
+            }, r => r.OneToMany());
         }
     }
 }

@@ -1,6 +1,9 @@
 namespace EventoWeb.Comum.Negocio.Entidades;
 
-public class Pagamento
+public enum EnumMeioPagamento { Credito, Debito, PIX, Dinheiro }
+public enum EnumSituacaoPagamento { Pendente, Concluido, Erro }
+
+public class Pagamento : Entidade
 {
     private IList<PagamentoLog> m_Logs = [];
     private double m_Desconto = 0;
@@ -88,7 +91,7 @@ public class Pagamento
         ValorPago =  valorPago;
         DataPago = dataPago;
         SituacaoPagamento = EnumSituacaoPagamento.Concluido;
-        AdicionarLog(EnumTipoPagamentoLog.Conclusao);
+        AdicionarLog(EnumTipoPagamentoLog.Conclusao, "Conclusão");
     }
 
     public virtual void Errar(string descricaoErro)
@@ -96,7 +99,7 @@ public class Pagamento
         ValidarSeConcluido();
         
         SituacaoPagamento = EnumSituacaoPagamento.Erro;
-        AdicionarLog(EnumTipoPagamentoLog.Erro, descricaoErro);
+        AdicionarLog(EnumTipoPagamentoLog.Erro, "Ocorreu um erro!", descricaoErro);
     }
     
     private void ValidarSeConcluido()
@@ -105,8 +108,8 @@ public class Pagamento
             throw new Exception("Pagamento já liquidado");
     }
 
-    public virtual void AdicionarLog(EnumTipoPagamentoLog tipo, string? dados = null)
+    public virtual void AdicionarLog(EnumTipoPagamentoLog tipo, string mensagem, string? dados = null)
     {
-        m_Logs.Add(new PagamentoLog(this, tipo, dados));
+        m_Logs.Add(new PagamentoLog(this, mensagem, tipo, dados));
     }
 }

@@ -18,7 +18,7 @@ namespace EventoWeb.Comum.Testes.Negocio
             );
 
             Assert.Equal("05506427654", p.CPF.Numero);
-            Assert.Equal(EnumSexo.Masculino, p.Masculino);
+            Assert.Equal(EnumSexo.Masculino, p.Sexo);
             Assert.Equal(new DateTime(1990, 5, 20), p.DataNascimento.Data);
             Assert.Equal("Nome da Pessoa", p.Nome.Nome);
             Assert.Equal("joao@uol.com.br", p.Email.Endereco);

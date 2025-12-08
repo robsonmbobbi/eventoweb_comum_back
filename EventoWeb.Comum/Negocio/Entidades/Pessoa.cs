@@ -13,7 +13,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
         public Pessoa(CPF cpf, EnumSexo sexo, DataAniversario dataNascimento, NomeCompleto nome, EMail email, Telefone celularWP)
         {
             CPF = cpf;
-            Masculino = sexo;
+            Sexo = sexo;
             DataNascimento = dataNascimento;
             Nome = nome;
             Email = email;
@@ -28,7 +28,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
             set => m_CPF = value ??
                 throw new ArgumentNullException(nameof(CPF), $"{nameof(CPF)} não pode ser nulo.");
         }
-        public virtual EnumSexo Masculino { get; set; }
+        public virtual EnumSexo Sexo { get; set; }
         public virtual DataAniversario DataNascimento
         {
             get => m_DataNascimento; 
