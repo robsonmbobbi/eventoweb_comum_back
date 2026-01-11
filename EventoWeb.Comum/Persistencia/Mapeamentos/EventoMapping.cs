@@ -1,4 +1,5 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades;
+using NHibernate;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -78,6 +79,14 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                  m.NotNullable(true);
                  m.Column("IDADE_MINIMA_INSC_ADULTO");
              });
+            
+            this.Property(x => x.Regulamento, m =>
+            {
+                m.Access(Accessor.Property);
+                m.NotNullable(false);
+                m.Column("REGULAMENTO");
+                m.Type(NHibernateUtil.StringClob);
+            });
         }
     }
 }

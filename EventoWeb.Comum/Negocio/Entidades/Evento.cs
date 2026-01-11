@@ -42,7 +42,8 @@
 
         public virtual DateTime DataRegistro { get { return m_DataRegistro; } }
 
-        public virtual ArquivoBinario Logotipo { get; set; }
+        public virtual ArquivoBinario? Logotipo { get; set; }
         public virtual int IdadeMinimaInscricaoAdulto { get; set; }
+        public virtual String? Regulamento { get; set; }
     }
 }

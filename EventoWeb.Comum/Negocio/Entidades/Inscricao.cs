@@ -1,6 +1,6 @@
 ﻿namespace EventoWeb.Comum.Negocio.Entidades
 {    
-    public enum EnumSituacaoInscricao { Pendente, Aceita, Rejeitada }
+    public enum EnumSituacaoInscricao { Limbo, Pendente, Aceita, Rejeitada }
 
     public abstract class Inscricao: Entidade
     {
@@ -9,12 +9,12 @@
         {
             Pessoa = pessoa ?? throw new ArgumentNullException(nameof(pessoa));
             Evento = evento ?? throw new ArgumentNullException(nameof(evento));
-            m_Situacao = EnumSituacaoInscricao.Pendente;
+            m_Situacao = EnumSituacaoInscricao.Limbo;
             DataRecebimento = dataRecebimento;
             ConfirmadoNoEvento = false;
             DormeEvento = true;
 
-            if (!EhValidaIdade(pessoa.DataNascimento. CalcularIdadeEmAnos(evento.PeriodoRealizacaoEvento.DataInicial)))
+            if (!EhValidaIdade(pessoa.DataNascimento.CalcularIdadeEmAnos(evento.PeriodoRealizacaoEvento.DataInicial)))
                 throw new ArgumentException("A idade da pessoa é inválida para este tipo de inscrição.");
         }
 
@@ -50,6 +50,14 @@
                 throw new Exception("Só se pode tornar uma inscrição rejeitada se ela estiver na situação Pendente");
 
             m_Situacao = EnumSituacaoInscricao.Rejeitada;
+        }
+
+        public virtual void TornarPendente()
+        {
+            if (m_Situacao != EnumSituacaoInscricao.Limbo)
+                throw new Exception("Só se pode tornar uma inscrição pendente se ela estiver na situação Limbo");
+
+            m_Situacao = EnumSituacaoInscricao.Pendente;
         }
     }
 }
