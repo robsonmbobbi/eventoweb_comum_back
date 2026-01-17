@@ -21,7 +21,7 @@
         { 
             get { return m_InscricaoResponsavel1; }
         }
-        public virtual InscricaoParticipante InscricaoResponsavel2 
+        public virtual InscricaoParticipante? InscricaoResponsavel2 
         { 
             get { return m_InscricaoResponsavel2; }
         }

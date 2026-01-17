@@ -5,5 +5,5 @@ public interface IPersistencia<T>
     void Incluir(T objeto);
     void Excluir(T objeto);
     void Atualizar(T objeto);
-    T Obter(int id);
+    T? Obter(int id);
 }

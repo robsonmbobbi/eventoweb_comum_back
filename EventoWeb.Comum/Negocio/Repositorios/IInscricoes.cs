@@ -4,5 +4,5 @@ namespace EventoWeb.Comum.Negocio.Repositorios;
 
 public interface IInscricoes : IPersistencia<Inscricao>
 {
-    Inscricao ObterPorCPF(int idEvento, string cpf);
+    Inscricao? ObterPorCPF(int idEvento, string cpf);
 }
