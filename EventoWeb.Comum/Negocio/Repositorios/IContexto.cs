@@ -1,6 +1,6 @@
 namespace EventoWeb.Comum.Negocio.Repositorios;
 
-public interface IContexto
+public interface IContexto : IDisposable
 {
     void IniciarTransacao();
 

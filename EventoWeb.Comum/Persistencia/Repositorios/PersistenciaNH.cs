@@ -22,7 +22,7 @@ public class PersistenciaNH<T>(ISession sessao) : IPersistencia<T>
         Sessao.Update(objeto);
     }
 
-    public T Obter(int id)
+    public T? Obter(int id)
     {
         return Sessao.Get<T>(id);
     }

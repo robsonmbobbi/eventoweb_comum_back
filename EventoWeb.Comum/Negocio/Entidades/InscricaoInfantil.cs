@@ -41,7 +41,7 @@
             }
 
             if (DormeEvento &&
-                (!responsavel1.DormeEvento & !(responsavel2?.DormeEvento ?? false)))
+                (!responsavel1.DormeEvento && !(responsavel2?.DormeEvento ?? false)))
                 throw new ArgumentException("Para uma criança que dormirá no evento, pelo um dos responsáveis deve dormir no evento.", $"{nameof(responsavel1)}/{nameof(responsavel2)}");
 
             m_InscricaoResponsavel1 = responsavel1;

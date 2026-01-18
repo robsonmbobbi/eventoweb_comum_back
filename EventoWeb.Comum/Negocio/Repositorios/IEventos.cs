@@ -6,5 +6,5 @@ public enum EnumFiltroListagemEventos { Todos, EmPeriodoInscricao }
 
 public interface IEventos : IPersistencia<Evento>
 {
-    IList<Evento> Listar(EnumFiltroListagemEventos filtro);
+    IList<Evento> Listar(EnumFiltroListagemEventos filtro, DateTime? dataAtual = null);
 }

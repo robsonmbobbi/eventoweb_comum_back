@@ -3,7 +3,7 @@ using EventoWeb.Comum.Negocio.Repositorios;
 
 namespace EventoWeb.Comum.Aplicacao.Inscricoes;
 
-public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes)
+public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes, IPessoas pessoas)
     : AppInscricaoBase(contexto, inscricoes)
 {
     public DTOInscricao? DtoInscricao { get; set; }
@@ -42,13 +42,48 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes)
         });
     }
 
-    private void AtualizarInscricaoInfantil(InscricaoInfantil infantil)
-    {
-        throw new NotImplementedException();
-    }
-
     private void AtualizarInscricaoAdulto(InscricaoParticipante participante)
     {
-        throw new NotImplementedException();
+        AtualizarPessoa(participante.Pessoa);
+        AtualizarComum(participante);
+        participante.InstituicoesEspiritasFrequenta = DtoInscricao!.InstituicoesEspiritasFrequenta;
+    }
+
+    private void AtualizarInscricaoInfantil(InscricaoInfantil infantil)
+    {
+        AtualizarPessoa(infantil.Pessoa);
+        AtualizarComum(infantil);
+        
+        InscricaoParticipante responsavel1 = 
+            Inscricoes.Obter(DtoInscricao!.Responsavel1.IdInscricao) as InscricaoParticipante ??
+            throw new Exception($"Inscrição do primeiro responsável não encontrada ou não é do tipo Participante. Id {DtoInscricao.Responsavel1.IdInscricao}");
+        InscricaoParticipante? responsavel2 = null;
+
+        if (DtoInscricao.Responsavel2 != null)
+        {
+            responsavel2 = 
+                Inscricoes.Obter(DtoInscricao.Responsavel2.IdInscricao) as InscricaoParticipante ??
+                throw new Exception($"Inscrição do segundo responsável não encontrada ou não é do tipo Participante. Id {DtoInscricao.Responsavel2.IdInscricao}");
+        }  
+        
+        infantil.AtribuirResponsaveis(responsavel1, responsavel2);
+    }
+    
+    private void AtualizarPessoa(Pessoa pessoa)
+    {
+        pessoa.Nome = new NomeCompleto(DtoInscricao.Pessoa.Nome);
+        pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
+        pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento);
+        pessoa.Email = new EMail(DtoInscricao.Pessoa.Email);
+        pessoa.CelularWP = new Telefone(DtoInscricao.Pessoa.Celular);
+        
+        pessoas.Atualizar(pessoa);
+    }    
+    
+    private void AtualizarComum(Inscricao inscricao)
+    {
+        inscricao.DormeEvento = DtoInscricao!.DormeEvento;
+        inscricao.NomeCracha = DtoInscricao!.NomeCracha;
+        inscricao.Observacoes = DtoInscricao!.Observacoes;
     }
 }
