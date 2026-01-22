@@ -23,7 +23,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             ManyToOne(x => x.Pedido, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column(("ID_PAGAMENTO"));
+                m.Column(("ID_PEDIDO"));
                 m.NotNullable(true);
             });
 
