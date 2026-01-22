@@ -23,7 +23,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             Id(x => x.Id, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("ID_INSCRICAO");
+                m.Column("ID");
                 m.Generator(Generators.Native, g =>
                 {
                     g.Params(new { sequence = "GEN_INSCRICAO" });

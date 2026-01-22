@@ -36,7 +36,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
 
             Property(x => x.Preco, m =>
             {
-                m.Access(Accessor.Field); // Acessa campo m_Desconto
+                m.Access(Accessor.Field);
                 m.Column("PRECO");
                 m.NotNullable(true);
             });

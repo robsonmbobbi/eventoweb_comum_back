@@ -77,7 +77,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
         private void CriarTabelaInscricoes()
         {
             Create.Table("inscricoes")
-                .WithColumn("ID_INSCRICAO").AsInt32().PrimaryKey().Identity()
+                .WithColumn("ID").AsInt32().PrimaryKey().Identity()
 
                 .WithColumn("TIPO_INSCRICAO").AsString(30).NotNullable()
 
@@ -99,9 +99,9 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
 
                 // Subclasses (InscricaoInfantil / InscricaoParticipante)
                 .WithColumn("ID_INSC_RESPONSAVEL_1").AsInt32().Nullable()
-                    .ForeignKey("FK_INSC_INF_1", "inscricoes", "ID_INSCRICAO").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_INSC_INF_1", "inscricoes", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
                 .WithColumn("ID_INSC_RESPONSAVEL_2").AsInt32().Nullable()
-                    .ForeignKey("FK_INSC_INF_2", "inscricoes", "ID_INSCRICAO").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_INSC_INF_2", "inscricoes", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
 
                 .WithColumn("TIPO").AsInt16().Nullable()
                 .WithColumn("INSTITUICOES_ESPIRITAS_FREQ").AsString(300).Nullable();
@@ -121,9 +121,9 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("ID_PEDIDO").AsInt32().NotNullable()
                     .ForeignKey("FK_PEDINSC_PEDIDO", "PEDIDOS", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
                 .WithColumn("ID_INSCRICAO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PEDINSC_INSC", "inscricoes", "ID_INSCRICAO").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade);
+                    .ForeignKey("FK_PEDINSC_INSC", "inscricoes", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade);
 
-            Create.UniqueConstraint("UK_PEDIDOS_INSCRICOES_PEDIDO_INSC")
+            Create.PrimaryKey("PK_PEDIDOS_INSCRICOES")
                 .OnTable("PEDIDOS_INSCRICOES")
                 .Columns("ID_PEDIDO", "ID_INSCRICAO");
         }
