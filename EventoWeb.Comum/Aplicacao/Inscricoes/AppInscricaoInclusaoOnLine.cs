@@ -4,7 +4,7 @@ using EventoWeb.Comum.Negocio.Servicos;
 
 namespace EventoWeb.Comum.Aplicacao.Inscricoes;
 
-public class AppInscricaoInclusao(
+public class AppInscricaoInclusaoOnLine(
     IContexto contexto,
     IInscricoes inscricoes,
     IPessoas pessoas,
@@ -23,7 +23,12 @@ public class AppInscricaoInclusao(
             var inscricao = DtoInscricao.Tipo == EnumTipoInscricao.Infantil ? 
                 IncluirInscricaoInfantil() : IncluirInscricaoAdulto();
 
-            var srv = new SrvInclusaoInscricao(Inscricoes);
+            var srv = new SrvInclusaoInscricao(
+                Inscricoes,
+                [
+                    new ValidacaoInscricaoPessoaJaInscrita(Inscricoes),
+                    new ValidacaoInscricaoPeriodoInscricaoOnLine()
+                ]);
             srv.Incluir(inscricao);
 
             DtoInscricao.Id = inscricao.Id;
@@ -100,8 +105,6 @@ public class AppInscricaoInclusao(
             
             pessoa = new Pessoa(
                 new CPF(DtoInscricao.Pessoa.CPF),
-                DtoInscricao.Pessoa.Sexo,
-                new DataAniversario(DtoInscricao.Pessoa.DataNascimento),
                 new NomeCompleto(DtoInscricao.Pessoa.Nome),
                 new EMail(DtoInscricao.Pessoa.Email),
                 new Telefone(DtoInscricao.Pessoa.Celular)
@@ -116,6 +119,8 @@ public class AppInscricaoInclusao(
             pessoa.CelularWP = new Telefone(DtoInscricao.Pessoa.Celular);
         }
 
+        pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
+        pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento);
         pessoa.AlergiaAlimentos = DtoInscricao.Pessoa.AlergiaAlimentos;
         pessoa.EhDiabetico = DtoInscricao.Pessoa.EhDiabetico;
         pessoa.EhVegetariano = DtoInscricao.Pessoa.EhVegetariano;

@@ -8,7 +8,7 @@ public class Pedido : Entidade
 {
     private IList<Inscricao> m_Inscricoes;
 
-    public Pedido(IEnumerable<Inscricao> inscricoes, double valor, EnumFormaPagamento formaPagamento)
+    public Pedido(Pessoa pagador, IEnumerable<Inscricao> inscricoes, double valor, EnumFormaPagamento formaPagamento)
     {
         if (!inscricoes.Any())
             throw new Exception($"{nameof(inscricoes)} não pode ser vazio.");
@@ -16,6 +16,7 @@ public class Pedido : Entidade
         if (valor < 0)
             throw new Exception($"{nameof(valor)} não pode ser negativo.");
 
+        Pagador = pagador ?? throw new Exception($"{nameof(pagador)} não pode ser nulo.");
         m_Inscricoes = new List<Inscricao>(inscricoes);
         Valor = valor;
         FormaPagamento = formaPagamento;
@@ -31,6 +32,7 @@ public class Pedido : Entidade
     public virtual double Valor { get; }
     public virtual EnumFormaPagamento FormaPagamento { get; protected set; }
     public virtual Pagamento Pagamento { get; }
+    public virtual Pessoa Pagador { get; }
 
     public virtual void AplicarDesconto(double valorDesconto)
     {

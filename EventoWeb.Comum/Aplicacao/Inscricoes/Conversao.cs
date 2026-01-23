@@ -16,7 +16,7 @@ public static class Conversao
             EhDiabetico = pessoa.EhDiabetico,
             EhVegetariano = pessoa.EhVegetariano,
             Email = pessoa.Email.Endereco,
-            Sexo = pessoa.Sexo,
+            Sexo = pessoa.Sexo ?? EnumSexo.Feminino,
             UsaAdocanteDiariamente = pessoa.UsaAdocanteDiariamente,
         };
     }

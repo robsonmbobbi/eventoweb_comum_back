@@ -10,16 +10,12 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             var p = new Pessoa(
                 new CPF("05506427654"),
-                EnumSexo.Masculino,
-                new DataAniversario(new DateTime(1990, 5, 20)),
                 new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
                 new Telefone("37991925134")
             );
 
             Assert.Equal("05506427654", p.CPF.Numero);
-            Assert.Equal(EnumSexo.Masculino, p.Sexo);
-            Assert.Equal(new DateTime(1990, 5, 20), p.DataNascimento.Data);
             Assert.Equal("Nome da Pessoa", p.Nome.Nome);
             Assert.Equal("joao@uol.com.br", p.Email.Endereco);
             Assert.Equal("37991925134", p.CelularWP.Numero);
@@ -30,8 +26,6 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             Assert.Throws<ArgumentNullException>(() => new Pessoa(
                 null, // CPF inválido
-                EnumSexo.Masculino,
-                new DataAniversario(new DateTime(1990, 5, 20)),
                 new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
                 new Telefone("37991925134")
@@ -43,8 +37,6 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             Assert.Throws<ArgumentNullException>(() => new Pessoa(
                 new CPF("05506427654"),
-                EnumSexo.Masculino,
-                new DataAniversario(new DateTime(1990, 5, 20)),
                 null,
                 new EMail("joao@uol.com.br"),
                 new Telefone("37991925134")
@@ -56,8 +48,6 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             Assert.Throws<ArgumentNullException>(() => new Pessoa(
                 new CPF("05506427654"),
-                EnumSexo.Masculino,
-                new DataAniversario(new DateTime(1990, 5, 20)),
                 new ("Nome da Pessoa"),
                 null,
                 new Telefone("37991925134")
@@ -69,8 +59,6 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             Assert.Throws<ArgumentNullException>(() => new Pessoa(
                 new CPF("05506427654"),
-                EnumSexo.Masculino,
-                new DataAniversario(new DateTime(1990, 5, 20)),
                 new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
                 null // número inválido
@@ -82,8 +70,6 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             Assert.Throws<ArgumentNullException>(() => new Pessoa(
                 new CPF("05506427654"),
-                EnumSexo.Masculino,
-                null,
                 new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
                 new Telefone("37991925134")
@@ -95,8 +81,6 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             var pessoa1 = new Pessoa(
                 new CPF("05506427654"),
-                EnumSexo.Masculino,
-                new DataAniversario(new DateTime(1990, 5, 20)),
                 new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
                 new Telefone("37991925134")
@@ -104,8 +88,6 @@ namespace EventoWeb.Comum.Testes.Negocio
 
             var pessoa2 = new Pessoa(
                 new CPF("05506427654"),
-                EnumSexo.Masculino,
-                new DataAniversario(new DateTime(1990, 5, 20)),
                 new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
                 new Telefone("37991925134")
