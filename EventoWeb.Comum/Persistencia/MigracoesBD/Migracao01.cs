@@ -46,7 +46,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("DATA_FIM_EVENTO").AsDateTime().NotNullable()
                 .WithColumn("DATA_REGISTRO").AsDateTime().NotNullable()
                 .WithColumn("ID_ARQUIVO_LOGOTIPO").AsInt32().Nullable()
-                    .ForeignKey("FK_EVENTO_ARQBIN", "arquivos_binarios", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_EVENTO_ARQBIN", "arquivos_binarios", "ID").OnUpdate(Rule.Cascade)
                 .WithColumn("IDADE_MINIMA_INSC_ADULTO").AsInt32().NotNullable()
                 .WithColumn("REGULAMENTO").AsString(int.MaxValue).Nullable();
         }
@@ -65,7 +65,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
 
                 .WithColumn("ALERGIA_ALIMENTOS").AsString(100).Nullable()
 
-                .WithColumn("DATA_NASCIMENTO").AsDate().NotNullable()
+                .WithColumn("DATA_NASCIMENTO").AsDate().Nullable()
 
                 .WithColumn("EH_DIABETICO").AsBoolean().NotNullable()
                 .WithColumn("EH_VEGETARIANO").AsBoolean().NotNullable()
@@ -86,12 +86,12 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("DORMIRA").AsBoolean().NotNullable()
 
                 .WithColumn("ID_EVENTO").AsInt32().NotNullable()
-                    .ForeignKey("FK_INSC_EVENTO", "eventos", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_INSC_EVENTO", "eventos", "ID").OnUpdate(Rule.Cascade)
 
                 .WithColumn("NOME_CRACHA").AsString(150).Nullable()
 
                 .WithColumn("ID_PESSOA").AsInt32().NotNullable()
-                    .ForeignKey("FK_INSC_PESSOA", "pessoas", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_INSC_PESSOA", "pessoas", "ID").OnUpdate(Rule.Cascade)
 
                 .WithColumn("SITUACAO").AsInt16().NotNullable()
 
@@ -99,9 +99,9 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
 
                 // Subclasses (InscricaoInfantil / InscricaoParticipante)
                 .WithColumn("ID_INSC_RESPONSAVEL_1").AsInt32().Nullable()
-                    .ForeignKey("FK_INSC_INF_1", "inscricoes", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_INSC_INF_1", "inscricoes", "ID").OnUpdate(Rule.Cascade)
                 .WithColumn("ID_INSC_RESPONSAVEL_2").AsInt32().Nullable()
-                    .ForeignKey("FK_INSC_INF_2", "inscricoes", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_INSC_INF_2", "inscricoes", "ID").OnUpdate(Rule.Cascade)
 
                 .WithColumn("TIPO").AsInt16().Nullable()
                 .WithColumn("INSTITUICOES_ESPIRITAS_FREQ").AsString(300).Nullable();
@@ -112,16 +112,19 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
             Create.Table("PEDIDOS")
                 .WithColumn("ID").AsInt32().PrimaryKey().Identity()
                 .WithColumn("VALOR").AsDecimal(18, 2).NotNullable()
-                .WithColumn("FORMA_PAGAMENTO").AsInt16().NotNullable();
+                .WithColumn("FORMA_PAGAMENTO").AsInt16().NotNullable()
+                .WithColumn("ID_PESSOA_PAGADORA").AsInt32().NotNullable()
+                .ForeignKey("FK_PEDISO_PESSOA_PAG", "pessoas", "ID").OnUpdate(Rule.Cascade);
+
         }
 
         private void CriarTabelaPedidosInscricoes()
         {
             Create.Table("PEDIDOS_INSCRICOES")
                 .WithColumn("ID_PEDIDO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PEDINSC_PEDIDO", "PEDIDOS", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_PEDINSC_PEDIDO", "PEDIDOS", "ID").OnUpdate(Rule.Cascade)
                 .WithColumn("ID_INSCRICAO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PEDINSC_INSC", "inscricoes", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade);
+                    .ForeignKey("FK_PEDINSC_INSC", "inscricoes", "ID").OnUpdate(Rule.Cascade);
 
             Create.PrimaryKey("PK_PEDIDOS_INSCRICOES")
                 .OnTable("PEDIDOS_INSCRICOES")
@@ -135,7 +138,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
 
                 // Mantido conforme mapping (apesar do nome ser suspeito)
                 .WithColumn("ID_PEDIDO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PAG_PEDIDO", "PEDIDOS", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_PAG_PEDIDO", "PEDIDOS", "ID").OnUpdate(Rule.Cascade)
 
                 .WithColumn("VALOR").AsDecimal(18, 2).NotNullable()
                 .WithColumn("DESCONTO").AsDecimal(18, 2).NotNullable()
@@ -170,7 +173,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
             Create.Table("PRECOS_INSCRICAO")
                 .WithColumn("ID").AsInt32().PrimaryKey().Identity()
                 .WithColumn("ID_EVENTO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PRECO_EVENTO", "eventos", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("FK_PRECO_EVENTO", "eventos", "ID").OnUpdate(Rule.Cascade)
 
                 .WithColumn("IDADE_MAX").AsInt32().NotNullable()
                 .WithColumn("PRECO").AsDecimal(18, 2).NotNullable();

@@ -34,6 +34,14 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.NotNullable(true);
                 m.Type<EnumGeneric<EnumFormaPagamento>>();
             });
+            
+            ManyToOne(x => x.Pagador, m =>
+            {
+                m.Access(Accessor.NoSetter);
+                m.Column("ID_PESSOA_PAGADORA");
+                m.NotNullable(true);
+                m.Cascade(Cascade.All | Cascade.DeleteOrphans);
+            });
 
             OneToOne(x => x.Pagamento, m =>
             {
