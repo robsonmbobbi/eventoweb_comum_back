@@ -8,38 +8,38 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
     {
         public PrecoInscricaoMapping()
         {
-            Table("PRECOS_INSCRICAO");
+            Table("precos_inscricao");
 
             Id(x => x.Id, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("ID");
+                m.Column("id");
                 m.Generator(Generators.Native, g =>
                 {
-                    g.Params(new { sequence = "GEN_PRECO_INSCRICAO" });
+                    g.Params(new { sequence = "gen_preco_inscricao" });
                 });
             });            
             
             ManyToOne(x => x.Evento, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column(("ID_EVENTO"));
+                m.Column(("id_evento"));
                 m.NotNullable(true);
             });
 
             Property(x => x.IdadeMax, m =>
             {
                 m.Access(Accessor.Field);
-                m.Column("IDADE_MAX");
+                m.Column("idade_max");
                 m.NotNullable(true);
             });
 
-            Property(x => x.Preco, m =>
+            Bag(x => x.Valores, m =>
             {
                 m.Access(Accessor.Field);
-                m.Column("PRECO");
-                m.NotNullable(true);
-            });
+                m.Key(k => k.Column("id_preco_inscricao")); 
+                m.Cascade(Cascade.All);
+            }, r => r.OneToMany());
         }
     }
 }

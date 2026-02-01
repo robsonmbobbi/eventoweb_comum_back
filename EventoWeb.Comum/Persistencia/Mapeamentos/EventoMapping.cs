@@ -13,10 +13,10 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             this.Id(x => x.Id, m =>
               {
                   m.Access(Accessor.NoSetter);
-                  m.Column("ID");
+                  m.Column("id");
                   m.Generator(Generators.Native, g =>
                   {
-                      g.Params(new { sequence = "GEN_EVENTOS" });
+                      g.Params(new { sequence = "gen_eventos" });
                   });
               });
 
@@ -25,9 +25,10 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 c.Access(Accessor.NoSetter);
                 c.Property(o => o.Nome, m => 
                 { 
+                    m.Access(Accessor.NoSetter);
                     m.NotNullable(true);
                     m.Length(250);
-                    m.Column("NOME");
+                    m.Column("nome");
                 });
             });
 
@@ -37,12 +38,12 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                  c.Property(o => o.DataInicial, m => {
                      m.Access(Accessor.Property);
                      m.NotNullable(true);
-                     m.Column("DATA_INICIO_INSC");
+                     m.Column("data_inicio_insc");
                  });
                  c.Property(o => o.DataFinal, m => {
                      m.Access(Accessor.Property);
                      m.NotNullable(true);
-                     m.Column("DATA_FIM_INSC");
+                     m.Column("data_fim_insc");
                  });
              });
 
@@ -52,39 +53,39 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 c.Property(o => o.DataInicial, m => {
                     m.Access(Accessor.Property);
                     m.NotNullable(true);
-                    m.Column("DATA_INICIO_EVENTO");
+                    m.Column("data_inicio_evento");
                 });
                 c.Property(o => o.DataFinal, m => {
                     m.Access(Accessor.Property);
                     m.NotNullable(true);
-                    m.Column("DATA_FIM_EVENTO");
+                    m.Column("data_fim_evento");
                 });
             });
 
             this.Property(x => x.DataRegistro, m => {
                 m.Access(Accessor.NoSetter);
                 m.NotNullable(true);
-                m.Column("DATA_REGISTRO");
+                m.Column("data_registro");
             });
             this.ManyToOne(x => x.Logotipo, m => {
                 m.Access(Accessor.Property);
                 m.Cascade(Cascade.All | Cascade.DeleteOrphans);
                 m.NotNullable(false);
-                m.Column("ID_ARQUIVO_LOGOTIPO");
+                m.Column("id_arquivo_logotipo");
             });
             
             this.Property(x => x.IdadeMinimaInscricaoAdulto, m =>
              {
-                 m.Access(Accessor.NoSetter);
+                 m.Access(Accessor.Property);
                  m.NotNullable(true);
-                 m.Column("IDADE_MINIMA_INSC_ADULTO");
+                 m.Column("idade_minima_insc_adulto");
              });
             
             this.Property(x => x.Regulamento, m =>
             {
                 m.Access(Accessor.Property);
                 m.NotNullable(false);
-                m.Column("REGULAMENTO");
+                m.Column("regulamento");
                 m.Type(NHibernateUtil.StringClob);
             });
         }

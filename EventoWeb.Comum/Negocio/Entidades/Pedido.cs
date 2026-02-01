@@ -29,10 +29,10 @@ public class Pedido : Entidade
     }
 
     public virtual IEnumerable<Inscricao> Inscricoes => m_Inscricoes;
-    public virtual double Valor { get; }
+    public virtual double Valor { get; protected set; }
     public virtual EnumFormaPagamento FormaPagamento { get; protected set; }
-    public virtual Pagamento Pagamento { get; }
-    public virtual Pessoa Pagador { get; }
+    public virtual Pagamento Pagamento { get; protected set; }
+    public virtual Pessoa Pagador { get; protected set; }
 
     public virtual void AplicarDesconto(double valorDesconto)
     {

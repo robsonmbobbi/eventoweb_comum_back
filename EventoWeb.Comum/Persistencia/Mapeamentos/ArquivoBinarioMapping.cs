@@ -13,10 +13,10 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             Id(x => x.Id, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("ID");
+                m.Column("id");
                 m.Generator(Generators.Native, g =>
                 {
-                    g.Params(new { sequence = "GEN_ARQUIVO_BINARIO" });
+                    g.Params(new { sequence = "gen_arquivo_binario" });
                 });
             });
 
@@ -24,7 +24,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             {
                 m.Access(Accessor.NoSetter);
                 m.NotNullable(true);
-                m.Column("ARQUIVO");
+                m.Column("arquivo");
                 m.Type(NHibernateUtil.BinaryBlob);
             });
 
@@ -32,7 +32,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             {
                 m.Access(Accessor.NoSetter);
                 m.NotNullable(true);
-                m.Column("TIPO_ARQUIVO");
+                m.Column("tipo_arquivo");
                 m.Type<EnumGeneric<EnumTipoArquivoBinario>>();
             });
         }

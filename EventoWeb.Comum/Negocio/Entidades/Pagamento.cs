@@ -21,7 +21,7 @@ public class Pagamento : Entidade
     
     protected Pagamento(){}
     
-    public virtual Pedido Pedido { get; }
+    public virtual Pedido Pedido { get; protected set; }
 
     public virtual double Valor
     {
@@ -59,7 +59,7 @@ public class Pagamento : Entidade
     public virtual double ValorPagar => Valor - Desconto;
     public virtual double? ValorPago { get; protected set; }
     public virtual DateTime? DataPago { get; protected set; }
-    public virtual DateTime DataRegistro { get; }
+    public virtual DateTime DataRegistro { get; protected set;}
 
     public virtual EnumMeioPagamento? MeioPagamento { get; protected set; }
     public virtual EnumSituacaoPagamento SituacaoPagamento { get; protected set;}

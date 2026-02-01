@@ -2,7 +2,9 @@ namespace EventoWeb.Comum.Negocio.Entidades
 {
     public class CPF
     {
-        public virtual string Numero { get; }
+        private string m_Numero;
+        
+        public virtual string Numero => m_Numero;
 
         public CPF(string numero)
         {
@@ -44,7 +46,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
                 throw new ArgumentException("Número de CPF inválido.", nameof(numero));
             }
 
-            Numero = numero;
+            m_Numero = numero;
         }
 
         protected CPF() { }

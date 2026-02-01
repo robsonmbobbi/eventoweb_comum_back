@@ -24,159 +24,178 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
             CriarTabelaPagamentos();
             CriarTabelaPagamentosLogs();
 
+            CriarTabelaFormasPagamento();
             CriarTabelaPrecosInscricao();
+            CriarTabelaPrecosInscricaoValores();
         }
 
         private void CriarTabelaArquivoBinario()
         {
             Create.Table("arquivos_binarios")
-                .WithColumn("ID").AsInt32().PrimaryKey().Identity()
-                .WithColumn("ARQUIVO").AsBinary().NotNullable()
-                .WithColumn("TIPO_ARQUIVO").AsInt16().NotNullable();
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("arquivo").AsBinary().NotNullable()
+                .WithColumn("tipo_arquivo").AsInt16().NotNullable();
         }
 
         private void CriarTabelaEventos()
         {
             Create.Table("eventos")
-                .WithColumn("ID").AsInt32().PrimaryKey().Identity()
-                .WithColumn("NOME").AsString(250).NotNullable()
-                .WithColumn("DATA_INICIO_INSC").AsDateTime().NotNullable()
-                .WithColumn("DATA_FIM_INSC").AsDateTime().NotNullable()
-                .WithColumn("DATA_INICIO_EVENTO").AsDateTime().NotNullable()
-                .WithColumn("DATA_FIM_EVENTO").AsDateTime().NotNullable()
-                .WithColumn("DATA_REGISTRO").AsDateTime().NotNullable()
-                .WithColumn("ID_ARQUIVO_LOGOTIPO").AsInt32().Nullable()
-                    .ForeignKey("FK_EVENTO_ARQBIN", "arquivos_binarios", "ID").OnUpdate(Rule.Cascade)
-                .WithColumn("IDADE_MINIMA_INSC_ADULTO").AsInt32().NotNullable()
-                .WithColumn("REGULAMENTO").AsString(int.MaxValue).Nullable();
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("nome").AsString(200).NotNullable()
+                .WithColumn("data_inicio_insc").AsDateTime().NotNullable()
+                .WithColumn("data_fim_insc").AsDateTime().NotNullable()
+                .WithColumn("data_inicio_evento").AsDateTime().NotNullable()
+                .WithColumn("data_fim_evento").AsDateTime().NotNullable()
+                .WithColumn("data_registro").AsDateTime().NotNullable()
+                .WithColumn("id_arquivo_logotipo").AsInt32().Nullable()
+                    .ForeignKey("fk_evento_arqbin", "arquivos_binarios", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("idade_minima_insc_adulto").AsInt32().NotNullable()
+                .WithColumn("regulamento").AsString(int.MaxValue).Nullable();
         }
 
         private void CriarTabelaPessoas()
         {
             Create.Table("pessoas")
-                .WithColumn("ID").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
 
-                .WithColumn("CPF").AsString(11).Nullable()
+                .WithColumn("cpf").AsString(11).Nullable()
 
-                .WithColumn("NOME").AsString(150).NotNullable()
+                .WithColumn("nome").AsString(200).NotNullable()
 
-                .WithColumn("CELULAR").AsString(15).NotNullable()
-                .WithColumn("EMAIL").AsString(100).NotNullable()
+                .WithColumn("celular").AsString(15).NotNullable()
+                .WithColumn("email").AsString(100).NotNullable()
 
-                .WithColumn("ALERGIA_ALIMENTOS").AsString(100).Nullable()
+                .WithColumn("alergia_alimentos").AsString(100).Nullable()
 
-                .WithColumn("DATA_NASCIMENTO").AsDate().Nullable()
+                .WithColumn("data_nascimento").AsDate().Nullable()
 
-                .WithColumn("EH_DIABETICO").AsBoolean().NotNullable()
-                .WithColumn("EH_VEGETARIANO").AsBoolean().NotNullable()
+                .WithColumn("eh_diabetico").AsBoolean().NotNullable()
+                .WithColumn("eh_vegetariano").AsBoolean().NotNullable()
 
-                .WithColumn("SEXO").AsInt16().Nullable()
-                .WithColumn("USA_ADOCANTE_DIAR").AsBoolean().Nullable();
+                .WithColumn("sexo").AsInt16().Nullable()
+                .WithColumn("usa_adocante_diar").AsBoolean().Nullable();
         }
 
         private void CriarTabelaInscricoes()
         {
             Create.Table("inscricoes")
-                .WithColumn("ID").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
 
-                .WithColumn("TIPO_INSCRICAO").AsString(30).NotNullable()
+                .WithColumn("tipo_inscricao").AsString(30).NotNullable()
 
-                .WithColumn("CONFIRMADO").AsBoolean().NotNullable()
-                .WithColumn("DATA_RECEBIMENTO").AsDate().NotNullable()
-                .WithColumn("DORMIRA").AsBoolean().NotNullable()
+                .WithColumn("confirmado").AsBoolean().NotNullable()
+                .WithColumn("data_recebimento").AsDate().NotNullable()
+                .WithColumn("dormira").AsBoolean().NotNullable()
 
-                .WithColumn("ID_EVENTO").AsInt32().NotNullable()
-                    .ForeignKey("FK_INSC_EVENTO", "eventos", "ID").OnUpdate(Rule.Cascade)
+                .WithColumn("id_evento").AsInt32().NotNullable()
+                    .ForeignKey("fk_insc_evento", "eventos", "id").OnUpdate(Rule.Cascade)
 
-                .WithColumn("NOME_CRACHA").AsString(150).Nullable()
+                .WithColumn("nome_cracha").AsString(150).Nullable()
 
-                .WithColumn("ID_PESSOA").AsInt32().NotNullable()
-                    .ForeignKey("FK_INSC_PESSOA", "pessoas", "ID").OnUpdate(Rule.Cascade)
+                .WithColumn("id_pessoa").AsInt32().NotNullable()
+                    .ForeignKey("fk_insc_pessoa", "pessoas", "id").OnUpdate(Rule.Cascade)
 
-                .WithColumn("SITUACAO").AsInt16().NotNullable()
+                .WithColumn("situacao").AsInt16().NotNullable()
 
-                .WithColumn("OBSERVACOES").AsString(int.MaxValue).Nullable()
+                .WithColumn("observacoes").AsString(int.MaxValue).Nullable()
 
                 // Subclasses (InscricaoInfantil / InscricaoParticipante)
-                .WithColumn("ID_INSC_RESPONSAVEL_1").AsInt32().Nullable()
-                    .ForeignKey("FK_INSC_INF_1", "inscricoes", "ID").OnUpdate(Rule.Cascade)
-                .WithColumn("ID_INSC_RESPONSAVEL_2").AsInt32().Nullable()
-                    .ForeignKey("FK_INSC_INF_2", "inscricoes", "ID").OnUpdate(Rule.Cascade)
+                .WithColumn("id_insc_responsavel_1").AsInt32().Nullable()
+                    .ForeignKey("fk_insc_inf_1", "inscricoes", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("id_insc_responsavel_2").AsInt32().Nullable()
+                    .ForeignKey("fk_insc_inf_2", "inscricoes", "id").OnUpdate(Rule.Cascade)
 
-                .WithColumn("TIPO").AsInt16().Nullable()
-                .WithColumn("INSTITUICOES_ESPIRITAS_FREQ").AsString(300).Nullable();
+                .WithColumn("tipo").AsInt16().Nullable()
+                .WithColumn("instituicoes_espiritas_freq").AsString(300).Nullable();
         }
 
         private void CriarTabelaPedidos()
         {
-            Create.Table("PEDIDOS")
-                .WithColumn("ID").AsInt32().PrimaryKey().Identity()
-                .WithColumn("VALOR").AsDecimal(18, 2).NotNullable()
-                .WithColumn("FORMA_PAGAMENTO").AsInt16().NotNullable()
-                .WithColumn("ID_PESSOA_PAGADORA").AsInt32().NotNullable()
-                .ForeignKey("FK_PEDISO_PESSOA_PAG", "pessoas", "ID").OnUpdate(Rule.Cascade);
+            Create.Table("pedidos")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("valor").AsDecimal(18, 2).NotNullable()
+                .WithColumn("forma_pagamento").AsInt16().NotNullable()
+                .WithColumn("id_pessoa_pagadora").AsInt32().NotNullable()
+                .ForeignKey("fk_pediso_pessoa_pag", "pessoas", "id").OnUpdate(Rule.Cascade);
 
         }
 
         private void CriarTabelaPedidosInscricoes()
         {
-            Create.Table("PEDIDOS_INSCRICOES")
-                .WithColumn("ID_PEDIDO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PEDINSC_PEDIDO", "PEDIDOS", "ID").OnUpdate(Rule.Cascade)
-                .WithColumn("ID_INSCRICAO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PEDINSC_INSC", "inscricoes", "ID").OnUpdate(Rule.Cascade);
+            Create.Table("pedidos_inscricoes")
+                .WithColumn("id_pedido").AsInt32().NotNullable()
+                    .ForeignKey("fk_pedinsc_pedido", "pedidos", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("id_inscricao").AsInt32().NotNullable()
+                    .ForeignKey("fk_pedinsc_insc", "inscricoes", "id").OnUpdate(Rule.Cascade);
 
-            Create.PrimaryKey("PK_PEDIDOS_INSCRICOES")
-                .OnTable("PEDIDOS_INSCRICOES")
-                .Columns("ID_PEDIDO", "ID_INSCRICAO");
+            Create.PrimaryKey("pk_pedidos_inscricoes")
+                .OnTable("pedidos_inscricoes")
+                .Columns("id_pedido", "id_inscricao");
         }
 
         private void CriarTabelaPagamentos()
         {
-            Create.Table("PAGAMENTOS")
-                .WithColumn("ID").AsInt32().PrimaryKey().Identity()
+            Create.Table("pagamentos")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
 
                 // Mantido conforme mapping (apesar do nome ser suspeito)
-                .WithColumn("ID_PEDIDO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PAG_PEDIDO", "PEDIDOS", "ID").OnUpdate(Rule.Cascade)
+                .WithColumn("id_pedido").AsInt32().NotNullable()
+                    .ForeignKey("fk_pag_pedido", "pedidos", "id").OnUpdate(Rule.Cascade)
 
-                .WithColumn("VALOR").AsDecimal(18, 2).NotNullable()
-                .WithColumn("DESCONTO").AsDecimal(18, 2).NotNullable()
+                .WithColumn("valor").AsDecimal(18, 2).NotNullable()
+                .WithColumn("desconto").AsDecimal(18, 2).NotNullable()
 
-                .WithColumn("VALOR_PAGO").AsDecimal(18, 2).Nullable()
-                .WithColumn("DATA_PAGO").AsDateTime().Nullable()
+                .WithColumn("valor_pago").AsDecimal(18, 2).Nullable()
+                .WithColumn("data_pago").AsDateTime().Nullable()
 
-                .WithColumn("DATA_REGISTRO_PAGAMENTO").AsDateTime().NotNullable()
+                .WithColumn("data_registro_pagamento").AsDateTime().NotNullable()
 
-                .WithColumn("MEIO_PAGAMENTO").AsInt16().Nullable()
-                .WithColumn("SITUACAO_PAGAMENTO").AsInt16().NotNullable()
+                .WithColumn("meio_pagamento").AsInt16().Nullable()
+                .WithColumn("situacao_pagamento").AsInt16().NotNullable()
 
-                .WithColumn("NUMERO_PARCELAS").AsInt32().Nullable();
+                .WithColumn("numero_parcelas").AsInt32().Nullable();
         }
 
         private void CriarTabelaPagamentosLogs()
         {
-            Create.Table("PAGAMENTOS_LOGS")
-                .WithColumn("ID").AsInt32().PrimaryKey().Identity()
-                .WithColumn("ID_PAGAMENTO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PAGLOG_PAG", "PAGAMENTOS", "ID").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+            Create.Table("pagamentos_logs")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_pagamento").AsInt32().NotNullable()
+                    .ForeignKey("fk_paglog_pag", "pagamentos", "id").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
 
-                .WithColumn("TIPO").AsInt16().NotNullable()
-                .WithColumn("DATA").AsDateTime().NotNullable()
+                .WithColumn("tipo").AsInt16().NotNullable()
+                .WithColumn("data").AsDateTime().NotNullable()
 
-                .WithColumn("MENSAGEM").AsString(500).Nullable()
-                .WithColumn("DADOS").AsString(4000).Nullable();
+                .WithColumn("mensagem").AsString(500).Nullable()
+                .WithColumn("dados").AsString(4000).Nullable();
+        }
+
+        private void CriarTabelaFormasPagamento()
+        {
+            Create.Table("formas_pagamento")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("nome").AsString(200).NotNullable();
         }
 
         private void CriarTabelaPrecosInscricao()
         {
-            Create.Table("PRECOS_INSCRICAO")
-                .WithColumn("ID").AsInt32().PrimaryKey().Identity()
-                .WithColumn("ID_EVENTO").AsInt32().NotNullable()
-                    .ForeignKey("FK_PRECO_EVENTO", "eventos", "ID").OnUpdate(Rule.Cascade)
+            Create.Table("precos_inscricao")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_evento").AsInt32().NotNullable()
+                    .ForeignKey("fk_preco_evento", "eventos", "id").OnUpdate(Rule.Cascade)
 
-                .WithColumn("IDADE_MAX").AsInt32().NotNullable()
-                .WithColumn("PRECO").AsDecimal(18, 2).NotNullable();
+                .WithColumn("idade_max").AsInt32().NotNullable();
+        }
+
+        private void CriarTabelaPrecosInscricaoValores()
+        {
+            Create.Table("preco_inscricao_valores")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_preco_inscricao").AsInt32().NotNullable()
+                .ForeignKey("fk_piv_pi", "precos_inscricao", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
+                .WithColumn("id_forma_pagamento").AsInt32().NotNullable()
+                .ForeignKey("fk_piv_forma", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("valor").AsDecimal(18, 2).NotNullable();
         }
     }
 }

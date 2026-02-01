@@ -8,69 +8,69 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
     {
         public PagamentoMapping()
         {
-            Table("PAGAMENTOS");
+            Table("pagamentos");
 
             Id(x => x.Id, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("ID");
+                m.Column("id");
                 m.Generator(Generators.Native, g =>
                 {
-                    g.Params(new { sequence = "GEN_PAGAMENTO" });
+                    g.Params(new { sequence = "gen_pagamento" });
                 });
             });            
             
             ManyToOne(x => x.Pedido, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column(("ID_PEDIDO"));
+                m.Column(("id_pedido"));
                 m.NotNullable(true);
             });
 
             Property(x => x.Valor, m =>
             {
                 m.Access(Accessor.Field);
-                m.Column("VALOR");
+                m.Column("valor");
                 m.NotNullable(true);
             });
 
             Property(x => x.Desconto, m =>
             {
                 m.Access(Accessor.Field); // Acessa campo m_Desconto
-                m.Column("DESCONTO");
+                m.Column("desconto");
                 m.NotNullable(true);
             });
 
             Property(x => x.ValorPago, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("VALOR_PAGO");
+                m.Column("valor_pago");
             });
 
             Property(x => x.DataPago, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("DATA_PAGO");
+                m.Column("data_pago");
             });
 
             Property(x => x.DataRegistro, m =>
             {
-                m.Access(Accessor.NoSetter);
-                m.Column("DATA_REGISTRO_PAGAMENTO");
+                m.Access(Accessor.Property);
+                m.Column("data_registro_pagamento");
                 m.NotNullable(true);
             });
 
             Property(x => x.MeioPagamento, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("MEIO_PAGAMENTO");
+                m.Column("meio_pagamento");
                 m.Type<EnumGeneric<EnumMeioPagamento>>();
             });
 
             Property(x => x.SituacaoPagamento, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("SITUACAO_PAGAMENTO");
+                m.Column("situacao_pagamento");
                 m.NotNullable(true);
                 m.Type<EnumGeneric<EnumSituacaoPagamento>>();
             });
@@ -78,13 +78,13 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             Property(x => x.NumeroParcelas, m =>
             {
                 m.Access(Accessor.Field); // Acessa campo m_NumeroParcelas
-                m.Column("NUMERO_PARCELAS");
+                m.Column("numero_parcelas");
             });
 
             Bag(x => x.Logs, m =>
             {
                 m.Access(Accessor.Field);
-                m.Key(k => k.Column("ID_PAGAMENTO")); 
+                m.Key(k => k.Column("id_pagamento")); 
                 m.Cascade(Cascade.All);
             }, r => r.OneToMany());
         }

@@ -2,7 +2,9 @@ namespace EventoWeb.Comum.Negocio.Entidades
 {
     public partial class EMail
     {
-        public virtual string Endereco { get; }
+        private string m_Endereco;
+        
+        public virtual string Endereco => m_Endereco;
 
         public EMail(string endereco)
         {
@@ -15,7 +17,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
             if (!MyRegex().IsMatch(endereco))
                 throw new ArgumentException("O endereço de e-mail informado não é válido");                              
 
-            Endereco = endereco;
+            m_Endereco = endereco;
         }
 
         protected EMail() { }

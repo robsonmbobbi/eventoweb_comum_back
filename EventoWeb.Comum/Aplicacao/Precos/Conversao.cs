@@ -10,8 +10,28 @@ public static class Conversao
         {
             Id = precoInscricao.Id,
             IdadeMax = precoInscricao.IdadeMax,
-            Preco = precoInscricao.Preco
+            Valores = precoInscricao
+                .Valores
+                .Select(x => x.Converter())
+                .ToList()
         };
     }
-    
+
+    public static DTOPrecosInscricaoForma Converter(this PrecoInscricaoValor valor)
+    {
+        return new DTOPrecosInscricaoForma
+        {
+            Forma = valor.Forma.Converter(),
+            Preco = valor.Valor
+        };
+    }
+
+    public static DTOForma Converter(this FormaPagamento forma)
+    {
+        return new DTOForma
+        {
+            Id = forma.Id,
+            Nome = forma.Nome.Nome
+        };
+    }
 }

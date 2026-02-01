@@ -3,20 +3,19 @@ namespace EventoWeb.Comum.Negocio.Entidades;
 public class PrecoInscricao : Entidade
 {
     private int m_IdadeMax;
-    private double m_Preco;
+    private IList<PrecoInscricaoValor> m_Valores = [];
 
-    public PrecoInscricao(Evento evento, int idadeMax, double preco)
+    public PrecoInscricao(Evento evento, int idadeMax)
     {
         Evento = evento ?? throw new ArgumentNullException(nameof(evento));
         IdadeMax = idadeMax;
-        Preco = preco;
     }
 
     protected PrecoInscricao()
     {
     }
 
-    public virtual Evento Evento { get; }
+    public virtual Evento Evento { get; protected set; }
 
     public virtual int IdadeMax
     {
@@ -28,14 +27,20 @@ public class PrecoInscricao : Entidade
             m_IdadeMax = value;
         }
     }
-    public virtual double Preco
+    
+    public virtual IEnumerable<PrecoInscricaoValor> Valores => m_Valores;
+
+    public virtual void AdicionarValor(FormaPagamento forma, decimal valor)
     {
-        get => m_Preco;
-        set
-        {
-            if (value < 0)
-                throw new ArgumentOutOfRangeException($"{nameof(value)} deve ser maior ou igual a zero.");
-            m_Preco = value;
-        }
+        if (m_Valores.Any(x => x.Forma.Id == forma.Id))
+            throw new Exception("Já existe um valor com aessa forma de pagamento.");
+        
+        m_Valores.Add(new PrecoInscricaoValor(this, forma, valor));
+    }
+
+    public virtual void RemoverValor(PrecoInscricaoValor preco)
+    {
+        if (!m_Valores.Remove(preco))
+            throw new Exception($"Preço com o id {preco.Id} não encontrado na lista para exclusão");
     }
 }

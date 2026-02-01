@@ -14,7 +14,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
 
             Discriminator(d =>
             {
-                d.Column("TIPO_INSCRICAO");
+                d.Column("tipo_inscricao");
                 d.Length(30);
             });
 
@@ -23,58 +23,58 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             Id(x => x.Id, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("ID");
+                m.Column("id");
                 m.Generator(Generators.Native, g =>
                 {
-                    g.Params(new { sequence = "GEN_INSCRICAO" });
+                    g.Params(new { sequence = "gen_inscricao" });
                 });
             });
 
             Property(x => x.ConfirmadoNoEvento, m =>
               {
                   m.Access(Accessor.Property);
-                  m.Column("CONFIRMADO");
+                  m.Column("confirmado");
                   m.NotNullable(true);
               });
 
             Property(x => x.DataRecebimento, m =>
               {
                   m.Access(Accessor.Property);
-                  m.Column("DATA_RECEBIMENTO");
+                  m.Column("data_recebimento");
                   m.NotNullable(true);
               });
 
             Property(x => x.DormeEvento, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("DORMIRA");
+                m.Column("dormira");
                 m.NotNullable(true);
             });
             ManyToOne(x => x.Evento, m =>
             {
-                m.Access(Accessor.NoSetter);
-                m.Column("ID_EVENTO");
+                m.Access(Accessor.Property);
+                m.Column("id_evento");
                 m.NotNullable(true);
             });
 
             Property(x => x.NomeCracha, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("NOME_CRACHA");
+                m.Column("nome_cracha");
                 m.Length(150);
                 m.NotNullable(false);
             });
             ManyToOne(x => x.Pessoa, m =>
             {
-                m.Access(Accessor.NoSetter);
-                m.Column("ID_PESSOA");
+                m.Access(Accessor.Property);
+                m.Column("id_pessoa");
                 m.NotNullable(true);
                 m.Cascade(Cascade.All | Cascade.DeleteOrphans);
             });
             Property(x => x.Situacao, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("SITUACAO");
+                m.Column("situacao");
                 m.NotNullable(true);
                 m.Type<EnumGeneric<EnumSituacaoInscricao>>();
             });
@@ -82,7 +82,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             Property(x => x.Observacoes, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("OBSERVACOES");
+                m.Column("observacoes");
                 m.NotNullable(false);
                 m.Type(NHibernateUtil.StringClob);
             });
@@ -93,18 +93,18 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
     {
         public InscricaoInfantilMapping()
         {
-            DiscriminatorValue("INFANTIL");
+            DiscriminatorValue("infantil");
             
             ManyToOne(x => x.InscricaoResponsavel1, m =>
             {
-                m.Column("ID_INSC_RESPONSAVEL_1");
+                m.Column("id_insc_responsavel_1");
                 m.Access(Accessor.NoSetter);
                 m.NotNullable(true);
             });
 
             ManyToOne(x => x.InscricaoResponsavel2, m =>
             {
-                m.Column("ID_INSC_RESPONSAVEL_2");
+                m.Column("id_insc_responsavel_2");
                 m.Access(Accessor.NoSetter);
                 m.NotNullable(false);
             });
@@ -115,11 +115,11 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
     {
         public InscricaoParticipanteMapping()
         {
-            DiscriminatorValue("PART_TRAB");
+            DiscriminatorValue("part_trab");
             
             Property(x => x.Tipo, m =>
             {
-                m.Column("TIPO");
+                m.Column("tipo");
                 m.Access(Accessor.Property);
                 m.NotNullable(false);
                 m.Type<EnumGeneric<EnumTipoParticipante>>();
@@ -127,7 +127,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             Property(x => x.InstituicoesEspiritasFrequenta, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("INSTITUICOES_ESPIRITAS_FREQ");
+                m.Column("instituicoes_espiritas_freq");
                 m.NotNullable(false);
             });
         }

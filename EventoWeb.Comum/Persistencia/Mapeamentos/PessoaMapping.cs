@@ -13,10 +13,10 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             this.Id(x => x.Id, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("ID");
+                m.Column("id");
                 m.Generator(Generators.Native, g =>
                 {
-                    g.Params(new { sequence = "GEN_PESSOAS" });
+                    g.Params(new { sequence = "gen_pessoas" });
                 });
             });
             
@@ -26,8 +26,8 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 
                 c.Property(y=>y.Numero, m =>
                 {
-                    m.Access(Accessor.Property);
-                    m.Column("CPF");
+                    m.Access(Accessor.NoSetter);
+                    m.Column("cpf");
                     m.Length(11);
                 });
             });
@@ -37,7 +37,8 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                   c.Access(Accessor.NoSetter);
                   c.Property(y=> y.Nome, m =>
                   {
-                      m.Column("NOME");
+                      m.Access(Accessor.NoSetter);
+                      m.Column("nome");
                       m.Length(150);
                       m.NotNullable(true);
                   });
@@ -48,7 +49,8 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 c.Access(Accessor.Property);
                 c.Property(y=> y.Numero, m =>
                 {
-                    m.Column("CELULAR");
+                    m.Access(Accessor.NoSetter);
+                    m.Column("celular");
                     m.Length(15);
                     m.NotNullable(true);
                 });
@@ -58,7 +60,8 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 c.Access(Accessor.Property);
                 c.Property(y => y.Endereco, m =>
                 {
-                    m.Column("EMAIL");
+                    m.Access(Accessor.NoSetter);
+                    m.Column("email");
                     m.Length(100);
                     m.NotNullable(true);
                 });
@@ -67,7 +70,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             this.Property(x => x.AlergiaAlimentos, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("ALERGIA_ALIMENTOS");
+                m.Column("alergia_alimentos");
                 m.Length(100);
                 m.NotNullable(false);
             });
@@ -76,34 +79,35 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 c.Access(Accessor.NoSetter);
                 c.Property(y=>y.Data, m =>
                 {
-                    m.Column("DATA_NASCIMENTO");
+                    m.Access(Accessor.NoSetter);
+                    m.Column("data_nascimento");
                     m.NotNullable(true);
                 });
             });
             this.Property(x => x.EhDiabetico, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("EH_DIABETICO");
+                m.Column("eh_diabetico");
                 m.NotNullable(true);
             });
             this.Property(x => x.EhVegetariano, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("EH_VEGETARIANO");
+                m.Column("eh_vegetariano");
                 m.NotNullable(true);
             });
             
             this.Property(x => x.Sexo, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("SEXO");
+                m.Column("sexo");
                 m.NotNullable(false);
                 m.Type<EnumGeneric<EnumSexo>>();
             });
             this.Property(x => x.UsaAdocanteDiariamente, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("USA_ADOCANTE_DIAR");
+                m.Column("usa_adocante_diar");
                 m.NotNullable(false);
             });
         }

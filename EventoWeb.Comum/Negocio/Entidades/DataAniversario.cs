@@ -2,7 +2,9 @@ namespace EventoWeb.Comum.Negocio.Entidades
 {
     public class DataAniversario
     {
-        public virtual DateTime Data { get; }
+        private DateTime m_Data;
+        
+        public virtual DateTime Data => m_Data;
 
         public DataAniversario(DateTime data)
         {
@@ -11,7 +13,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
                 throw new ArgumentException("Data de aniversário não pode ser no futuro.", nameof(data));
             }
 
-            Data = data;
+            m_Data = data;
         }
 
         protected DataAniversario() { }

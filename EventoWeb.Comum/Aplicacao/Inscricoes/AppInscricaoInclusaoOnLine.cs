@@ -62,6 +62,9 @@ public class AppInscricaoInclusaoOnLine(
         var pessoa = GerenciarPessoa();
         var evento = ObterEvento();
 
+        if (DtoInscricao!.Responsavel1 == null)
+            throw new Exception("Inscrição do primeiro responsável não poder ser nula para inscrições infantis");
+
         InscricaoParticipante responsavel1 = 
             Inscricoes.Obter(DtoInscricao!.Responsavel1.IdInscricao) as InscricaoParticipante ??
             throw new Exception($"Inscrição do primeiro responsável não encontrada ou não é do tipo Participante. Id {DtoInscricao.Responsavel1.IdInscricao}");

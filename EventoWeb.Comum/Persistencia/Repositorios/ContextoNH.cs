@@ -37,8 +37,11 @@ public class ContextoNH: IContexto
 
     public void Dispose()
     {
-        m_Sessao.Close();
-        m_Sessao.Dispose();
+        if (m_Sessao.IsOpen)
+        {
+            m_Sessao.Close();
+            m_Sessao.Dispose();
+        }
     }
 
     public IEventos Eventos => new EventosNH(m_Sessao);

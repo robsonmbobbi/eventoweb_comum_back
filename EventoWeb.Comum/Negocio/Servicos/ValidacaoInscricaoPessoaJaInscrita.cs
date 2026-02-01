@@ -12,7 +12,7 @@ public class ValidacaoInscricaoPessoaJaInscrita(IInscricoes inscricoes): IValida
         var inscricaoExistente = m_Inscricoes.ObterPorCPF(entidade.Evento.Id, entidade.Pessoa.CPF.Numero);
         if (inscricaoExistente != null)
         {
-            throw new Exception($"Esta pessoa, {entidade.Pessoa.CPF.Numero} - {inscricaoExistente.Pessoa.Nome}, já esta inscrita.");
+            throw new Exception($"Esta pessoa, {entidade.Pessoa.CPF.Numero} - {inscricaoExistente.Pessoa.Nome.Nome}, já esta inscrita.");
         }
 
     }

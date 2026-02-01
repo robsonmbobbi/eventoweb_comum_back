@@ -8,28 +8,28 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
     {
         public PagamentoLogMapping()
         {
-            Table("PAGAMENTOS_LOGS");
+            Table("pagamentos_logs");
 
             Id(x => x.Id, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("ID");
+                m.Column("id");
                 m.Generator(Generators.Native, g =>
                 {
-                    g.Params(new { sequence = "GEN_PAGAMENTO_LOG" });
+                    g.Params(new { sequence = "gen_pagamento_log" });
                 });
             }); 
             
             ManyToOne(x=>x.Pagamento, m =>
             {
-                m.Column("ID_PAGAMENTO");
+                m.Column("id_pagamento");
                 m.NotNullable(true);
             });
             
             Property(x => x.Tipo, m =>
             {
-                m.Access(Accessor.NoSetter);
-                m.Column("TIPO");
+                m.Access(Accessor.Property);
+                m.Column("tipo");
                 m.NotNullable(true);
                 m.Type<EnumGeneric<EnumTipoPagamentoLog>>();
             });
@@ -37,21 +37,21 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             Property(x => x.Data, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("DATA");
+                m.Column("data");
                 m.NotNullable(true);
             });
             
             Property(x => x.Mensagem, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("MENSAGEM");
+                m.Column("mensagem");
                 m.Length(500);
             });            
 
             Property(x => x.Dados, m =>
             {
-                m.Access(Accessor.NoSetter);
-                m.Column("DADOS");
+                m.Access(Accessor.Property);
+                m.Column("dados");
                 m.Length(4000);
             });
         }

@@ -20,8 +20,8 @@
 
         protected Inscricao() { }
 
-        public virtual Pessoa Pessoa { get; }  
-        public virtual Evento Evento { get; }       
+        public virtual Pessoa Pessoa { get; protected set; }  
+        public virtual Evento Evento { get; protected set; }       
 
         public virtual DateTime DataRecebimento { get; set; }
 

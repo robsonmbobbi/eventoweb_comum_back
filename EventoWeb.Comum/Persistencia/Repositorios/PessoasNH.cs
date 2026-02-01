@@ -10,7 +10,7 @@ public class PessoasNH(ISession sessao) : PersistenciaNH<Pessoa>(sessao), IPesso
     {
         return Sessao
             .QueryOver<Pessoa>()
-            .Where(p => p.CPF.Numero.Equals(cpf))
+            .Where(p => p.CPF.Numero == cpf)
             .SingleOrDefault();
     }
 }

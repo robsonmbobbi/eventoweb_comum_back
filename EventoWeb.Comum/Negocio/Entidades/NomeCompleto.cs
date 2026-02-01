@@ -2,7 +2,9 @@ namespace EventoWeb.Comum.Negocio.Entidades
 {
     public class NomeCompleto
     {
-        public virtual string Nome { get; }
+        private string m_Nome;
+
+        public virtual string Nome => m_Nome;
 
         public NomeCompleto(string nome)
         {
@@ -14,7 +16,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
                     nameof(nome));
             }
 
-            Nome = nome;
+            m_Nome = nome;
         }
 
         protected NomeCompleto() { }

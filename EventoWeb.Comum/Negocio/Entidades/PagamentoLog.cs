@@ -19,9 +19,9 @@ public class PagamentoLog : Entidade
 
     protected PagamentoLog(){}
     
-    public virtual Pagamento Pagamento { get; }
-    public virtual string Mensagem { get; }
-    public virtual EnumTipoPagamentoLog Tipo { get; }
-    public virtual DateTime Data { get; }
-    public virtual string? Dados { get; }
+    public virtual Pagamento Pagamento { get; protected set; }
+    public virtual string Mensagem { get; protected set; }
+    public virtual EnumTipoPagamentoLog Tipo { get; protected set; }
+    public virtual DateTime Data { get; protected set; }
+    public virtual string? Dados { get; protected set; }
 }

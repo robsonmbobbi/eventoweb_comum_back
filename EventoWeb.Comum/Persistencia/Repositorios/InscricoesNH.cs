@@ -8,7 +8,7 @@ public class InscricoesNH(ISession sessao) : PersistenciaNH<Inscricao>(sessao), 
 {
     public Inscricao? ObterPorCPF(int idEvento, string cpf)
     {
-        cpf = cpf.Where(char.IsDigit)?.ToString() ?? "";
+        cpf = new String(cpf.Where(char.IsDigit)?.ToArray());
         
         return Sessao
             .QueryOver<Inscricao>()

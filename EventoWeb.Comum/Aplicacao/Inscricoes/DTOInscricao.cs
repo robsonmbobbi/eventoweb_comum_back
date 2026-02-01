@@ -14,7 +14,7 @@ public class DTOInscricao
     public string? NomeCracha { get; set; }
     public string? Observacoes { get; set; }
     public DTOPessoa Pessoa { get; set; }
-    public DTOResponsavel Responsavel1 { get; set; }
+    public DTOResponsavel? Responsavel1 { get; set; }
     public DTOResponsavel? Responsavel2 { get; set; }
     public EnumSituacaoInscricao? Situacao { get; set; }
 }

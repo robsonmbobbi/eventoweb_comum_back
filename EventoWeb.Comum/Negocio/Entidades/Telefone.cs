@@ -2,7 +2,9 @@ namespace EventoWeb.Comum.Negocio.Entidades
 {
     public class Telefone
     {
-        public virtual string Numero { get; }
+        private string m_Numero;
+        
+        public virtual string Numero => m_Numero;
 
         public Telefone(string numero)
         {
@@ -14,7 +16,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
                     nameof(numero));
             }
 
-            Numero = numero;
+            m_Numero = numero;
         }
         
         protected Telefone() { }
