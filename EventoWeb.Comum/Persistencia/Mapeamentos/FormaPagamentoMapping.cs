@@ -31,5 +31,19 @@ public class FormaPagamentoMapping : ClassMapping<FormaPagamento>
                 m.NotNullable(true);
             });
         });
+
+        Property(m => m.NrParcelasMinima, m =>
+        {
+            m.Access(Accessor.NoSetter);
+            m.Column("NR_PARCELAS_MINIMA");
+            m.NotNullable(true);
+        });
+
+        Property(m => m.NrParcelasMaxima, m =>
+        {
+            m.Access(Accessor.NoSetter);
+            m.Column("NR_PARCELAS_MAXIMA");
+            m.NotNullable(true);
+        });
     }
 }

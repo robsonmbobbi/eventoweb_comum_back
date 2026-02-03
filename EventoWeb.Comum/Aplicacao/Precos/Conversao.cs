@@ -31,7 +31,9 @@ public static class Conversao
         return new DTOForma
         {
             Id = forma.Id,
-            Nome = forma.Nome.Nome
+            Nome = forma.Nome.Nome,
+            NrParcelasMaxima = forma.NrParcelasMaxima,
+            NrParcelasMinima = forma.NrParcelasMinima
         };
     }
 }

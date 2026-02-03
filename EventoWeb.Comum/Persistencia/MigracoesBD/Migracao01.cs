@@ -162,10 +162,8 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("id_pagamento").AsInt32().NotNullable()
                     .ForeignKey("fk_paglog_pag", "pagamentos", "id").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
-
                 .WithColumn("tipo").AsInt16().NotNullable()
                 .WithColumn("data").AsDateTime().NotNullable()
-
                 .WithColumn("mensagem").AsString(500).Nullable()
                 .WithColumn("dados").AsString(4000).Nullable();
         }
@@ -174,7 +172,9 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
         {
             Create.Table("formas_pagamento")
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
-                .WithColumn("nome").AsString(200).NotNullable();
+                .WithColumn("nome").AsString(200).NotNullable()
+                .WithColumn("nr_parcelas_minima").AsInt32().NotNullable()
+                .WithColumn("nr_parcelas_maxima").AsInt32().NotNullable();
         }
 
         private void CriarTabelaPrecosInscricao()
@@ -183,7 +183,6 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("id_evento").AsInt32().NotNullable()
                     .ForeignKey("fk_preco_evento", "eventos", "id").OnUpdate(Rule.Cascade)
-
                 .WithColumn("idade_max").AsInt32().NotNullable();
         }
 
@@ -192,9 +191,9 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
             Create.Table("preco_inscricao_valores")
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("id_preco_inscricao").AsInt32().NotNullable()
-                .ForeignKey("fk_piv_pi", "precos_inscricao", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
+                    .ForeignKey("fk_piv_pi", "precos_inscricao", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
                 .WithColumn("id_forma_pagamento").AsInt32().NotNullable()
-                .ForeignKey("fk_piv_forma", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
+                    .ForeignKey("fk_piv_forma", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
                 .WithColumn("valor").AsDecimal(18, 2).NotNullable();
         }
     }

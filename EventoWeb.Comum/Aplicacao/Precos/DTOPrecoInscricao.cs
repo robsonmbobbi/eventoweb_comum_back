@@ -18,4 +18,6 @@ public class DTOForma
 {
     public int Id { get; set; }
     public string Nome { get; set; }
+    public int NrParcelasMinima { get; set; }
+    public int NrParcelasMaxima { get; set; }
 }
