@@ -1,4 +1,6 @@
 
+using EventoWeb.Comum.Negocio.ObjetosValor;
+
 namespace EventoWeb.Comum.Negocio.Entidades
 {
     public enum EnumSexo { Masculino, Feminino }

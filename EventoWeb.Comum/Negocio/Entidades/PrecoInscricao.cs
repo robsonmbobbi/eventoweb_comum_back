@@ -1,3 +1,5 @@
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
+
 namespace EventoWeb.Comum.Negocio.Entidades;
 
 public class PrecoInscricao : Entidade

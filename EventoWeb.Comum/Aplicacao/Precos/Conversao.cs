@@ -1,4 +1,5 @@
 using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 
 namespace EventoWeb.Comum.Aplicacao.Precos;
 

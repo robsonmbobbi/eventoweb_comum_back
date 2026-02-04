@@ -1,4 +1,6 @@
-namespace EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.ObjetosValor;
+
+namespace EventoWeb.Comum.Negocio.Entidades.Financeiro;
 
 public class FormaPagamento : Entidade
 {

@@ -17,7 +17,7 @@ public class Pedido : Entidade
             throw new Exception($"{nameof(valor)} não pode ser negativo.");
 
         Pagador = pagador ?? throw new Exception($"{nameof(pagador)} não pode ser nulo.");
-        m_Inscricoes = new List<Inscricao>(inscricoes);
+        m_Inscricoes = [.. inscricoes];
         Valor = valor;
         FormaPagamento = formaPagamento;
 
