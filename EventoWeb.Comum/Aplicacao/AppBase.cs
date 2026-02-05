@@ -21,11 +21,11 @@ public abstract class AppBase
 
             Contexto.SalvarTransacao();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             Contexto.CancelarTransacao();
 
-            throw ex;
+            throw;
         }
     }
 }

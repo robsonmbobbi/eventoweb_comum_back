@@ -1,27 +1,31 @@
-using System.Reflection.Emit;
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 
 namespace EventoWeb.Comum.Negocio.Entidades;
 
-public enum EnumFormaPagamento { DebitoAplicado, SolicitacaoDesconto, SolicitacaoIsencao, DescontoAplicado, IsencaoAplicada }
+public enum EnumTipoPedido { Debito, Desconto, Isencao }
 
 public class Pedido : Entidade
 {
     private IList<Inscricao> m_Inscricoes;
 
-    public Pedido(Pessoa pagador, IEnumerable<Inscricao> inscricoes, double valor, EnumFormaPagamento formaPagamento)
+    public Pedido(Pessoa pagador, IEnumerable<Inscricao> inscricoes, ValorMonetario valor, EnumTipoPedido tipo, FormaPagamento? forma)
     {
         if (!inscricoes.Any())
             throw new Exception($"{nameof(inscricoes)} não pode ser vazio.");
 
-        if (valor < 0)
-            throw new Exception($"{nameof(valor)} não pode ser negativo.");
+        if (tipo == EnumTipoPedido.Debito && forma == null)
+            throw new Exception($"Forma de pagamento deve ser informada para pedidos do tipo {EnumTipoPedido.Debito}.");
 
         Pagador = pagador ?? throw new Exception($"{nameof(pagador)} não pode ser nulo.");
         m_Inscricoes = [.. inscricoes];
-        Valor = valor;
-        FormaPagamento = formaPagamento;
+        Valor = valor ?? throw new Exception($"{nameof(valor)} não pode ser nulo."); ;
+        Tipo = tipo;
 
-        Pagamento = new Pagamento(this, valor);
+
+        FormaPagamento = forma;
+
+        Conta = new Conta(pagador, EnumTipoTransacao.Receita, valor, DateTime.Now);
     }
 
     protected Pedido()
@@ -29,21 +33,9 @@ public class Pedido : Entidade
     }
 
     public virtual IEnumerable<Inscricao> Inscricoes => m_Inscricoes;
-    public virtual double Valor { get; protected set; }
-    public virtual EnumFormaPagamento FormaPagamento { get; protected set; }
-    public virtual Pagamento Pagamento { get; protected set; }
+    public virtual ValorMonetario Valor { get; protected set; }
+    public virtual EnumTipoPedido Tipo { get; protected set; }
+    public virtual FormaPagamento? FormaPagamento { get; protected set; }
+    public virtual Conta Conta { get; protected set; }
     public virtual Pessoa Pagador { get; protected set; }
-
-    public virtual void AplicarDesconto(double valorDesconto)
-    {
-        FormaPagamento = EnumFormaPagamento.DescontoAplicado;
-        Pagamento.Desconto = valorDesconto;
-    }
-
-    public virtual void AplicarIsencao()
-    {
-        FormaPagamento = EnumFormaPagamento.IsencaoAplicada;
-        Pagamento.Desconto = Pagamento.Valor;
-        Pagamento.Concluir(0, DateTime.Now, EnumMeioPagamento.Dinheiro);
-    }
 }

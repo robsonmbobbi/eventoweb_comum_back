@@ -1,4 +1,5 @@
 using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Repositorios;
 using NHibernate;
 
@@ -49,5 +50,6 @@ public class ContextoNH: IContexto
     public IPessoas Pessoas => new PessoasNH(m_Sessao);
     public IPrecosInscricao PrecosInscricao => new PrecosInscricaoNH(m_Sessao);
     public IPersistencia<Pedido> Pedidos => new PersistenciaNH<Pedido>(m_Sessao);
+    public IPersistencia<FormaPagamento> FormasPagamento => new PersistenciaNH<FormaPagamento>(m_Sessao);
 
 }

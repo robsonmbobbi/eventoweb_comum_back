@@ -20,19 +20,24 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 });
             });
 
-            Property(x => x.Valor, m =>
+            Component(x => x.Valor, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("valor");
-                m.NotNullable(true);
+
+                m.Property(c => c.Valor, y =>
+                {
+                    y.Access(Accessor.Property);
+                    y.Column("valor");
+                    y.NotNullable(true);
+                });
             });
 
-            Property(x => x.FormaPagamento, m =>
+            Property(x => x.Tipo, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column("forma_pagamento");
+                m.Column("tipo");
                 m.NotNullable(true);
-                m.Type<EnumGeneric<EnumFormaPagamento>>();
+                m.Type<EnumGeneric<EnumTipoPedido>>();
             });
             
             ManyToOne(x => x.Pagador, m =>
@@ -43,10 +48,19 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Cascade(Cascade.All | Cascade.DeleteOrphans);
             });
 
-            OneToOne(x => x.Pagamento, m =>
+            ManyToOne(x => x.Conta, m =>
             {
                 m.Access(Accessor.Property);
-                m.Cascade(Cascade.All);
+                m.Column("id_conta");
+                m.NotNullable(true);
+                m.Cascade(Cascade.All | Cascade.DeleteOrphans);
+            });
+
+            ManyToOne(x => x.FormaPagamento, m =>
+            {
+                m.Access(Accessor.Property);
+                m.Column("id_forma_pagamento");
+                m.NotNullable(false);
             });
 
             Bag(x => x.Inscricoes, m =>

@@ -18,16 +18,22 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
             CriarTabelaPessoas();
             CriarTabelaInscricoes();
 
+            CriarTabelaFormasPagamento();
+            CriarTabelaContasBancarias();
+            CriarTabelaTransacoes();
+            CriarTabelaContas();
+            CriarTabelaTransacoesConta();
+
+
             CriarTabelaPedidos();
             CriarTabelaPedidosInscricoes();
 
             CriarTabelaPagamentos();
             CriarTabelaPagamentosLogs();
 
-            CriarTabelaFormasPagamento();
             CriarTabelaPrecosInscricao();
             CriarTabelaPrecosInscricaoValores();
-        }
+        }       
 
         private void CriarTabelaArquivoBinario()
         {
@@ -114,9 +120,13 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
             Create.Table("pedidos")
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("valor").AsDecimal(18, 2).NotNullable()
-                .WithColumn("forma_pagamento").AsInt16().NotNullable()
+                .WithColumn("tipo").AsInt16().NotNullable()
+                .WithColumn("id_forma_pagamento").AsInt32().NotNullable()
+                    .ForeignKey("fk_pedido_forma_pag", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("id_conta").AsInt32().NotNullable()
+                    .ForeignKey("fk_pedido_conta", "contas", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
                 .WithColumn("id_pessoa_pagadora").AsInt32().NotNullable()
-                .ForeignKey("fk_pediso_pessoa_pag", "pessoas", "id").OnUpdate(Rule.Cascade);
+                    .ForeignKey("fk_pedido_pessoa_pag", "pessoas", "id").OnUpdate(Rule.Cascade);
 
         }
 
@@ -161,7 +171,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
             Create.Table("pagamentos_logs")
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("id_pagamento").AsInt32().NotNullable()
-                    .ForeignKey("fk_paglog_pag", "pagamentos", "id").OnDelete(Rule.Cascade).OnUpdate(Rule.Cascade)
+                    .ForeignKey("fk_paglog_pag", "contas_bancarias", "id").OnUpdate(Rule.Cascade)
                 .WithColumn("tipo").AsInt16().NotNullable()
                 .WithColumn("data").AsDateTime().NotNullable()
                 .WithColumn("mensagem").AsString(500).Nullable()
@@ -175,6 +185,58 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("nome").AsString(200).NotNullable()
                 .WithColumn("nr_parcelas_minima").AsInt32().NotNullable()
                 .WithColumn("nr_parcelas_maxima").AsInt32().NotNullable();
+        }
+
+        private void CriarTabelaTransacoes()
+        {
+            Create.Table("transacoes")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_conta_bancaria").AsInt32().NotNullable()
+                    .ForeignKey("fk_trans_cb", "contas_bancarias", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("data_hora").AsDateTime().NotNullable()
+                .WithColumn("descricao").AsString(200).Nullable()
+                .WithColumn("tipo").AsInt16().NotNullable()
+                .WithColumn("valor").AsDecimal(18,2).NotNullable();
+        }
+
+        private void CriarTabelaTransacoesConta()
+        {
+            Create.Table("transacoes_conta")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_conta").AsInt32().NotNullable()
+                    .ForeignKey("fk_tc_ct", "contas", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
+                .WithColumn("id_transacao").AsInt32().NotNullable()
+                    .ForeignKey("fk_tc_tr", "transacoes", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("data").AsDateTime().NotNullable()
+                .WithColumn("valor_transacao").AsDecimal(18, 2).NotNullable()
+                .WithColumn("valor_multa").AsDecimal(18, 2).NotNullable()
+                .WithColumn("valor_juros").AsDecimal(18, 2).NotNullable()
+                .WithColumn("valor_desconto").AsDecimal(18, 2).NotNullable();
+        }
+
+        private void CriarTabelaContas()
+        {
+            Create.Table("contas")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_pessoa").AsInt32().NotNullable()
+                    .ForeignKey("fk_ct_pe", "pessoas", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("valor").AsDecimal(18, 2).NotNullable()
+                .WithColumn("liquidado").AsBoolean().NotNullable()
+                .WithColumn("data_criado").AsDateTime().NotNullable()
+                .WithColumn("descricao").AsString(200).Nullable()
+                .WithColumn("data_vencimento").AsDateTime().NotNullable()
+                .WithColumn("tipo").AsInt16().NotNullable()
+                .WithColumn("valor_total_transacoes").AsDecimal(18, 2).NotNullable()
+                .WithColumn("valor_total_desconto").AsDecimal(18, 2).NotNullable()
+                .WithColumn("valor_total_juros").AsDecimal(18, 2).NotNullable()
+                .WithColumn("valor_total_multa").AsDecimal(18, 2).NotNullable();
+        }
+
+        private void CriarTabelaContasBancarias()
+        {
+            Create.Table("contas_bancarias")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("nome").AsString(250).NotNullable();
         }
 
         private void CriarTabelaPrecosInscricao()

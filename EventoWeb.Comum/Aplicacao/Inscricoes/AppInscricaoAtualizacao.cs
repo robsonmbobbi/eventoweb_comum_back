@@ -1,4 +1,5 @@
 using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 
 namespace EventoWeb.Comum.Aplicacao.Inscricoes;
@@ -71,7 +72,7 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes,
     
     private void AtualizarPessoa(Pessoa pessoa)
     {
-        pessoa.Nome = new NomeCompleto(DtoInscricao.Pessoa.Nome);
+        pessoa.Nome = new NomeCompleto(DtoInscricao!.Pessoa.Nome);
         pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
         pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento);
         pessoa.Email = new EMail(DtoInscricao.Pessoa.Email);

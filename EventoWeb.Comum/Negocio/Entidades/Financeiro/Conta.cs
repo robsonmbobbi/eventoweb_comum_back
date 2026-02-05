@@ -11,8 +11,9 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
         private IList<TransacaoConta> m_Transacoes;
         private EnumTipoTransacao m_Tipo;
 
-        public Conta(EnumTipoTransacao tipo, ValorMonetario valor, DateTime dataVencimento)
+        public Conta(Pessoa pessoa, EnumTipoTransacao tipo, ValorMonetario valor, DateTime dataVencimento)
         {
+            Pessoa = pessoa ?? throw new Exception($"{nameof(pessoa)} não pode ser nulo.");
             DataCriado = DateTime.Now;
             Liquidado = false;
             DataVencimento = dataVencimento;
@@ -28,6 +29,8 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
         }
 
         protected Conta() { }
+
+        public virtual Pessoa Pessoa { get; protected set; }
 
         public virtual ValorMonetario Valor
         {
