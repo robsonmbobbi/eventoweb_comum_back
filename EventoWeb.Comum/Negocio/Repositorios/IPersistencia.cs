@@ -1,3 +1,4 @@
+
 namespace EventoWeb.Comum.Negocio.Repositorios;
 
 public interface IPersistencia<T>

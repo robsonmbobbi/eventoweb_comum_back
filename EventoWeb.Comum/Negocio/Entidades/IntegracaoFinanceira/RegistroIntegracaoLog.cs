@@ -1,27 +1,25 @@
-namespace EventoWeb.Comum.Negocio.Entidades;
+namespace EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 
-public enum EnumTipoPagamentoLog { Info, Erro, Conclusao }
-
-public class PagamentoLog : Entidade
+public class RegistroIntegracaoLog : Entidade
 {
-    public PagamentoLog(Pagamento pagamento, string mensagem, EnumTipoPagamentoLog tipo, 
+    public RegistroIntegracaoLog(RegistroIntegracaoFinanceira registro, string mensagem, EnumTipoLog tipo, 
         string? dados = null)
     {
         if (string.IsNullOrWhiteSpace(mensagem))
             throw new ArgumentException($"{nameof(mensagem)} não pode estar vazia ou em branco");
         
-        Pagamento = pagamento ??  throw new ArgumentNullException(nameof(pagamento));
+        Registro = registro ??  throw new ArgumentNullException(nameof(registro));
         Mensagem = mensagem;
         Tipo = tipo;
         Dados = dados;
         Data = DateTime.Now;
     }
 
-    protected PagamentoLog(){}
+    protected RegistroIntegracaoLog(){}
     
-    public virtual Pagamento Pagamento { get; protected set; }
+    public virtual RegistroIntegracaoFinanceira Registro { get; protected set; }
     public virtual string Mensagem { get; protected set; }
-    public virtual EnumTipoPagamentoLog Tipo { get; protected set; }
+    public virtual EnumTipoLog Tipo { get; protected set; }
     public virtual DateTime Data { get; protected set; }
     public virtual string? Dados { get; protected set; }
 }

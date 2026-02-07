@@ -28,12 +28,25 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
             CriarTabelaPedidos();
             CriarTabelaPedidosInscricoes();
 
-            CriarTabelaPagamentos();
-            CriarTabelaPagamentosLogs();
+            CriarTabelaIntegradoresFinanceiros();
+            CriarTabelaRegistrosIntegracaoFinanceira();
+            CriarTabelaRegistroIntegracaoFinanceiraLogs();
+            CriarTabelaIntegracaoFinanceiraPorFormaPag();
 
             CriarTabelaPrecosInscricao();
             CriarTabelaPrecosInscricaoValores();
-        }       
+        }
+
+        private void CriarTabelaIntegracaoFinanceiraPorFormaPag()
+        {
+            Create.Table("integracao_financeira_formas_pags")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_integrador_financeiro").AsInt32().NotNullable()
+                    .ForeignKey("fk_iffp_if", "integradores_financeiros", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
+                .WithColumn("id_forma_pagamento").AsInt32().NotNullable()
+                    .ForeignKey("fk_iffp_fp", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("tipo").AsInt16().NotNullable();
+        }
 
         private void CriarTabelaArquivoBinario()
         {
@@ -143,35 +156,41 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .Columns("id_pedido", "id_inscricao");
         }
 
-        private void CriarTabelaPagamentos()
+        private void CriarTabelaIntegradoresFinanceiros()
         {
-            Create.Table("pagamentos")
+            Create.Table("integradores_financeiros")
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
-
-                // Mantido conforme mapping (apesar do nome ser suspeito)
-                .WithColumn("id_pedido").AsInt32().NotNullable()
-                    .ForeignKey("fk_pag_pedido", "pedidos", "id").OnUpdate(Rule.Cascade)
-
-                .WithColumn("valor").AsDecimal(18, 2).NotNullable()
-                .WithColumn("desconto").AsDecimal(18, 2).NotNullable()
-
-                .WithColumn("valor_pago").AsDecimal(18, 2).Nullable()
-                .WithColumn("data_pago").AsDateTime().Nullable()
-
-                .WithColumn("data_registro_pagamento").AsDateTime().NotNullable()
-
-                .WithColumn("meio_pagamento").AsInt16().Nullable()
-                .WithColumn("situacao_pagamento").AsInt16().NotNullable()
-
-                .WithColumn("numero_parcelas").AsInt32().Nullable();
+                .WithColumn("id_conta_bancaria").AsInt32().NotNullable()
+                    .ForeignKey("fk_if_cb", "contas_bancarias", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("token_acesso").AsString(1000).NotNullable()
+                .WithColumn("integracao_externa").AsInt16().NotNullable();
         }
 
-        private void CriarTabelaPagamentosLogs()
+        private void CriarTabelaRegistrosIntegracaoFinanceira()
         {
-            Create.Table("pagamentos_logs")
+            Create.Table("registros_integracao_financeira")
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
-                .WithColumn("id_pagamento").AsInt32().NotNullable()
-                    .ForeignKey("fk_paglog_pag", "contas_bancarias", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("id_integrador_financeiro").AsInt32().NotNullable()
+                    .ForeignKey("fk_rif_if", "integradores_financeiros", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("id_conta").AsInt32().NotNullable()
+                    .ForeignKey("fk_rif_if", "contas_bancarias", "id").OnUpdate(Rule.Cascade)
+                .WithColumn("valor").AsDecimal(18, 2).NotNullable()
+                .WithColumn("data_registro").AsDateTime().NotNullable()
+                .WithColumn("tipo").AsInt16().NotNullable()
+                .WithColumn("situacao").AsInt16().NotNullable()
+                .WithColumn("numero_parcelas").AsInt32().Nullable()
+                .WithColumn("data_concluido_abortado").AsDateTime().Nullable()
+                .WithColumn("id_no_integrador").AsString(1000).Nullable()
+                .WithColumn("id_transacao").AsString(1000).Nullable()
+                    .ForeignKey("fk_rif_tra", "transacoes", "id").OnUpdate(Rule.Cascade);
+        }
+
+        private void CriarTabelaRegistroIntegracaoFinanceiraLogs()
+        {
+            Create.Table("registro_integracao_financeira_logs")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_registro_integracao").AsInt32().NotNullable()
+                    .ForeignKey("fk_rifl_rif", "registros_integracao_financeira", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
                 .WithColumn("tipo").AsInt16().NotNullable()
                 .WithColumn("data").AsDateTime().NotNullable()
                 .WithColumn("mensagem").AsString(500).Nullable()

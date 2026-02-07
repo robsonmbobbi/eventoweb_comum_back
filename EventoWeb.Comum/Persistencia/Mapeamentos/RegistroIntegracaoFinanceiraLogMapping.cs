@@ -1,14 +1,14 @@
-using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
 namespace EventoWeb.Comum.Persistencia.Mapeamentos
 {
-    public class PagamentoLogMapping : ClassMapping<PagamentoLog>
+    public class RegistroIntegracaoFinanceiraLogMapping : ClassMapping<RegistroIntegracaoLog>
     {
-        public PagamentoLogMapping()
+        public RegistroIntegracaoFinanceiraLogMapping()
         {
-            Table("pagamentos_logs");
+            Table("registro_integracao_financeira_logs");
 
             Id(x => x.Id, m =>
             {
@@ -16,13 +16,13 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Column("id");
                 m.Generator(Generators.Native, g =>
                 {
-                    g.Params(new { sequence = "gen_pagamento_log" });
+                    g.Params(new { sequence = "gen_registro_integracao_financeira_log" });
                 });
             }); 
             
-            ManyToOne(x=>x.Pagamento, m =>
+            ManyToOne(x=>x.Registro, m =>
             {
-                m.Column("id_pagamento");
+                m.Column("id_registro_integracao");
                 m.NotNullable(true);
             });
             
@@ -31,7 +31,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Access(Accessor.Property);
                 m.Column("tipo");
                 m.NotNullable(true);
-                m.Type<EnumGeneric<EnumTipoPagamentoLog>>();
+                m.Type<EnumGeneric<EnumTipoLog>>();
             });
 
             Property(x => x.Data, m =>
