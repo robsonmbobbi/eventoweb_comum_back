@@ -5,6 +5,6 @@ namespace EventoWeb.Comum.Negocio.Servicos
 {
     public interface IIntegracaoExterna
     {
-        DadosRetornoIntegracaoExterna Enviar(IntegradorFinanceiro integrador, EnumTipoIntegracao tipoIntegracao, decimal valor, DadosCartaoCredito? dadosCartaoCredito);
+        Task<DadosRetornoIntegracaoExterna> Enviar(IntegracaoFinanceiraPorFormaPag integrador, Pedido pedido, DadosCartaoCredito? dadosCartaoCredito);
     }
 }

@@ -31,9 +31,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
             var integracao = m_Integracoes.ObterPorFormaPagamento(pedido.FormaPagamento!);
             var integradorExterno = m_IntegracoesExternas[integracao.IntegracaoExterna];
 
-            // Integração com os meios de pagamento (negócio e empresa)
-            //https://github.com/cloviscoli/asaas-sdk-net/tree/master/AsaasClient/Core
-            var retorno = integradorExterno.Enviar(integracao.Integrador, integracao.TipoIntegracao, pedido.Valor.Valor, dadosCartaoCredito);
+            var retorno = integradorExterno.Enviar(integracao, pedido, dadosCartaoCredito).Result;
 
             var registroIntegracao = new RegistroIntegracaoFinanceira(
                 integracao.Integrador,
