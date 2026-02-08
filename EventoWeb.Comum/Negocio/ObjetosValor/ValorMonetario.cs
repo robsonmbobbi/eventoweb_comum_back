@@ -10,6 +10,8 @@
             Valor = valor;
         }
 
+        protected ValorMonetario() { }
+
         public virtual decimal Valor
         {
             get;

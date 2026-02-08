@@ -7,11 +7,12 @@ public class RegistroIntegracaoFinanceira : Entidade
 {
     private IList<RegistroIntegracaoLog> m_Logs = [];
 
-    public RegistroIntegracaoFinanceira(IntegradorFinanceiro integrador, Conta conta, ValorMonetario valor, EnumTipoIntegracao tipo, int? numeroParcelas = null)
+    public RegistroIntegracaoFinanceira(IntegradorFinanceiro integrador, Conta conta, ValorMonetario valor, EnumTipoIntegracao tipo, string identificacaoNoIntegrador, int? numeroParcelas = null)
     {
         Integrador = integrador ??  throw new ArgumentNullException(nameof(integrador));
         Conta = conta ??  throw new ArgumentNullException(nameof(conta));
         Valor = valor ?? throw new ArgumentNullException(nameof(valor));
+        IdentificacaoNoIntegrador = identificacaoNoIntegrador ?? throw new ArgumentNullException(nameof(identificacaoNoIntegrador));
         Situacao = EnumSituacaoIntegracao.Pendente;
         Tipo = tipo;
         DataRegistro = DateTime.Now;
@@ -41,17 +42,16 @@ public class RegistroIntegracaoFinanceira : Entidade
 
     public virtual string? IdentificacaoNoIntegrador { get; protected set; }
 
-    public virtual Transacao? Transacao { get; protected set; }
+    public virtual Transacao Transacao { get; protected set; }
 
     public virtual IEnumerable<RegistroIntegracaoLog> Logs => m_Logs;
 
    
-    public virtual void Concluir(Transacao transacao, string IdentificacaoNoIntegrador)
+    public virtual void Concluir(Transacao transacao)
     {
         ValidarSeConcluidoAbortado();
 
-        Transacao = transacao ?? throw new ArgumentNullException(nameof(transacao));
-        IdentificacaoNoIntegrador = IdentificacaoNoIntegrador ?? throw new ArgumentNullException(nameof(IdentificacaoNoIntegrador));
+        Transacao = transacao ?? throw new ArgumentNullException(nameof(transacao));        
         DataConcluidoAbortado = DateTime.Now;
         Situacao = EnumSituacaoIntegracao.Concluido;
 

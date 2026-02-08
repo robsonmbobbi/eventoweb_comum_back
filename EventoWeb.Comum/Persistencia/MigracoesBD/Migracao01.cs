@@ -45,7 +45,8 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                     .ForeignKey("fk_iffp_if", "integradores_financeiros", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
                 .WithColumn("id_forma_pagamento").AsInt32().NotNullable()
                     .ForeignKey("fk_iffp_fp", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
-                .WithColumn("tipo").AsInt16().NotNullable();
+                .WithColumn("integracao_externa").AsInt16().NotNullable()
+                .WithColumn("tipo_integracao").AsInt16().NotNullable();
         }
 
         private void CriarTabelaArquivoBinario()
@@ -134,7 +135,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("valor").AsDecimal(18, 2).NotNullable()
                 .WithColumn("tipo").AsInt16().NotNullable()
-                .WithColumn("id_forma_pagamento").AsInt32().NotNullable()
+                .WithColumn("id_forma_pagamento").AsInt32().Nullable()
                     .ForeignKey("fk_pedido_forma_pag", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
                 .WithColumn("id_conta").AsInt32().NotNullable()
                     .ForeignKey("fk_pedido_conta", "contas", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
@@ -173,7 +174,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("id_integrador_financeiro").AsInt32().NotNullable()
                     .ForeignKey("fk_rif_if", "integradores_financeiros", "id").OnUpdate(Rule.Cascade)
                 .WithColumn("id_conta").AsInt32().NotNullable()
-                    .ForeignKey("fk_rif_if", "contas_bancarias", "id").OnUpdate(Rule.Cascade)
+                    .ForeignKey("fk_rif_cb", "contas_bancarias", "id").OnUpdate(Rule.Cascade)
                 .WithColumn("valor").AsDecimal(18, 2).NotNullable()
                 .WithColumn("data_registro").AsDateTime().NotNullable()
                 .WithColumn("tipo").AsInt16().NotNullable()
@@ -181,7 +182,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("numero_parcelas").AsInt32().Nullable()
                 .WithColumn("data_concluido_abortado").AsDateTime().Nullable()
                 .WithColumn("id_no_integrador").AsString(1000).Nullable()
-                .WithColumn("id_transacao").AsString(1000).Nullable()
+                .WithColumn("id_transacao").AsInt32().Nullable()
                     .ForeignKey("fk_rif_tra", "transacoes", "id").OnUpdate(Rule.Cascade);
         }
 

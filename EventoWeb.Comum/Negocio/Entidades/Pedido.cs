@@ -14,6 +14,9 @@ public class Pedido : Entidade
         if (!inscricoes.Any())
             throw new Exception($"{nameof(inscricoes)} não pode ser vazio.");
 
+        if (inscricoes.Any(i => i.Situacao != EnumSituacaoInscricao.Limbo))
+            throw new Exception($"Somente são aceitas inscrições que estejam no limbo");
+
         if (tipo == EnumTipoPedido.Debito && forma == null)
             throw new Exception($"Forma de pagamento deve ser informada para pedidos do tipo {EnumTipoPedido.Debito}.");
 
@@ -21,8 +24,6 @@ public class Pedido : Entidade
         m_Inscricoes = [.. inscricoes];
         Valor = valor ?? throw new Exception($"{nameof(valor)} não pode ser nulo."); ;
         Tipo = tipo;
-
-
         FormaPagamento = forma;
 
         Conta = new Conta(pagador, EnumTipoTransacao.Receita, valor, DateTime.Now);

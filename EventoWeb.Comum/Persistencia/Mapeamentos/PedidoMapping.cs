@@ -45,7 +45,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Access(Accessor.Property);
                 m.Column("id_pessoa_pagadora");
                 m.NotNullable(true);
-                m.Cascade(Cascade.All | Cascade.DeleteOrphans);
+                m.Cascade(Cascade.All);
             });
 
             ManyToOne(x => x.Conta, m =>
@@ -69,7 +69,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Key(k => k.Column("id_pedido"));
                 m.Table("pedidos_inscricoes");
                 m.Inverse(false); 
-                m.Cascade(Cascade.All);
+                m.Cascade(Cascade.All | Cascade.DeleteOrphans);
             }, r => r.ManyToMany(x =>
             {
                 x.Column("id_inscricao");

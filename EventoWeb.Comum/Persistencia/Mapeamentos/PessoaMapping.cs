@@ -81,7 +81,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 {
                     m.Access(Accessor.NoSetter);
                     m.Column("data_nascimento");
-                    m.NotNullable(true);
+                    m.NotNullable(false);
                 });
             });
             this.Property(x => x.EhDiabetico, m =>

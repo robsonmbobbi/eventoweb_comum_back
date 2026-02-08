@@ -1,12 +1,10 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
+using EventoWeb.Comum.Negocio.Servicos;
 
-namespace EventoWeb.Comum.Negocio.Servicos
+namespace EventoWeb.Comum.Aplicacao.Pedidos
 {
-    public enum EnumStatusTransacao { Pendente, Recebida, Cancelada }
-
-    public class DadosRetornoIntegracaoExterna
+    public class DTODebitoPedido
     {
-        public required string IdTransacao { get; set; }
         public required EnumTipoIntegracao TipoTransacao { get; set; }
         public required EnumStatusTransacao Status { get; set; }
         public string? ImagemQRCodePixBase64 { get; set; }

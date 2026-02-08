@@ -31,26 +31,32 @@ namespace EventoWeb.Comum.Negocio.Servicos
             var integracao = m_Integracoes.ObterPorFormaPagamento(pedido.FormaPagamento!);
             var integradorExterno = m_IntegracoesExternas[integracao.IntegracaoExterna];
 
+            // Integração com os meios de pagamento (negócio e empresa)
+            //https://github.com/cloviscoli/asaas-sdk-net/tree/master/AsaasClient/Core
             var retorno = integradorExterno.Enviar(integracao.Integrador, integracao.TipoIntegracao, pedido.Valor.Valor, dadosCartaoCredito);
-
-            pedido.Conta.AdicionarTransacao(
-                integracao.Integrador.ContaBancaria,
-                DateTime.Now,
-                pedido.Conta.Valor
-            );
-
-            m_Pedidos.Atualizar(pedido);
-
-            var transacao = pedido.Conta.Transacoes.Last().Transacao;
 
             var registroIntegracao = new RegistroIntegracaoFinanceira(
                 integracao.Integrador,
                 pedido.Conta,
                 pedido.Valor,
-                integracao.TipoIntegracao
-            );
+                integracao.TipoIntegracao,
+                retorno.IdTransacao
+            );            
 
-            registroIntegracao.Concluir(transacao!, retorno.IdTransacao);
+            if (retorno.Status == EnumStatusTransacao.Recebida)
+            {
+                pedido.Conta.AdicionarTransacao(
+                    integracao.Integrador.ContaBancaria,
+                    DateTime.Now,
+                    pedido.Conta.Valor
+                );
+                m_Pedidos.Atualizar(pedido);
+
+                var transacao = pedido.Conta.Transacoes.Last().Transacao;
+
+                registroIntegracao.Concluir(transacao!);
+            }
+
             m_RegistrosIntegracao.Incluir(registroIntegracao);
 
             return retorno;

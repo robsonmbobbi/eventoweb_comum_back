@@ -32,9 +32,15 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             });
             Property(x => x.IntegracaoExterna, m =>
             {
-                m.Column("tipo");
+                m.Column("integracao_externa");
                 m.NotNullable(true);
                 m.Type<EnumGeneric<EnumIntegracaoExterna>>();
+            });
+            Property(x => x.TipoIntegracao, m =>
+            {
+                m.Column("tipo_integracao");
+                m.NotNullable(true);
+                m.Type<EnumGeneric<EnumTipoIntegracao>>();
             });
         }
     }
