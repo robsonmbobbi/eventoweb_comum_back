@@ -1,6 +1,7 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
+using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
 using EventoWeb.Comum.Negocio.Repositorios;
 using NHibernate;
 
@@ -54,5 +55,7 @@ public class ContextoNH: IContexto
     public IPersistencia<FormaPagamento> FormasPagamento => new PersistenciaNH<FormaPagamento>(m_Sessao);
     public IIntegracaoFinanceiraPorFormasPagamentos IntegracoesFinanceirasPorFormasPagamento => new IntegracaoFinanceiraPorFormasPagamentosNH(m_Sessao);
     public IPersistencia<RegistroIntegracaoFinanceira> RegistrosIntegracoesFinanceiras => new PersistenciaNH<RegistroIntegracaoFinanceira>(m_Sessao);
+    public IModelosMensagemNotificacao ModelosMensagemNotificacao => new ModelosMensagemNotificacaoNH(m_Sessao);
+    public IPersistencia<MensagemNotificacao> MensagensNotificacao => new PersistenciaNH<MensagemNotificacao>(m_Sessao);
 
 }

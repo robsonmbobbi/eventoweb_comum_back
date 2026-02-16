@@ -29,9 +29,11 @@ namespace EventoWeb.Comum.Negocio.Servicos
             }
             
             var integracao = m_Integracoes.ObterPorFormaPagamento(pedido.FormaPagamento!);
-            var integradorExterno = m_IntegracoesExternas[integracao.IntegracaoExterna];
+            var integradorExterno = m_IntegracoesExternas[integracao.Integrador.IntegracaoExterna];
 
-            var retorno = integradorExterno.Enviar(integracao, pedido, dadosCartaoCredito).Result;
+            var retorno = integradorExterno
+                .Enviar(integracao, pedido, dadosCartaoCredito)
+                .Result;
 
             var registroIntegracao = new RegistroIntegracaoFinanceira(
                 integracao.Integrador,

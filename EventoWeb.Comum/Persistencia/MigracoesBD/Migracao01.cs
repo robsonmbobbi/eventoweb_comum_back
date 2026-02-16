@@ -45,7 +45,6 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                     .ForeignKey("fk_iffp_if", "integradores_financeiros", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
                 .WithColumn("id_forma_pagamento").AsInt32().NotNullable()
                     .ForeignKey("fk_iffp_fp", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
-                .WithColumn("integracao_externa").AsInt16().NotNullable()
                 .WithColumn("tipo_integracao").AsInt16().NotNullable();
         }
 

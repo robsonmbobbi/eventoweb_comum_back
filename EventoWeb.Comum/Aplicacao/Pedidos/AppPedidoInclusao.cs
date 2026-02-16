@@ -1,9 +1,12 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
+using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 using EventoWeb.Comum.Negocio.Servicos;
+using EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes;
+using EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos;
 
 namespace EventoWeb.Comum.Aplicacao.Pedidos;
 
@@ -16,6 +19,8 @@ public class AppPedidoInclusao : AppBase
     private readonly IIntegracaoFinanceiraPorFormasPagamentos m_Integracoes;
     private readonly IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> m_IntegracoesExternas;
     private readonly IPersistencia<RegistroIntegracaoFinanceira> m_RegistrosIntegracao;
+    private readonly IModelosMensagemNotificacao m_ModelosNotificacao;
+    private readonly IPersistencia<MensagemNotificacao> m_Mensagens;
 
     public AppPedidoInclusao(
         IContexto contexto, 
@@ -60,8 +65,16 @@ public class AppPedidoInclusao : AppBase
                 forma
             );
 
-            var servicoPedido = new SrvInclusaoPedido(m_Inscricoes, m_Pedidos);
-            servicoPedido.Incluir(pedido);
+            var servicoPedido = new SrvInclusaoPedido(
+                m_Inscricoes, 
+                m_Pedidos,
+                m_IntegracoesExternas,
+                m_Integracoes,
+                m_RegistrosIntegracao,
+                new SrvNotificacaoInscricaoRecebida(m_ModelosNotificacao, m_Mensagens),
+                new SrvNotificacaoPedidoRealizado(m_ModelosNotificacao, m_Mensagens)
+            );
+            var resultadoIntegracao = servicoPedido.Incluir(pedido, dtoPedido.DadosCartaoCredito);
 
             resultado = new DTOResultadoPedido
             {
@@ -71,17 +84,8 @@ public class AppPedidoInclusao : AppBase
                 IdFormaPagamento = pedido.FormaPagamento?.Id
             };
 
-            if (dtoPedido.Tipo == EnumTipoPedido.Debito)
+            if (resultadoIntegracao != null)
             {
-                var servico = new SrvIntegracaoFinanceira(
-                    m_IntegracoesExternas,
-                    m_Integracoes,
-                    m_RegistrosIntegracao,
-                    m_Pedidos
-                );
-
-                var resultadoIntegracao = servico.ProcessarIntegracao(pedido, dtoPedido.DadosCartaoCredito);
-
                 resultado.Debito = new DTODebitoPedido
                 {
                     TipoTransacao = resultadoIntegracao.TipoTransacao,
