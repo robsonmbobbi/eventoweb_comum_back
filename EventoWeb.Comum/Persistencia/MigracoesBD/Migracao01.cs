@@ -35,6 +35,9 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
 
             CriarTabelaPrecosInscricao();
             CriarTabelaPrecosInscricaoValores();
+
+            CriarModelosMensagemNotificacao();
+            CriarMensagensNotificacao();
         }
 
         private void CriarTabelaIntegracaoFinanceiraPorFormaPag()
@@ -173,7 +176,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("id_integrador_financeiro").AsInt32().NotNullable()
                     .ForeignKey("fk_rif_if", "integradores_financeiros", "id").OnUpdate(Rule.Cascade)
                 .WithColumn("id_conta").AsInt32().NotNullable()
-                    .ForeignKey("fk_rif_cb", "contas_bancarias", "id").OnUpdate(Rule.Cascade)
+                    .ForeignKey("fk_rif_ct", "contas", "id").OnUpdate(Rule.Cascade)
                 .WithColumn("valor").AsDecimal(18, 2).NotNullable()
                 .WithColumn("data_registro").AsDateTime().NotNullable()
                 .WithColumn("tipo").AsInt16().NotNullable()
@@ -276,6 +279,33 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("id_forma_pagamento").AsInt32().NotNullable()
                     .ForeignKey("fk_piv_forma", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
                 .WithColumn("valor").AsDecimal(18, 2).NotNullable();
+        }
+
+        private void CriarModelosMensagemNotificacao()
+        {
+            Create.Table("modelos_mensagem_notificacao")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_evento").AsInt32().NotNullable()
+                    .ForeignKey("fk_mmn_ev", "eventos", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
+                .WithColumn("meio").AsInt16().NotNullable()
+                .WithColumn("tipo").AsInt16().NotNullable()
+                .WithColumn("nome").AsString(200).NotNullable()
+                .WithColumn("assunto").AsString(200).Nullable()
+                .WithColumn("mensagem").AsString(int.MaxValue).NotNullable()
+                .WithColumn("ativo").AsBoolean().NotNullable();
+
+        }
+        private void CriarMensagensNotificacao()
+        {
+            Create.Table("mensagens_notificacao")
+                .WithColumn("id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("id_modelo").AsInt32().NotNullable()
+                    .ForeignKey("fk_mn_mmn", "modelos_mensagem_notificacao", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.None)
+                .WithColumn("destinatario").AsString(500).NotNullable()
+                .WithColumn("variaveis_json").AsString(int.MaxValue).Nullable()
+                .WithColumn("situacao").AsInt16().NotNullable()
+                .WithColumn("data_situacao").AsDateTime().Nullable()
+                .WithColumn("erro").AsString(int.MaxValue).Nullable();
         }
     }
 }

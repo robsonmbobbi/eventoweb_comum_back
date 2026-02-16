@@ -40,7 +40,8 @@ namespace EventoWeb.Comum.Negocio.Servicos
                 pedido.Conta,
                 pedido.Valor,
                 integracao.TipoIntegracao,
-                retorno.IdTransacao
+                retorno.IdTransacao,
+                integracao.TipoIntegracao == EnumTipoIntegracao.CreditoParcelado ? dadosCartaoCredito?.NumeroParcelas : null
             );            
 
             if (retorno.Status == EnumStatusTransacao.Recebida)

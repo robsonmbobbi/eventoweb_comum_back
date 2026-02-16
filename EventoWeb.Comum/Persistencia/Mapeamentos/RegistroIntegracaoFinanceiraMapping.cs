@@ -23,15 +23,15 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             ManyToOne(x => x.Integrador, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column(("id_integrador_financeiro"));
+                m.Column("id_integrador_financeiro");
                 m.NotNullable(true);
             });
 
             ManyToOne(x => x.Conta, m =>
             {
                 m.Access(Accessor.Property);
-                m.Column(("id_conta"));
-                m.NotNullable(true);
+                m.Column("id_conta");
+                m.NotNullable(true);               
             });
 
             Component(x => x.Valor, m =>

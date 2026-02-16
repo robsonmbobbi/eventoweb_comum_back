@@ -2,7 +2,7 @@
 {
     public class MensagemNotificacao : Entidade
     {
-        public MensagemNotificacao(ModeloMensagemNotificacao modelo, string destinatario, string variaveisJson)
+        public MensagemNotificacao(ModeloMensagemNotificacao modelo, string destinatario, string? variaveisJson)
         {
             Modelo = modelo;
             Destinatario = destinatario;
@@ -16,7 +16,7 @@
         public virtual string Destinatario { get; protected set; }
         public virtual DateTime? DataSituacao { get; protected set; }
         public virtual EnumSituacaoEnvioNotificacao Situacao { get; protected set; }
-        public virtual string VariaveisJson { get; protected set; }
+        public virtual string? VariaveisJson { get; protected set; }
         public virtual string? Erro { get; protected set; }
 
         public virtual void RegistrarEnvio()

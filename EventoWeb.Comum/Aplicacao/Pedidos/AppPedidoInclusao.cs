@@ -30,7 +30,9 @@ public class AppPedidoInclusao : AppBase
         IPessoas pessoas,
         IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, 
         IIntegracaoFinanceiraPorFormasPagamentos integracoes,
-        IPersistencia<RegistroIntegracaoFinanceira> registrosIntegracao) : base(contexto)
+        IPersistencia<RegistroIntegracaoFinanceira> registrosIntegracao,
+        IModelosMensagemNotificacao modelosNotificacao,
+        IPersistencia<MensagemNotificacao> mensagens) : base(contexto)
     {
         m_Inscricoes = inscricoes;
         m_Pedidos = pedidos;
@@ -39,6 +41,8 @@ public class AppPedidoInclusao : AppBase
         m_IntegracoesExternas = integracoesExternas;
         m_Integracoes = integracoes;
         m_RegistrosIntegracao = registrosIntegracao;
+        m_ModelosNotificacao = modelosNotificacao;
+        m_Mensagens = mensagens;
     }
 
     public DTOResultadoPedido Incluir(DTOPedido dtoPedido)

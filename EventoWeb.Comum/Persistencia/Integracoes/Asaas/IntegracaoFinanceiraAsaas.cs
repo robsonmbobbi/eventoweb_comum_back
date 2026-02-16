@@ -81,6 +81,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                     if (integrador.TipoIntegracao == EnumTipoIntegracao.CreditoParcelado)
                     {
                         paymentRequest.InstallmentCount = dadosCartaoCredito?.NumeroParcelas;
+                        paymentRequest.TotalValue = pedido.Valor.Valor;
                     }
                     break;
                 default:
