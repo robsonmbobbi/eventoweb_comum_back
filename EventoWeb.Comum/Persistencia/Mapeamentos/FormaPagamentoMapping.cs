@@ -1,3 +1,4 @@
+using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
@@ -30,6 +31,14 @@ public class FormaPagamentoMapping : ClassMapping<FormaPagamento>
                 m.Length(150);
                 m.NotNullable(true);
             });
+        });
+
+        Property(m => m.Tipo, m =>
+        {
+            m.Access(Accessor.Property);
+            m.Column("TIPO");
+            m.NotNullable(true);
+            m.Type<EnumGeneric<EnumTipoPagamento>>();
         });
 
         Property(m => m.NrParcelasMinima, m =>

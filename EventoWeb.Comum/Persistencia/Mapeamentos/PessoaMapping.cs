@@ -110,6 +110,21 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Column("usa_adocante_diar");
                 m.NotNullable(false);
             });
+
+            this.Property(x => x.UF, m =>
+            {
+                m.Access(Accessor.Property);
+                m.Column("uf");
+                m.NotNullable(false);
+            });
+
+            this.Property(x => x.Cidade, m =>
+            {
+                m.Access(Accessor.Property);
+                m.Column("cidade");
+                m.NotNullable(false);
+                m.Length(300);
+            });
         }
     }
 }

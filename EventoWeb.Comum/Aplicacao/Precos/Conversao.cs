@@ -1,5 +1,5 @@
 using EventoWeb.Comum.Negocio.Entidades;
-using EventoWeb.Comum.Negocio.Entidades.Financeiro;
+using EventoWeb.Comum.Aplicacao.FormasPagamento;
 
 namespace EventoWeb.Comum.Aplicacao.Precos;
 
@@ -11,10 +11,9 @@ public static class Conversao
         {
             Id = precoInscricao.Id,
             IdadeMax = precoInscricao.IdadeMax,
-            Valores = precoInscricao
+            Valores = [.. precoInscricao
                 .Valores
-                .Select(x => x.Converter())
-                .ToList()
+                .Select(x => x.Converter())]
         };
     }
 
@@ -24,17 +23,6 @@ public static class Conversao
         {
             Forma = valor.Forma.Converter(),
             Preco = valor.Valor
-        };
-    }
-
-    public static DTOForma Converter(this FormaPagamento forma)
-    {
-        return new DTOForma
-        {
-            Id = forma.Id,
-            Nome = forma.Nome.Nome,
-            NrParcelasMaxima = forma.NrParcelasMaxima,
-            NrParcelasMinima = forma.NrParcelasMinima
         };
     }
 }

@@ -1,5 +1,5 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades;
-using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
 using EventoWeb.Comum.Negocio.Repositorios;
 using System.Text.Json;
@@ -43,13 +43,10 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos
                 var tipoTransacao = "";
                 switch(dadosRetorno?.TipoTransacao)
                 {
-                    case EnumTipoIntegracao.CreditoVista:
-                        tipoTransacao = "Cartão Crédito à vista";
+                    case EnumTipoPagamento.CartaoCredito:
+                        tipoTransacao = "Cartão Crédito";
                         break;
-                    case EnumTipoIntegracao.CreditoParcelado:
-                        tipoTransacao = "Cartão de crédito parcelado";
-                        break;
-                    case EnumTipoIntegracao.PIX:
+                    case EnumTipoPagamento.PIX:
                         tipoTransacao = "PIX";
                         break;
                 }

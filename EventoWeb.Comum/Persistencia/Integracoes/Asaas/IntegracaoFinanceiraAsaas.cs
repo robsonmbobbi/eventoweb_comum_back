@@ -5,6 +5,7 @@ using AsaasClient.Models.Common.Enums;
 using AsaasClient.Models.Customer;
 using AsaasClient.Models.Payment;
 using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.Servicos;
 
@@ -50,13 +51,12 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                 Description = $"Pagamento inscrições {pedido.Inscricoes.First().Evento.Nome}. Pedido: {pedido.Id}"
             };
 
-            switch (integrador.TipoIntegracao)
+            switch (integrador.FormaPagamento.Tipo)
             {
-                case EnumTipoIntegracao.PIX:
+                case EnumTipoPagamento.PIX:
                     paymentRequest.BillingType = BillingType.PIX;
                     break;
-                case EnumTipoIntegracao.CreditoParcelado:
-                case EnumTipoIntegracao.CreditoVista:
+                case EnumTipoPagamento.CartaoCredito:
                     paymentRequest.BillingType = BillingType.CREDIT_CARD;
 
                     paymentRequest.CreditCard = new CreditCardRequest
@@ -78,14 +78,14 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                         PostalCode = dadosCartaoCredito?.CEPTitular
                     };
 
-                    if (integrador.TipoIntegracao == EnumTipoIntegracao.CreditoParcelado)
+                    if (integrador.FormaPagamento.NrParcelasMinima > 1)
                     {
                         paymentRequest.InstallmentCount = dadosCartaoCredito?.NumeroParcelas;
                         paymentRequest.TotalValue = pedido.Valor.Valor;
                     }
                     break;
                 default:
-                    throw new Exception("Tipo de integração não suportado: " + integrador.TipoIntegracao);
+                    throw new Exception("Tipo de integração não suportado: " + integrador.FormaPagamento.Tipo);
             }
 
             var paymentResponse = await asaasApi.Payment.Create(paymentRequest);
@@ -97,10 +97,10 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
             {
                 IdTransacao = payment.Id,
                 Status = EnumStatusTransacao.Pendente,
-                TipoTransacao = integrador.TipoIntegracao
+                TipoTransacao = integrador.FormaPagamento.Tipo
             };
 
-            if (integrador.TipoIntegracao == EnumTipoIntegracao.PIX)
+            if (integrador.FormaPagamento.Tipo == EnumTipoPagamento.PIX)
             {
                 var pixResponse = await asaasApi.Payment.GetPixQrCode(payment.Id);
                 if (pixResponse.WasSucessfull())

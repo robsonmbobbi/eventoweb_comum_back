@@ -7,7 +7,7 @@ public class RegistroIntegracaoFinanceira : Entidade
 {
     private IList<RegistroIntegracaoLog> m_Logs = [];
 
-    public RegistroIntegracaoFinanceira(IntegradorFinanceiro integrador, Conta conta, ValorMonetario valor, EnumTipoIntegracao tipo, string identificacaoNoIntegrador, int? numeroParcelas = null)
+    public RegistroIntegracaoFinanceira(IntegradorFinanceiro integrador, Conta conta, ValorMonetario valor, EnumTipoPagamento tipo, string identificacaoNoIntegrador, int? numeroParcelas = null)
     {
         Integrador = integrador ??  throw new ArgumentNullException(nameof(integrador));
         Conta = conta ??  throw new ArgumentNullException(nameof(conta));
@@ -16,9 +16,6 @@ public class RegistroIntegracaoFinanceira : Entidade
         Situacao = EnumSituacaoIntegracao.Pendente;
         Tipo = tipo;
         DataRegistro = DateTime.Now;
-
-        if (tipo == EnumTipoIntegracao.CreditoParcelado && (!numeroParcelas.HasValue || numeroParcelas <= 1))
-            throw new ArgumentException("Número de parcelas deve ser informado e maior que 1 para crédito parcelado.", nameof(numeroParcelas));
         NumeroParcelas = numeroParcelas;
     }
     
@@ -32,7 +29,7 @@ public class RegistroIntegracaoFinanceira : Entidade
 
     public virtual DateTime DataRegistro { get; protected set;}
 
-    public virtual EnumTipoIntegracao Tipo { get; protected set; }
+    public virtual EnumTipoPagamento Tipo { get; protected set; }
 
     public virtual EnumSituacaoIntegracao Situacao { get; protected set;}
 

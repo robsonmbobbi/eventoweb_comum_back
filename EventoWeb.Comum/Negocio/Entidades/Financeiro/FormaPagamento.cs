@@ -8,9 +8,10 @@ public class FormaPagamento : Entidade
     private int m_NrParcelasMinima;
     private int m_NrParcelasMaxima;
 
-    public FormaPagamento(NomeCompleto nome)
+    public FormaPagamento(NomeCompleto nome, EnumTipoPagamento tipo)
     {
         Nome = nome;
+        Tipo = tipo;
         m_NrParcelasMaxima = 1;
         m_NrParcelasMinima = 1;
     }
@@ -30,6 +31,8 @@ public class FormaPagamento : Entidade
             m_Nome = value;
         }
     }
+
+    public virtual EnumTipoPagamento Tipo { get; set; }
 
     public virtual int NrParcelasMinima => m_NrParcelasMinima;
     public virtual int NrParcelasMaxima => m_NrParcelasMaxima;

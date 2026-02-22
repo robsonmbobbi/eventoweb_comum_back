@@ -29,11 +29,10 @@ namespace EventoWeb.Comum.Negocio.Entidades
                 throw new ArgumentNullException(nameof(CPF), $"{nameof(CPF)} não pode ser nulo.");
         }
         public virtual EnumSexo? Sexo { get; set; }
-        public virtual DataAniversario DataNascimento
+        public virtual DataAniversario? DataNascimento
         {
-            get => m_DataNascimento; 
-            set => m_DataNascimento = value ??
-                throw new ArgumentNullException(nameof(DataNascimento), $"{nameof(DataNascimento)} não pode ser nulo.");
+            get => m_DataNascimento;
+            set => m_DataNascimento = value;
         }        
         public virtual NomeCompleto Nome
         {
@@ -58,6 +57,9 @@ namespace EventoWeb.Comum.Negocio.Entidades
 
         public virtual Boolean UsaAdocanteDiariamente { get; set; }
 
-        public virtual String AlergiaAlimentos { get; set; }     
+        public virtual String? AlergiaAlimentos { get; set; }  
+        
+        public virtual String? UF { get; set; }
+        public virtual String? Cidade { get; set; }
     }
 }

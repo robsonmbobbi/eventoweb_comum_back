@@ -28,7 +28,8 @@ public class AppInscricaoInclusaoOnLine(
                 Inscricoes,
                 [
                     new ValidacaoInscricaoPessoaJaInscrita(Inscricoes),
-                    new ValidacaoInscricaoPeriodoInscricaoOnLine()
+                    new ValidacaoInscricaoPeriodoInscricaoOnLine(),
+                    new ValidacaoInscricaoDadosPessoa()
                 ]);
             srv.Incluir(inscricao);
 
@@ -118,17 +119,19 @@ public class AppInscricaoInclusaoOnLine(
         {
             pessoa.Nome = new NomeCompleto(DtoInscricao.Pessoa.Nome);
             pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
-            pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento);
+            pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento!.Value);
             pessoa.Email = new EMail(DtoInscricao.Pessoa.Email);
             pessoa.CelularWP = new Telefone(DtoInscricao.Pessoa.Celular);
         }
 
         pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
-        pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento);
+        pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento!.Value);
         pessoa.AlergiaAlimentos = DtoInscricao.Pessoa.AlergiaAlimentos;
         pessoa.EhDiabetico = DtoInscricao.Pessoa.EhDiabetico;
         pessoa.EhVegetariano = DtoInscricao.Pessoa.EhVegetariano;
         pessoa.UsaAdocanteDiariamente = DtoInscricao.Pessoa.UsaAdocanteDiariamente;
+        pessoa.Cidade = DtoInscricao.Pessoa.Cidade;
+        pessoa.UF = DtoInscricao.Pessoa.UF;
 
         if (ehInclusao)
         {

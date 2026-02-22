@@ -1,4 +1,5 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.Repositorios;
 
@@ -39,9 +40,9 @@ namespace EventoWeb.Comum.Negocio.Servicos
                 integracao.Integrador,
                 pedido.Conta,
                 pedido.Valor,
-                integracao.TipoIntegracao,
+                pedido.FormaPagamento!.Tipo,
                 retorno.IdTransacao,
-                integracao.TipoIntegracao == EnumTipoIntegracao.CreditoParcelado ? dadosCartaoCredito?.NumeroParcelas : null
+                pedido.FormaPagamento!.Tipo == EnumTipoPagamento.CartaoCredito ? dadosCartaoCredito?.NumeroParcelas : null
             );            
 
             if (retorno.Status == EnumStatusTransacao.Recebida)

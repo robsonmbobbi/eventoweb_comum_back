@@ -39,7 +39,14 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.NotNullable(true);
                 m.Type<EnumGeneric<EnumTipoPedido>>();
             });
-            
+
+            Property(x => x.Motivo, m =>
+            {
+                m.Access(Accessor.Property);
+                m.Column("motivo");
+                m.NotNullable(false);
+            });
+
             ManyToOne(x => x.Pagador, m =>
             {
                 m.Access(Accessor.Property);

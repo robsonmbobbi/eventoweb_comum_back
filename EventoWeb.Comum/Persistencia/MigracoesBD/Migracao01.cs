@@ -47,8 +47,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("id_integrador_financeiro").AsInt32().NotNullable()
                     .ForeignKey("fk_iffp_if", "integradores_financeiros", "id").OnUpdate(Rule.Cascade).OnDelete(Rule.Cascade)
                 .WithColumn("id_forma_pagamento").AsInt32().NotNullable()
-                    .ForeignKey("fk_iffp_fp", "formas_pagamento", "id").OnUpdate(Rule.Cascade)
-                .WithColumn("tipo_integracao").AsInt16().NotNullable();
+                    .ForeignKey("fk_iffp_fp", "formas_pagamento", "id").OnUpdate(Rule.Cascade);
         }
 
         private void CriarTabelaArquivoBinario()
@@ -88,6 +87,8 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                 .WithColumn("email").AsString(100).NotNullable()
 
                 .WithColumn("alergia_alimentos").AsString(100).Nullable()
+                .WithColumn("uf").AsString(2).Nullable()
+                .WithColumn("cidade").AsString(300).Nullable()
 
                 .WithColumn("data_nascimento").AsDate().Nullable()
 
@@ -128,7 +129,8 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                     .ForeignKey("fk_insc_inf_2", "inscricoes", "id").OnUpdate(Rule.Cascade)
 
                 .WithColumn("tipo").AsInt16().Nullable()
-                .WithColumn("instituicoes_espiritas_freq").AsString(300).Nullable();
+                .WithColumn("instituicoes_espiritas_freq").AsString(300).Nullable()
+                .WithColumn("motivo").AsString(int.MaxValue).Nullable();
         }
 
         private void CriarTabelaPedidos()
@@ -205,6 +207,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
             Create.Table("formas_pagamento")
                 .WithColumn("id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("nome").AsString(200).NotNullable()
+                .WithColumn("tipo").AsInt16().NotNullable()
                 .WithColumn("nr_parcelas_minima").AsInt32().NotNullable()
                 .WithColumn("nr_parcelas_maxima").AsInt32().NotNullable();
         }

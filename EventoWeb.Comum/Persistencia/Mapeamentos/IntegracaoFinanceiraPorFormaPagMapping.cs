@@ -1,4 +1,5 @@
-﻿using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
+﻿using EventoWeb.Comum.Negocio.Entidades.Financeiro;
+using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -29,13 +30,6 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             {
                 m.Column("id_forma_pagamento");
                 m.NotNullable(true);
-            });
-
-            Property(x => x.TipoIntegracao, m =>
-            {
-                m.Column("tipo_integracao");
-                m.NotNullable(true);
-                m.Type<EnumGeneric<EnumTipoIntegracao>>();
             });
         }
     }

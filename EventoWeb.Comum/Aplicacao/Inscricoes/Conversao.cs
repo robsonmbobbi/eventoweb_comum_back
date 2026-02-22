@@ -9,7 +9,7 @@ public static class Conversao
         return new DTOPessoa
         {
             Nome = pessoa.Nome.Nome,
-            DataNascimento = pessoa.DataNascimento.Data,
+            DataNascimento = pessoa.DataNascimento?.Data,
             CPF = pessoa.CPF.Numero,
             AlergiaAlimentos = pessoa.AlergiaAlimentos,
             Celular = pessoa.CelularWP.Numero,
@@ -18,6 +18,8 @@ public static class Conversao
             Email = pessoa.Email.Endereco,
             Sexo = pessoa.Sexo ?? EnumSexo.Feminino,
             UsaAdocanteDiariamente = pessoa.UsaAdocanteDiariamente,
+            Cidade = pessoa.Cidade,
+            UF = pessoa.UF
         };
     }
 

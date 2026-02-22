@@ -26,7 +26,7 @@ public class AppPedidoInclusao : AppBase
         IContexto contexto, 
         IInscricoes inscricoes,
         IPersistencia<Pedido> pedidos,
-        IPersistencia<FormaPagamento> formasPagamento,
+        IFormasPagamento formasPagamento,
         IPessoas pessoas,
         IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, 
         IIntegracaoFinanceiraPorFormasPagamentos integracoes,
@@ -66,7 +66,8 @@ public class AppPedidoInclusao : AppBase
                     m_Inscricoes.Obter(id) ?? throw new Exception($"Inscrição não encontrada com o id {id}")),
                 new ValorMonetario(dtoPedido.Valor),
                 dtoPedido.Tipo,
-                forma
+                forma,
+                dtoPedido.Motivo
             );
 
             var servicoPedido = new SrvInclusaoPedido(

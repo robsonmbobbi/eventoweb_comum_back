@@ -1,4 +1,3 @@
-using EventoWeb.Comum.Aplicacao.Precos;
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Servicos;
 
@@ -15,4 +14,5 @@ public class DTOPedido
     public string CelularPagador { get; set; }
     public string EmailPagador { get; set; }
     public DadosCartaoCredito? DadosCartaoCredito { get; set; }
+    public string? Motivo { get; set; }
 }

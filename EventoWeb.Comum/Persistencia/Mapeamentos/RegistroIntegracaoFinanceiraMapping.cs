@@ -1,3 +1,4 @@
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
@@ -57,7 +58,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             {
                 m.Access(Accessor.Property);
                 m.Column("tipo");
-                m.Type<EnumGeneric<EnumTipoIntegracao>>();
+                m.Type<EnumGeneric<EnumTipoPagamento>>();
                 m.NotNullable(true);
             });
 

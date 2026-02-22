@@ -74,10 +74,12 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes,
     {
         pessoa.Nome = new NomeCompleto(DtoInscricao!.Pessoa.Nome);
         pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
-        pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento);
+        pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento!.Value);
         pessoa.Email = new EMail(DtoInscricao.Pessoa.Email);
         pessoa.CelularWP = new Telefone(DtoInscricao.Pessoa.Celular);
-        
+        pessoa.Cidade = DtoInscricao.Pessoa.Cidade;
+        pessoa.UF = DtoInscricao.Pessoa.UF;
+
         pessoas.Atualizar(pessoa);
     }    
     
