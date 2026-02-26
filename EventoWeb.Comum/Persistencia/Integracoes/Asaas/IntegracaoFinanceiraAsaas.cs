@@ -15,7 +15,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
     {
         public async Task<DadosRetornoIntegracaoExterna> Enviar(IntegracaoFinanceiraPorFormaPag integrador, Pedido pedido, DadosCartaoCredito? dadosCartaoCredito)
         {
-            AsaasApi asaasApi = new(new(integrador.Integrador.TokenAcesso, "EventoWeb4", AsaasEnvironment.SANDBOX));
+            AsaasApi asaasApi = new(new(integrador.Integrador.TokenAcesso, "EventoWeb4", AsaasEnvironment.PRODUCTION));
             var customerResponse = await asaasApi.Customer.List(
                 1,
                 10,
