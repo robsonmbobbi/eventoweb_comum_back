@@ -3,9 +3,9 @@ using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.Repositorios;
 
-namespace EventoWeb.Comum.Negocio.Servicos
+namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
 {
-    public class SrvIntegracaoFinanceira
+    public class SrvCriacaoCobranca
     {
         private readonly IIntegracaoFinanceiraPorFormasPagamentos m_Integracoes;
         private readonly IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> m_IntegracoesExternas;
@@ -13,7 +13,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
         private readonly IPersistencia<Pedido> m_Pedidos;
 
 
-        public SrvIntegracaoFinanceira(IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, IIntegracaoFinanceiraPorFormasPagamentos integracoes,
+        public SrvCriacaoCobranca(IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, IIntegracaoFinanceiraPorFormasPagamentos integracoes,
             IPersistencia<RegistroIntegracaoFinanceira> registrosIntegracao, IPersistencia<Pedido> pedidos)
         {
             m_Integracoes = integracoes;
@@ -22,7 +22,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
             m_Pedidos = pedidos;
         }
 
-        public DadosRetornoIntegracaoExterna ProcessarIntegracao(Pedido pedido, DadosCartaoCredito? dadosCartaoCredito)
+        public DadosRetornoIntegracaoExterna Criar(Pedido pedido, DadosCartaoCredito? dadosCartaoCredito)
         {
             if (pedido.Tipo != EnumTipoPedido.Debito) 
             { 
@@ -33,7 +33,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
             var integradorExterno = m_IntegracoesExternas[integracao.Integrador.IntegracaoExterna];
 
             var retorno = integradorExterno
-                .Enviar(integracao, pedido, dadosCartaoCredito)
+                .CriarCobranca(integracao, pedido, dadosCartaoCredito)
                 .Result;
 
             var registroIntegracao = new RegistroIntegracaoFinanceira(

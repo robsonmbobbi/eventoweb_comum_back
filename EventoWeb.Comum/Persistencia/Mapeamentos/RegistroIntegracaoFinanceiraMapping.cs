@@ -88,7 +88,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Access(Accessor.Property);
                 m.Column("id_no_integrador");
                 m.Length(1000);
-                m.NotNullable(false);
+                m.NotNullable(true);
             });
 
             ManyToOne(x => x.Transacao, m =>

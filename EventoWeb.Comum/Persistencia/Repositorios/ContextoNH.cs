@@ -54,7 +54,8 @@ public class ContextoNH: IContexto
     public IPersistencia<Pedido> Pedidos => new PersistenciaNH<Pedido>(m_Sessao);
     public IFormasPagamento FormasPagamento => new FormasPagamentoNH(m_Sessao);
     public IIntegracaoFinanceiraPorFormasPagamentos IntegracoesFinanceirasPorFormasPagamento => new IntegracaoFinanceiraPorFormasPagamentosNH(m_Sessao);
-    public IPersistencia<RegistroIntegracaoFinanceira> RegistrosIntegracoesFinanceiras => new PersistenciaNH<RegistroIntegracaoFinanceira>(m_Sessao);
+    public IRegistrosIntegracoesFinanceiras RegistrosIntegracoesFinanceiras => new RegistrosIntegracoesFinanceirasNH(m_Sessao);
     public IModelosMensagemNotificacao ModelosMensagemNotificacao => new ModelosMensagemNotificacaoNH(m_Sessao);
-    public IPersistencia<MensagemNotificacao> MensagensNotificacao => new PersistenciaNH<MensagemNotificacao>(m_Sessao);
+    public IMensagens MensagensNotificacao => new MensagensNH(m_Sessao);
+    public IPersistencia<Conta> Contas => new PersistenciaNH<Conta>(m_Sessao);
 }

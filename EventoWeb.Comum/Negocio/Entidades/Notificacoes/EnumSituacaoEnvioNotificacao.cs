@@ -4,6 +4,7 @@
     {
         Enviada,
         Pendente,
-        Error
+        Error,
+        Cancelada
     }
 }

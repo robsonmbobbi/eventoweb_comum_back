@@ -1,6 +1,7 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.Repositorios;
+using EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes;
 using EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos;
 
@@ -47,14 +48,14 @@ namespace EventoWeb.Comum.Negocio.Servicos
 
             if (pedido.Tipo == EnumTipoPedido.Debito)
             {
-                var servico = new SrvIntegracaoFinanceira(
+                var servico = new SrvCriacaoCobranca(
                     m_IntegracoesExternas,
                     m_Integracoes,
                     m_RegistrosIntegracao,
                     m_Pedidos
                 );
 
-                retornoIntegracao = servico.ProcessarIntegracao(pedido, dadosCartaoCredito);
+                retornoIntegracao = servico.Criar(pedido, dadosCartaoCredito);
             }
 
             m_SrvNotificacaoInscricoes.Notificar(pedido.Inscricoes);

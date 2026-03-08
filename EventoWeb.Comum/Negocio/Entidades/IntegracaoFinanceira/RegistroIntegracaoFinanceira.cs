@@ -37,7 +37,7 @@ public class RegistroIntegracaoFinanceira : Entidade
 
     public virtual DateTime? DataConcluidoAbortado { get; protected set; }
 
-    public virtual string? IdentificacaoNoIntegrador { get; protected set; }
+    public virtual string IdentificacaoNoIntegrador { get; protected set; }
 
     public virtual Transacao Transacao { get; protected set; }
 

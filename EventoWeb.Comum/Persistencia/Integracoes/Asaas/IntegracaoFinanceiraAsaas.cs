@@ -13,7 +13,32 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
 {
     public class IntegracaoFinanceiraAsaas : IIntegracaoExterna
     {
-        public async Task<DadosRetornoIntegracaoExterna> Enviar(IntegracaoFinanceiraPorFormaPag integrador, Pedido pedido, DadosCartaoCredito? dadosCartaoCredito)
+        public async Task<DadosRetornoIntegracaoExterna?> ConsultarCobranca(IntegradorFinanceiro integrador, string identificador)
+        {
+            AsaasApi asaasApi = new(new(integrador.TokenAcesso, "EventoWeb4", AsaasEnvironment.PRODUCTION));
+
+            var paymentResponse = await asaasApi.Payment.Find(identificador);
+            if (!paymentResponse.WasSucessfull())
+                throw paymentResponse.TratarErros();
+
+            var payment = paymentResponse.Data;
+            return new DadosRetornoIntegracaoExterna
+            {
+                IdTransacao = payment.Id,
+                Status = payment.Status switch { 
+                    AsaasClient.Models.Payment.Enums.PaymentStatus.RECEIVED => EnumStatusTransacao.Recebida,
+                    AsaasClient.Models.Payment.Enums.PaymentStatus.OVERDUE => EnumStatusTransacao.Cancelada,
+                    _ => EnumStatusTransacao.Pendente
+                },
+                TipoTransacao = payment.BillingType switch { 
+                    BillingType.PIX => EnumTipoPagamento.PIX,
+                    BillingType.CREDIT_CARD => EnumTipoPagamento.CartaoCredito,
+                    _ => throw new Exception("Tipo de pagamento não suportado: " + payment.BillingType)
+                }
+            };
+        }
+
+        public async Task<DadosRetornoIntegracaoExterna> CriarCobranca(IntegracaoFinanceiraPorFormaPag integrador, Pedido pedido, DadosCartaoCredito? dadosCartaoCredito)
         {
             AsaasApi asaasApi = new(new(integrador.Integrador.TokenAcesso, "EventoWeb4", AsaasEnvironment.PRODUCTION));
             var customerResponse = await asaasApi.Customer.List(
