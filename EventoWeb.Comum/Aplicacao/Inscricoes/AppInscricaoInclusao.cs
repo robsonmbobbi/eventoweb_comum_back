@@ -5,11 +5,12 @@ using EventoWeb.Comum.Negocio.Servicos;
 
 namespace EventoWeb.Comum.Aplicacao.Inscricoes;
 
-public class AppInscricaoInclusaoOnLine(
+public class AppInscricaoInclusao(
     IContexto contexto,
     IInscricoes inscricoes,
     IPessoas pessoas,
-    IEventos eventos)
+    IEventos eventos,
+    IEnumerable<IValidacao<Inscricao>> validacoesInscricao)
     : AppInscricaoBase(contexto, inscricoes)
 {
     public DTOInscricao? DtoInscricao { get; set; }
@@ -26,11 +27,8 @@ public class AppInscricaoInclusaoOnLine(
 
             var srv = new SrvInclusaoInscricao(
                 Inscricoes,
-                [
-                    new ValidacaoInscricaoPessoaJaInscrita(Inscricoes),
-                    new ValidacaoInscricaoPeriodoInscricaoOnLine(),
-                    new ValidacaoInscricaoDadosPessoa()
-                ]);
+                validacoesInscricao
+            );
             srv.Incluir(inscricao);
 
             DtoInscricao.Id = inscricao.Id;

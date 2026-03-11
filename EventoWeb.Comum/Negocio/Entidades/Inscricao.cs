@@ -14,7 +14,7 @@
             ConfirmadoNoEvento = false;
             DormeEvento = true;
 
-            if (!EhValidaIdade(pessoa.DataNascimento.CalcularIdadeEmAnos(evento.PeriodoRealizacaoEvento.DataInicial)))
+            if (!EhValidaIdade(pessoa.DataNascimento!.CalcularIdadeEmAnos(evento.PeriodoRealizacaoEvento.DataInicial)))
                 throw new ArgumentException("A idade da pessoa é inválida para este tipo de inscrição.");
         }
 
