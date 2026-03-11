@@ -6,5 +6,5 @@ public interface IInscricoes : IPersistencia<Inscricao>
 {
     Inscricao? ObterPorCPF(int idEvento, string cpf);
 
-    List<Inscricao> ListarPorSituacao(int idEvento, EnumSituacaoInscricao situacao);
+    IList<Inscricao> ListarPorSituacao(int idEvento, EnumSituacaoInscricao situacao);
 }

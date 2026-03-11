@@ -6,6 +6,14 @@ namespace EventoWeb.Comum.Persistencia.Repositorios;
 
 public class InscricoesNH(ISession sessao) : PersistenciaNH<Inscricao>(sessao), IInscricoes
 {
+    public IList<Inscricao> ListarPorSituacao(int idEvento, EnumSituacaoInscricao situacao)
+    {
+        return Sessao
+            .QueryOver<Inscricao>()
+            .Where(inscricao => inscricao.Evento.Id == idEvento && inscricao.Situacao == situacao)
+            .List();
+    }
+
     public Inscricao? ObterPorCPF(int idEvento, string cpf)
     {
         cpf = new String(cpf.Where(char.IsDigit)?.ToArray());

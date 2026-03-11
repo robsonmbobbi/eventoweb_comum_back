@@ -1,7 +1,6 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
-using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 using EventoWeb.Comum.Negocio.Servicos;
@@ -18,9 +17,9 @@ public class AppPedidoInclusao : AppBase
     private readonly IPersistencia<FormaPagamento> m_FormasPagamento;
     private readonly IIntegracaoFinanceiraPorFormasPagamentos m_Integracoes;
     private readonly IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> m_IntegracoesExternas;
-    private readonly IPersistencia<RegistroIntegracaoFinanceira> m_RegistrosIntegracao;
+    private readonly IRegistrosIntegracoesFinanceiras m_RegistrosIntegracao;
     private readonly IModelosMensagemNotificacao m_ModelosNotificacao;
-    private readonly IPersistencia<MensagemNotificacao> m_Mensagens;
+    private readonly IMensagens m_Mensagens;
 
     public AppPedidoInclusao(
         IContexto contexto, 
@@ -30,9 +29,9 @@ public class AppPedidoInclusao : AppBase
         IPessoas pessoas,
         IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, 
         IIntegracaoFinanceiraPorFormasPagamentos integracoes,
-        IPersistencia<RegistroIntegracaoFinanceira> registrosIntegracao,
+        IRegistrosIntegracoesFinanceiras registrosIntegracao,
         IModelosMensagemNotificacao modelosNotificacao,
-        IPersistencia<MensagemNotificacao> mensagens) : base(contexto)
+        IMensagens mensagens) : base(contexto)
     {
         m_Inscricoes = inscricoes;
         m_Pedidos = pedidos;
