@@ -12,9 +12,9 @@ namespace EventoWeb.Comum.Aplicacao.Pedidos;
 public class AppPedidoInclusao : AppBase
 {
     private readonly IInscricoes m_Inscricoes;
-    private readonly IPersistencia<Pedido> m_Pedidos;
+    private readonly IPedidos m_Pedidos;
     private readonly IPessoas m_Pessoas;
-    private readonly IPersistencia<FormaPagamento> m_FormasPagamento;
+    private readonly IFormasPagamento m_FormasPagamento;
     private readonly IIntegracaoFinanceiraPorFormasPagamentos m_Integracoes;
     private readonly IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> m_IntegracoesExternas;
     private readonly IRegistrosIntegracoesFinanceiras m_RegistrosIntegracao;
@@ -24,7 +24,7 @@ public class AppPedidoInclusao : AppBase
     public AppPedidoInclusao(
         IContexto contexto, 
         IInscricoes inscricoes,
-        IPersistencia<Pedido> pedidos,
+        IPedidos pedidos,
         IFormasPagamento formasPagamento,
         IPessoas pessoas,
         IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, 

@@ -16,5 +16,11 @@ namespace EventoWeb.Comum.Persistencia.Repositorios
                 .Where(r => r.Situacao == EnumSituacaoIntegracao.Pendente)
                 .ToList();
         }
+
+        public RegistroIntegracaoFinanceira? ObterPorConta(int idConta)
+        {
+            return Sessao.Query<RegistroIntegracaoFinanceira>()
+                .FirstOrDefault(r => r.Conta.Id == idConta);
+        }
     }
 }

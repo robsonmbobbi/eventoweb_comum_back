@@ -1,4 +1,4 @@
-using EventoWeb.Comum.Negocio.Entidades;
+        using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Repositorios;
 
 namespace EventoWeb.Comum.Aplicacao.Inscricoes;

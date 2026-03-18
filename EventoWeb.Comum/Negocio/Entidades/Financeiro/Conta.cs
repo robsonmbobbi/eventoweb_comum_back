@@ -89,8 +89,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
         public virtual decimal ValorTotalJuros { get; protected set; }
         public virtual decimal ValorTotalMulta { get; protected set; }
 
-        public virtual IEnumerable<TransacaoConta> Transacoes => m_Transacoes;
-
+        public virtual IEnumerable<TransacaoConta> Transacoes => m_Transacoes;       
 
         private void ValidarSeContaLiquidada()
         {
