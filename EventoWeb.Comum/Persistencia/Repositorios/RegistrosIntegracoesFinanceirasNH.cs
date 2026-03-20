@@ -12,15 +12,18 @@ namespace EventoWeb.Comum.Persistencia.Repositorios
 
         public IList<RegistroIntegracaoFinanceira> ListarPendentes()
         {
-            return Sessao.Query<RegistroIntegracaoFinanceira>()
+            return Sessao
+                .QueryOver<RegistroIntegracaoFinanceira>()
                 .Where(r => r.Situacao == EnumSituacaoIntegracao.Pendente)
-                .ToList();
+                .List();
         }
 
-        public RegistroIntegracaoFinanceira? ObterPorConta(int idConta)
+        public IList<RegistroIntegracaoFinanceira> ListarPorConta(int idConta)
         {
-            return Sessao.Query<RegistroIntegracaoFinanceira>()
-                .FirstOrDefault(r => r.Conta.Id == idConta);
+            return Sessao
+                .QueryOver<RegistroIntegracaoFinanceira>()
+                .Where(r => r.Conta.Id == idConta)
+                .List();
         }
     }
 }

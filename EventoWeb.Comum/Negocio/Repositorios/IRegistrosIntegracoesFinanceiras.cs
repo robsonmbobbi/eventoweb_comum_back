@@ -6,6 +6,6 @@ namespace EventoWeb.Comum.Negocio.Repositorios
     public interface IRegistrosIntegracoesFinanceiras : IPersistencia<RegistroIntegracaoFinanceira>
     {
         IList<RegistroIntegracaoFinanceira> ListarPendentes();
-        RegistroIntegracaoFinanceira? ObterPorConta(int idConta);
+        IList<RegistroIntegracaoFinanceira> ListarPorConta(int idConta);
     }
 }

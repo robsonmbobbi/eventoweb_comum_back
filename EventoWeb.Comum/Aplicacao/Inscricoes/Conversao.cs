@@ -50,6 +50,7 @@ public static class Conversao
         {
             dto.Tipo = EnumTipoInscricao.Adulto;
             dto.InstituicoesEspiritasFrequenta = participante.InstituicoesEspiritasFrequenta;
+            dto.TipoParticipante = participante.Tipo;
         }
         else if (inscricao is InscricaoInfantil infantil)
         {

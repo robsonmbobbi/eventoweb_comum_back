@@ -16,5 +16,6 @@ public class DTOInscricao
     public DTOPessoa Pessoa { get; set; }
     public DTOResponsavel? Responsavel1 { get; set; }
     public DTOResponsavel? Responsavel2 { get; set; }
-    public EnumSituacaoInscricao? Situacao { get; set; }
+    public EnumSituacaoInscricao Situacao { get; set; }
+    public EnumTipoParticipante? TipoParticipante { get; set; }
 }
