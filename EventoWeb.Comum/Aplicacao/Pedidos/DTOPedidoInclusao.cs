@@ -3,7 +3,7 @@ using EventoWeb.Comum.Negocio.Servicos;
 
 namespace EventoWeb.Comum.Aplicacao.Pedidos;
 
-public class DTOPedido
+public class DTOPedidoInclusao
 {
     public IList<int> IdsInscricoes { get; set; }
     public decimal Valor { get; set; }

@@ -44,7 +44,7 @@ public class AppPedidoInclusao : AppBase
         m_Mensagens = mensagens;
     }
 
-    public DTOResultadoPedido Incluir(DTOPedido dtoPedido)
+    public DTOResultadoPedido Incluir(DTOPedidoInclusao dtoPedido)
     {
         DTOResultadoPedido? resultado = null;
         ExecutarSeguramente(() =>
@@ -103,7 +103,7 @@ public class AppPedidoInclusao : AppBase
         return resultado!;
     }
     
-    private Pessoa GerenciarPessoa(DTOPedido dtoPedido)
+    private Pessoa GerenciarPessoa(DTOPedidoInclusao dtoPedido)
     {
         var ehInclusao = false;
         var pessoa = m_Pessoas.ObterPorCPF(dtoPedido.CPFPagador);
