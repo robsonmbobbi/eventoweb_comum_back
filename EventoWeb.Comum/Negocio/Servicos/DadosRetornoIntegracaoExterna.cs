@@ -11,5 +11,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
         public required EnumStatusTransacao Status { get; set; }
         public string? ImagemQRCodePixBase64 { get; set; }
         public string? PixCopiaECola { get; set; }
+        public string? LinkPagamento { get; set; }
+        public decimal Valor { get; set; }
     }
 }

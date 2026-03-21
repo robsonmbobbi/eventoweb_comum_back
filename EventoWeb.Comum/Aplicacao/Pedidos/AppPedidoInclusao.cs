@@ -78,7 +78,7 @@ public class AppPedidoInclusao : AppBase
                 new SrvNotificacaoInscricaoRecebida(m_ModelosNotificacao, m_Mensagens),
                 new SrvNotificacaoPedidoRealizado(m_ModelosNotificacao, m_Mensagens)
             );
-            var resultadoIntegracao = servicoPedido.Incluir(pedido, dtoPedido.DadosCartaoCredito);
+            var resultadoIntegracao = servicoPedido.Incluir(pedido, dtoPedido.NumeroParcelas);
 
             resultado = new DTOResultadoPedido
             {

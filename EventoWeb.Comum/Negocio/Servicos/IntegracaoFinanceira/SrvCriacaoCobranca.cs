@@ -22,18 +22,18 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
             m_Pedidos = pedidos;
         }
 
-        public DadosRetornoIntegracaoExterna Criar(Pedido pedido, DadosCartaoCredito? dadosCartaoCredito)
+        public DadosRetornoIntegracaoExterna Criar(Pedido pedido, int? numeroParcelas)
         {
             if (pedido.Tipo != EnumTipoPedido.Debito) 
             { 
                 throw new InvalidOperationException("A integração financeira só pode ser processada para pedidos do tipo Débito.");
             }
-            
+
             var integracao = m_Integracoes.ObterPorFormaPagamento(pedido.FormaPagamento!);
             var integradorExterno = m_IntegracoesExternas[integracao.Integrador.IntegracaoExterna];
 
             var retorno = integradorExterno
-                .CriarCobranca(integracao, pedido, dadosCartaoCredito)
+                .CriarCobranca(integracao, pedido, numeroParcelas)
                 .Result;
 
             var registroIntegracao = new RegistroIntegracaoFinanceira(
@@ -42,8 +42,8 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
                 pedido.Valor,
                 pedido.FormaPagamento!.Tipo,
                 retorno.IdTransacao,
-                pedido.FormaPagamento!.Tipo == EnumTipoPagamento.CartaoCredito ? dadosCartaoCredito?.NumeroParcelas : null
-            );            
+                pedido.FormaPagamento!.Tipo == EnumTipoPagamento.CartaoCredito ? numeroParcelas : null
+            );
 
             if (retorno.Status == EnumStatusTransacao.Recebida)
             {

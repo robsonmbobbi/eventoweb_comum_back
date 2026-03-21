@@ -35,7 +35,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
             m_SrvNotificacaoInscricoes = srvNotificacaoInscricoes;
         }
 
-        public DadosRetornoIntegracaoExterna? Incluir(Pedido pedido, DadosCartaoCredito? dadosCartaoCredito)
+        public DadosRetornoIntegracaoExterna? Incluir(Pedido pedido, int? numeroParcelas)
         {
             foreach(var inscricao in pedido.Inscricoes)
             {
@@ -55,7 +55,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
                     m_Pedidos
                 );
 
-                retornoIntegracao = servico.Criar(pedido, dadosCartaoCredito);
+                retornoIntegracao = servico.Criar(pedido, numeroParcelas);
             }
 
             m_SrvNotificacaoInscricoes.Notificar(pedido.Inscricoes);

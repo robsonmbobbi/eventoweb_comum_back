@@ -13,9 +13,12 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
 {
     public class IntegracaoFinanceiraAsaas : IIntegracaoExterna
     {
+        private readonly string _appName = "EventoWeb4";
+        private readonly AsaasEnvironment _environment = AsaasEnvironment.PRODUCTION;
+
         public async Task<DadosRetornoIntegracaoExterna?> ConsultarCobranca(IntegradorFinanceiro integrador, string identificador)
         {
-            AsaasApi asaasApi = new(new(integrador.TokenAcesso, "EventoWeb4", AsaasEnvironment.PRODUCTION));
+            var asaasApi = CriarAsaasApi(integrador);
 
             var paymentResponse = await asaasApi.Payment.Find(identificador);
             if (!paymentResponse.WasSucessfull())
@@ -38,109 +41,159 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
             };
         }
 
-        public async Task<DadosRetornoIntegracaoExterna> CriarCobranca(IntegracaoFinanceiraPorFormaPag integrador, Pedido pedido, DadosCartaoCredito? dadosCartaoCredito)
+        public async Task<DadosRetornoIntegracaoExterna> CriarCobranca(IntegracaoFinanceiraPorFormaPag integrador, Pedido pedido, int? numeroParcelas)
         {
-            AsaasApi asaasApi = new(new(integrador.Integrador.TokenAcesso, "EventoWeb4", AsaasEnvironment.PRODUCTION));
-            var customerResponse = await asaasApi.Customer.List(
-                1,
-                10,
-                new CustomerListFilter
-                {
-                    CpfCnpj = pedido.Pagador.CPF.Numero
-                });
+            var asaasApi = CriarAsaasApi(integrador.Integrador);
+            var customer = await ObterOuCriarCliente(asaasApi, pedido.Pagador.CPF.Numero, pedido.Pagador.Nome.Nome);
+
+            var paymentRequest = ConstruirPaymentRequest(
+                customer.Id,
+                pedido.Valor.Valor,
+                integrador.FormaPagamento.Tipo,
+                integrador.FormaPagamento.NrParcelasMinima,
+                numeroParcelas,
+                $"Pagamento inscrições {pedido.Inscricoes.First().Evento.Nome}. Pedido: {pedido.Id}"
+            );
+
+            var paymentResponse = await asaasApi.Payment.Create(paymentRequest);
+            if (!paymentResponse.WasSucessfull())
+                throw paymentResponse.TratarErros();
+
+            return await ProcessarRespostaCobranca(asaasApi, paymentResponse.Data, integrador.FormaPagamento.Tipo);
+        }
+
+        public async Task<DadosRetornoIntegracaoExterna> CriarCobrancaPorConta(IntegracaoFinanceiraPorFormaPag integrador, Conta conta, decimal valor, EnumTipoPagamento tipoPagamento, int? numeroParcelas)
+        {
+            var asaasApi = CriarAsaasApi(integrador.Integrador);
+            var customer = await ObterOuCriarCliente(asaasApi, conta.Pessoa.CPF.Numero, conta.Pessoa.Nome.Nome);
+
+            var paymentRequest = ConstruirPaymentRequest(
+                customer.Id,
+                valor,
+                tipoPagamento,
+                integrador.FormaPagamento.NrParcelasMinima,
+                numeroParcelas,
+                $"Pagamento - Conta ID: {conta.Id}"
+            );
+
+            var paymentResponse = await asaasApi.Payment.Create(paymentRequest);
+            if (!paymentResponse.WasSucessfull())
+                throw paymentResponse.TratarErros();
+
+            return await ProcessarRespostaCobranca(asaasApi, paymentResponse.Data, tipoPagamento);
+        }
+
+        /// <summary>
+        /// Cria instância da API Asaas com as configurações necessárias
+        /// </summary>
+        private AsaasApi CriarAsaasApi(IntegradorFinanceiro integrador)
+        {
+            return new AsaasApi(new(integrador.TokenAcesso, _appName, _environment));
+        }
+
+        /// <summary>
+        /// Obtém cliente existente ou cria novo cliente
+        /// </summary>
+        private async Task<Customer> ObterOuCriarCliente(AsaasApi asaasApi, string cpfCnpj, string nome)
+        {
+            var customerResponse = await asaasApi.Customer.List(1, 10, new CustomerListFilter { CpfCnpj = cpfCnpj });
 
             if (!customerResponse.WasSucessfull())
                 throw customerResponse.TratarErros();
 
-            Customer? customer = customerResponse.Data.FirstOrDefault();
-            if (customer == null)
-            {
-                var createCustomerResponse = await asaasApi.Customer.Create(
-                    new CreateCustomerRequest
-                    {
-                        Name = pedido.Pagador.Nome.Nome,
-                        CpfCnpj = pedido.Pagador.CPF.Numero
-                    });
+            var customer = customerResponse.Data.FirstOrDefault();
+            if (customer != null)
+                return customer;
 
-                if (!createCustomerResponse.WasSucessfull())
-                    throw createCustomerResponse.TratarErros();
+            var createCustomerResponse = await asaasApi.Customer.Create(
+                new CreateCustomerRequest { Name = nome, CpfCnpj = cpfCnpj });
 
-                customer = createCustomerResponse.Data;
-            }            
+            if (!createCustomerResponse.WasSucessfull())
+                throw createCustomerResponse.TratarErros();
 
+            return createCustomerResponse.Data;
+        }
+
+        /// <summary>
+        /// Constrói o objeto CreatePaymentRequest com configurações apropriadas
+        /// </summary>
+        private CreatePaymentRequest ConstruirPaymentRequest(
+            string customerId,
+            decimal valor,
+            EnumTipoPagamento tipoPagamento,
+            int nrParcelasMinima,
+            int? numeroParcelas,
+            string descricao)
+        {
             var paymentRequest = new CreatePaymentRequest
             {
-                CustomerId = customer.Id,
-                Value = pedido.Valor.Valor,
+                CustomerId = customerId,
+                Value = valor,
                 DueDate = DateTime.Now.AddDays(1),
-                Description = $"Pagamento inscrições {pedido.Inscricoes.First().Evento.Nome}. Pedido: {pedido.Id}"
+                Description = descricao
             };
 
-            switch (integrador.FormaPagamento.Tipo)
+            switch (tipoPagamento)
             {
                 case EnumTipoPagamento.PIX:
                     paymentRequest.BillingType = BillingType.PIX;
                     break;
                 case EnumTipoPagamento.CartaoCredito:
                     paymentRequest.BillingType = BillingType.CREDIT_CARD;
-
-                    paymentRequest.CreditCard = new CreditCardRequest
+                    if (nrParcelasMinima > 1)
                     {
-                        HolderName = dadosCartaoCredito?.NomeImpressoCartao,
-                        Number = dadosCartaoCredito?.NumeroCartao,
-                        ExpiryMonth = dadosCartaoCredito?.MesExpiracao,
-                        ExpiryYear = dadosCartaoCredito?.AnoExpiracao,
-                        Ccv = dadosCartaoCredito?.CodigoSeguranca
-                    };
-
-                    paymentRequest.CreditCardHolderInfo = new CreditCardHolderInfoRequest
-                    {
-                        Name = dadosCartaoCredito?.NomeTitular,
-                        Email = dadosCartaoCredito?.EmailTitular,
-                        CpfCnpj = dadosCartaoCredito?.CPFouCNPJTitular,
-                        AddressNumber = dadosCartaoCredito?.NumeroEnderecoTitular,
-                        Phone = dadosCartaoCredito?.TelefoneTitular,
-                        PostalCode = dadosCartaoCredito?.CEPTitular
-                    };
-
-                    if (integrador.FormaPagamento.NrParcelasMinima > 1)
-                    {
-                        paymentRequest.InstallmentCount = dadosCartaoCredito?.NumeroParcelas;
-                        paymentRequest.TotalValue = pedido.Valor.Valor;
+                        paymentRequest.InstallmentCount = numeroParcelas;
+                        paymentRequest.TotalValue = valor;
                     }
                     break;
                 default:
-                    throw new Exception("Tipo de integração não suportado: " + integrador.FormaPagamento.Tipo);
+                    throw new Exception($"Tipo de pagamento não suportado: {tipoPagamento}");
             }
 
-            var paymentResponse = await asaasApi.Payment.Create(paymentRequest);
-            if (!paymentResponse.WasSucessfull())
-                throw paymentResponse.TratarErros();
+            return paymentRequest;
+        }
 
-            var payment = paymentResponse.Data;
+        /// <summary>
+        /// Processa a resposta da criação de cobrança, obtendo dados adicionais conforme necessário
+        /// </summary>
+        private async Task<DadosRetornoIntegracaoExterna> ProcessarRespostaCobranca(
+            AsaasApi asaasApi,
+            Payment payment,
+            EnumTipoPagamento tipoPagamento)
+        {
             var retorno = new DadosRetornoIntegracaoExterna
             {
                 IdTransacao = payment.Id,
                 Status = EnumStatusTransacao.Pendente,
-                TipoTransacao = integrador.FormaPagamento.Tipo
+                TipoTransacao = tipoPagamento,
+                Valor = payment.Value
             };
 
-            if (integrador.FormaPagamento.Tipo == EnumTipoPagamento.PIX)
+            switch (tipoPagamento)
             {
-                var pixResponse = await asaasApi.Payment.GetPixQrCode(payment.Id);
-                if (pixResponse.WasSucessfull())
-                {
-                    var pixData = pixResponse.Data;
-                    retorno.ImagemQRCodePixBase64 = pixData.EncodedImage;
-                    retorno.PixCopiaECola = pixData.Payload;
-                }
-                else
-                {
-                    throw pixResponse.TratarErros();
-                }
+                case EnumTipoPagamento.PIX:
+                    await AdicionarDadosPix(asaasApi, payment.Id, retorno);
+                    break;
+                case EnumTipoPagamento.CartaoCredito:
+                    retorno.LinkPagamento = payment.InvoiceUrl;
+                    break;
             }
 
             return retorno;
+        }
+
+        /// <summary>
+        /// Adiciona dados do PIX (QR Code e código de cópia e cola) ao retorno
+        /// </summary>
+        private async Task AdicionarDadosPix(AsaasApi asaasApi, string paymentId, DadosRetornoIntegracaoExterna retorno)
+        {
+            var pixResponse = await asaasApi.Payment.GetPixQrCode(paymentId);
+            if (!pixResponse.WasSucessfull())
+                throw pixResponse.TratarErros();
+
+            var pixData = pixResponse.Data;
+            retorno.ImagemQRCodePixBase64 = pixData.EncodedImage;
+            retorno.PixCopiaECola = pixData.Payload;
         }
     }
 }

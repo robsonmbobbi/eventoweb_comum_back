@@ -62,7 +62,8 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos
                             TipoPedido = tipoPedido,
                             TipoTransacao = tipoTransacao,
                             dadosRetorno?.ImagemQRCodePixBase64,
-                            dadosRetorno?.PixCopiaECola
+                            dadosRetorno?.PixCopiaECola,
+                            dadosRetorno?.LinkPagamento,
                         }
                     )
                 );
