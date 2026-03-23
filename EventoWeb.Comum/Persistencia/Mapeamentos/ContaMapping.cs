@@ -32,9 +32,9 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
 
             Component(x => x.Valor, c =>
             {
+                c.Access(Accessor.NoSetter);
                 c.Property(v => v.Valor, pm => 
                 {
-                    pm.Access(Accessor.Property);
                     pm.Column("valor");
                     pm.NotNullable(true);
                 });
@@ -42,6 +42,7 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
 
             Property(x => x.Liquidado, m =>
             {
+                m.Access(Accessor.NoSetter);
                 m.Column("liquidado"); 
                 m.NotNullable(true);
             });
@@ -53,7 +54,8 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
             });
             
             Property(x => x.Descricao, m => 
-            { 
+            {
+                m.Access(Accessor.NoSetter);
                 m.Column("descricao"); 
                 m.Length(200); 
                 m.NotNullable(false); 
@@ -61,13 +63,14 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
             
             Property(x => x.DataVencimento, m => 
             {
+                m.Access(Accessor.NoSetter);
                 m.Column("data_vencimento"); 
                 m.NotNullable(true);
             });
             
             Property(x => x.Tipo, m => 
             {
-                m.Access(Accessor.Property);
+                m.Access(Accessor.NoSetter);
                 m.Column("tipo");
                 m.NotNullable(true);
                 m.Type<EnumGeneric<EnumTipoTransacao>>();

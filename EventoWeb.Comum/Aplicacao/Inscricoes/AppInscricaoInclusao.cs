@@ -51,7 +51,8 @@ public class AppInscricaoInclusao(
             InstituicoesEspiritasFrequenta = DtoInscricao!.InstituicoesEspiritasFrequenta,
             DormeEvento = DtoInscricao!.DormeEvento,
             NomeCracha = DtoInscricao!.NomeCracha,
-            Observacoes = DtoInscricao!.Observacoes
+            Observacoes = DtoInscricao!.Observacoes,
+            Tipo = DtoInscricao!.TipoParticipante
         };
 
         return inscricao;

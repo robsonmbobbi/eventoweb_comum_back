@@ -52,7 +52,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                 integrador.FormaPagamento.Tipo,
                 integrador.FormaPagamento.NrParcelasMinima,
                 numeroParcelas,
-                $"Pagamento inscrições {pedido.Inscricoes.First().Evento.Nome}. Pedido: {pedido.Id}"
+                $"Pagamento inscrições {pedido.Inscricoes.First().Evento.Nome.Nome}. Pedido: {pedido.Id}"
             );
 
             var paymentResponse = await asaasApi.Payment.Create(paymentRequest);

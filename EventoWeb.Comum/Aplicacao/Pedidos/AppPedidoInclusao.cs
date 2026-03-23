@@ -75,7 +75,7 @@ public class AppPedidoInclusao : AppBase
                 m_IntegracoesExternas,
                 m_Integracoes,
                 m_RegistrosIntegracao,
-                new SrvNotificacaoInscricaoRecebida(m_ModelosNotificacao, m_Mensagens),
+                new SrvNotificacaoInscricao(m_ModelosNotificacao, m_Mensagens),
                 new SrvNotificacaoPedidoRealizado(m_ModelosNotificacao, m_Mensagens)
             );
             var resultadoIntegracao = servicoPedido.Incluir(pedido, dtoPedido.NumeroParcelas);

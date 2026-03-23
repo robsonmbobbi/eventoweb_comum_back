@@ -5,16 +5,18 @@ using System.Text.Json;
 
 namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes
 {
-    public class SrvNotificacaoInscricaoRecebida (IModelosMensagemNotificacao modelosNotificacao, IPersistencia<MensagemNotificacao> mensagens)
+    public enum EnumTipoNotificacaoInscricao { InscricaoRecebida, InscricaoAceita, InscricaoRejeitada }
+
+    public class SrvNotificacaoInscricao(IModelosMensagemNotificacao modelosNotificacao, IMensagens mensagens)
     {
         private readonly IModelosMensagemNotificacao m_ModelosNotificacao = modelosNotificacao;
-        private readonly IPersistencia<MensagemNotificacao> m_Mensagens = mensagens;
+        private readonly IMensagens m_Mensagens = mensagens;
 
-        public void Notificar(IEnumerable<Inscricao> inscricoes)
+        public void Notificar(IEnumerable<Inscricao> inscricoes, EnumTipoNotificacaoInscricao tipo)
         {
             foreach(var inscricao in inscricoes)
             {
-                var modelos = m_ModelosNotificacao.ListarPorTipo(inscricao.Evento.Id, EnumTipoNotificacao.InscricaoRecebida);
+                var modelos = m_ModelosNotificacao.ListarPorTipo(inscricao.Evento.Id, (EnumTipoNotificacao)(int)tipo);
                 foreach(var modelo in modelos)
                 {
                     var destinatario = "";
@@ -49,7 +51,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes
                     inscricao.Pessoa.EhDiabetico,
                     inscricao.Pessoa.AlergiaAlimentos,
                     inscricao.Pessoa.UsaAdocanteDiariamente,
-                    Evento = inscricao.Evento.Nome,
+                    Evento = inscricao.Evento.Nome.Nome,
                     inscricao.NomeCracha,
                     inscricao.DormeEvento,
                     inscricao.Observacoes,

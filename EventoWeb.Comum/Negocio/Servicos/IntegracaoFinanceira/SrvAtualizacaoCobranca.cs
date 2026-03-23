@@ -1,6 +1,7 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.Repositorios;
+using EventoWeb.Comum.Negocio.Servicos.Notificacoes.RegistrosIntegracao;
 
 namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
 {
@@ -8,16 +9,19 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
     {
         private readonly IPersistencia<Conta> m_Contas;
         private readonly IRegistrosIntegracoesFinanceiras m_RegistrosIntegracao;
+        private readonly SrvNotificacaoCobrancaRecebida m_SrvNotificacaoCobrancaRecebida;
         private readonly IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> m_IntegracoesExternas;
 
         public SrvAtualizacaoCobranca(
             IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, 
             IRegistrosIntegracoesFinanceiras registrosIntegracao, 
-            IPersistencia<Conta> contas)
+            IPersistencia<Conta> contas,
+            SrvNotificacaoCobrancaRecebida srvNotificacaoCobrancaRecebida)
         {
             m_IntegracoesExternas = integracoesExternas;
             m_Contas = contas;
             m_RegistrosIntegracao = registrosIntegracao;
+            m_SrvNotificacaoCobrancaRecebida = srvNotificacaoCobrancaRecebida;
         }
 
 
@@ -45,6 +49,8 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
 
                     registro.Concluir(transacao!.Transacao!);
                     m_RegistrosIntegracao.Atualizar(registro);
+
+                    m_SrvNotificacaoCobrancaRecebida.Notificar(registro, 1); // Todo: melhorar a questão do evento
 
                     break;
                 case EnumStatusTransacao.Cancelada:

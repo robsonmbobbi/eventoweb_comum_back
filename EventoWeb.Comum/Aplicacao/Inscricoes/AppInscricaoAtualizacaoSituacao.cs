@@ -1,10 +1,11 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
+using EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes;
 
 namespace EventoWeb.Comum.Aplicacao.Inscricoes;
 
-public class AppInscricaoAtualizacaoSituacao(IContexto contexto, IInscricoes inscricoes)
+public class AppInscricaoAtualizacaoSituacao(IContexto contexto, IInscricoes inscricoes, SrvNotificacaoInscricao notificacao)
     : AppInscricaoBase(contexto, inscricoes)
 {
     public void Aceitar(int idInscricao)
@@ -15,7 +16,9 @@ public class AppInscricaoAtualizacaoSituacao(IContexto contexto, IInscricoes ins
 
             inscricao.Aceitar();
             
-             Inscricoes.Atualizar(inscricao);
+            Inscricoes.Atualizar(inscricao);
+
+            notificacao.Notificar([inscricao], EnumTipoNotificacaoInscricao.InscricaoAceita);
         });
     }
 
@@ -28,6 +31,8 @@ public class AppInscricaoAtualizacaoSituacao(IContexto contexto, IInscricoes ins
             inscricao.Rejeitar();
 
             Inscricoes.Atualizar(inscricao);
+
+            notificacao.Notificar([inscricao], EnumTipoNotificacaoInscricao.InscricaoRejeitada);
         });
     }
 }

@@ -48,6 +48,7 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes,
         AtualizarPessoa(participante.Pessoa);
         AtualizarComum(participante);
         participante.InstituicoesEspiritasFrequenta = DtoInscricao!.InstituicoesEspiritasFrequenta;
+        participante.Tipo = DtoInscricao!.TipoParticipante;
     }
 
     private void AtualizarInscricaoInfantil(InscricaoInfantil infantil)

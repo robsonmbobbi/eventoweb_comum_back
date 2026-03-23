@@ -31,7 +31,7 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
             {
                 m.Column("id_transacao");
                 m.NotNullable(false);
-                m.Cascade(Cascade.None);
+                m.Cascade(Cascade.All);                
             });
 
             Property(x => x.Data, m =>

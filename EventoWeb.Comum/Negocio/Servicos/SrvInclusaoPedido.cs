@@ -14,7 +14,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
         private readonly IIntegracaoFinanceiraPorFormasPagamentos m_Integracoes;
         private readonly IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> m_IntegracoesExternas;
         private readonly IPersistencia<RegistroIntegracaoFinanceira> m_RegistrosIntegracao;
-        private readonly SrvNotificacaoInscricaoRecebida m_SrvNotificacaoInscricoes;
+        private readonly SrvNotificacaoInscricao m_SrvNotificacaoInscricoes;
         private readonly SrvNotificacaoPedidoRealizado m_SrvNotificacaoPedidoRealizado;
 
         public SrvInclusaoPedido(
@@ -23,7 +23,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
             IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas,
             IIntegracaoFinanceiraPorFormasPagamentos integracoes,
             IPersistencia<RegistroIntegracaoFinanceira> registrosIntegracao,
-            SrvNotificacaoInscricaoRecebida srvNotificacaoInscricoes,
+            SrvNotificacaoInscricao srvNotificacaoInscricoes,
             SrvNotificacaoPedidoRealizado srvNotificacaoPedidoRealizado)
         {
             m_Inscricoes = inscricoes;
@@ -58,7 +58,7 @@ namespace EventoWeb.Comum.Negocio.Servicos
                 retornoIntegracao = servico.Criar(pedido, numeroParcelas);
             }
 
-            m_SrvNotificacaoInscricoes.Notificar(pedido.Inscricoes);
+            m_SrvNotificacaoInscricoes.Notificar(pedido.Inscricoes, EnumTipoNotificacaoInscricao.InscricaoRecebida);
             m_SrvNotificacaoPedidoRealizado.Notificar(pedido, retornoIntegracao);
 
             return retornoIntegracao;
