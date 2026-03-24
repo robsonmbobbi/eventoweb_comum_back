@@ -29,8 +29,8 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
             {
                 IdTransacao = payment.Id,
                 Status = payment.Status switch { 
-                    AsaasClient.Models.Payment.Enums.PaymentStatus.RECEIVED => EnumStatusTransacao.Recebida,
-                    AsaasClient.Models.Payment.Enums.PaymentStatus.OVERDUE => EnumStatusTransacao.Cancelada,
+                    PaymentStatus.RECEIVED => EnumStatusTransacao.Recebida,
+                    PaymentStatus.OVERDUE => EnumStatusTransacao.Cancelada,
                     _ => EnumStatusTransacao.Pendente
                 },
                 TipoTransacao = payment.BillingType switch { 

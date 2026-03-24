@@ -83,7 +83,6 @@ public class RegistroIntegracaoFinanceira : Entidade
 
     public virtual void AdicionarLog(EnumTipoLog tipo, string mensagem, string? dados = null)
     {
-        ValidarSeConcluidoAbortado();
         m_Logs.Add(new RegistroIntegracaoLog(this, mensagem, tipo, dados));
     }
 }
