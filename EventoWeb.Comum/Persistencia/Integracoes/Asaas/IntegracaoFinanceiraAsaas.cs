@@ -1,9 +1,9 @@
 ﻿using AsaasClient;
 using AsaasClient.Core;
-using AsaasClient.Models.Common;
 using AsaasClient.Models.Common.Enums;
 using AsaasClient.Models.Customer;
 using AsaasClient.Models.Payment;
+using AsaasClient.Models.Payment.Enums;
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
@@ -25,7 +25,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                 throw paymentResponse.TratarErros();
 
             var payment = paymentResponse.Data;
-            return new DadosRetornoIntegracaoExterna
+            var retorno = new DadosRetornoIntegracaoExterna
             {
                 IdTransacao = payment.Id,
                 Status = payment.Status switch { 
@@ -37,8 +37,22 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                     BillingType.PIX => EnumTipoPagamento.PIX,
                     BillingType.CREDIT_CARD => EnumTipoPagamento.CartaoCredito,
                     _ => throw new Exception("Tipo de pagamento não suportado: " + payment.BillingType)
-                }
+                },
+                Valor = payment.Value,
             };
+
+            switch (payment.BillingType)
+            {
+                case BillingType.PIX:
+                    if (payment.Status == PaymentStatus.PENDING)
+                        await AdicionarDadosPix(asaasApi, payment.Id, retorno);
+                    break;
+                case BillingType.CREDIT_CARD:
+                    retorno.LinkPagamento = payment.InvoiceUrl;
+                    break;
+            }
+
+            return retorno;
         }
 
         public async Task<DadosRetornoIntegracaoExterna> CriarCobranca(IntegracaoFinanceiraPorFormaPag integrador, Pedido pedido, int? numeroParcelas)
