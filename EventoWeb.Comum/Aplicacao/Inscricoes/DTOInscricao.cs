@@ -1,5 +1,4 @@
 using EventoWeb.Comum.Negocio.Entidades;
-using EventoWeb.Comum.Negocio.Entidades.Atividades;
 
 namespace EventoWeb.Comum.Aplicacao.Inscricoes;
 

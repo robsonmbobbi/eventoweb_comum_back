@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventoWeb.Comum.Negocio.Entidades.Atividades
+namespace EventoWeb.Comum.Negocio.Entidades
 {
     public enum EnumTipoInscricao
     {

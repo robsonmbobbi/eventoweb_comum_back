@@ -1,5 +1,4 @@
 using EventoWeb.Comum.Negocio.Entidades;
-using EventoWeb.Comum.Negocio.Entidades.Atividades;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 
