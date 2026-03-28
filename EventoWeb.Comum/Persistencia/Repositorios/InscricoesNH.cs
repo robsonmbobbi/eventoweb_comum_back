@@ -17,12 +17,22 @@ public class InscricoesNH(ISession sessao) : PersistenciaNH<Inscricao>(sessao), 
     public Inscricao? ObterPorCPF(int idEvento, string cpf)
     {
         cpf = new String(cpf.Where(char.IsDigit)?.ToArray());
-        
+
         return Sessao
             .QueryOver<Inscricao>()
             .Where(inscricao => inscricao.Evento.Id == idEvento)
             .JoinQueryOver(inscricao => inscricao.Pessoa)
             .Where(pessoa => pessoa.CPF.Numero == cpf)
             .SingleOrDefault();
+    }
+
+    public IList<Inscricao> ListarTodasInscricoesAceitasComPessoasDormemEvento(int id)
+    {
+        return Sessao
+            .QueryOver<Inscricao>()
+            .Where(inscricao => inscricao.Evento.Id == id && 
+                                inscricao.Situacao == EnumSituacaoInscricao.Aceita &&
+                                inscricao.DormeEvento == true)
+            .List();
     }
 }
