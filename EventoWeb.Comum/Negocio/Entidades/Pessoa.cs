@@ -11,6 +11,9 @@ namespace EventoWeb.Comum.Negocio.Entidades
         private EMail m_EMail;
         private Telefone m_CelularWP;
         private NomeCompleto m_Nome;
+        private UF? m_UF;
+        private Cidade? m_Cidade;
+        private AlergiaAlimentar? m_AlergiaAlimentos;
 
         public Pessoa(CPF cpf, NomeCompleto nome, EMail email, Telefone celularWP)
         {
@@ -57,9 +60,22 @@ namespace EventoWeb.Comum.Negocio.Entidades
 
         public virtual Boolean UsaAdocanteDiariamente { get; set; }
 
-        public virtual String? AlergiaAlimentos { get; set; }  
-        
-        public virtual String? UF { get; set; }
-        public virtual String? Cidade { get; set; }
+        public virtual AlergiaAlimentar? AlergiaAlimentos
+        {
+            get => m_AlergiaAlimentos;
+            set => m_AlergiaAlimentos = value;
+        }
+
+        public virtual UF? UF
+        {
+            get => m_UF;
+            set => m_UF = value;
+        }
+
+        public virtual Cidade? Cidade
+        {
+            get => m_Cidade;
+            set => m_Cidade = value;
+        }
     }
 }

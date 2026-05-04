@@ -11,15 +11,15 @@ public static class Conversao
             Nome = pessoa.Nome.Nome,
             DataNascimento = pessoa.DataNascimento?.Data,
             CPF = pessoa.CPF.Numero,
-            AlergiaAlimentos = pessoa.AlergiaAlimentos,
+            AlergiaAlimentos = pessoa.AlergiaAlimentos?.Descricao,
             Celular = pessoa.CelularWP.Numero,
             EhDiabetico = pessoa.EhDiabetico,
             EhVegetariano = pessoa.EhVegetariano,
             Email = pessoa.Email.Endereco,
             Sexo = pessoa.Sexo ?? EnumSexo.Feminino,
             UsaAdocanteDiariamente = pessoa.UsaAdocanteDiariamente,
-            Cidade = pessoa.Cidade,
-            UF = pessoa.UF
+            Cidade = pessoa.Cidade?.Nome,
+            UF = pessoa.UF?.Sigla
         };
     }
 

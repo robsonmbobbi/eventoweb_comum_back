@@ -125,12 +125,18 @@ public class AppInscricaoInclusao(
 
         pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
         pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento!.Value);
-        pessoa.AlergiaAlimentos = DtoInscricao.Pessoa.AlergiaAlimentos;
+        pessoa.AlergiaAlimentos = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.AlergiaAlimentos) 
+            ? null 
+            : new AlergiaAlimentar(DtoInscricao.Pessoa.AlergiaAlimentos);
         pessoa.EhDiabetico = DtoInscricao.Pessoa.EhDiabetico;
         pessoa.EhVegetariano = DtoInscricao.Pessoa.EhVegetariano;
         pessoa.UsaAdocanteDiariamente = DtoInscricao.Pessoa.UsaAdocanteDiariamente;
-        pessoa.Cidade = DtoInscricao.Pessoa.Cidade;
-        pessoa.UF = DtoInscricao.Pessoa.UF;
+        pessoa.Cidade = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.Cidade) 
+            ? null 
+            : new Cidade(DtoInscricao.Pessoa.Cidade);
+        pessoa.UF = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.UF) 
+            ? null 
+            : new UF(DtoInscricao.Pessoa.UF);
 
         if (ehInclusao)
         {

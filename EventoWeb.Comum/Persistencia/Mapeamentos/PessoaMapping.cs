@@ -66,14 +66,19 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                     m.NotNullable(true);
                 });
             });
-            
-            this.Property(x => x.AlergiaAlimentos, m =>
+
+            this.Component(x => x.AlergiaAlimentos, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("alergia_alimentos");
-                m.Length(100);
-                m.NotNullable(false);
+                c.Access(Accessor.Property);
+                c.Property(y => y.Descricao, m =>
+                {
+                    m.Access(Accessor.NoSetter);
+                    m.Column("alergia_alimentos");
+                    m.Length(100);
+                    m.NotNullable(false);
+                });
             });
+
             this.Component(x => x.DataNascimento, c =>
             {
                 c.Access(Accessor.NoSetter);
@@ -81,6 +86,30 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 {
                     m.Access(Accessor.NoSetter);
                     m.Column("data_nascimento");
+                    m.NotNullable(false);
+                });
+            });
+
+            this.Component(x => x.UF, c =>
+            {
+                c.Access(Accessor.Property);
+                c.Property(y => y.Sigla, m =>
+                {
+                    m.Access(Accessor.NoSetter);
+                    m.Column("uf");
+                    m.Length(2);
+                    m.NotNullable(false);
+                });
+            });
+
+            this.Component(x => x.Cidade, c =>
+            {
+                c.Access(Accessor.Property);
+                c.Property(y => y.Nome, m =>
+                {
+                    m.Access(Accessor.NoSetter);
+                    m.Column("cidade");
+                    m.Length(300);
                     m.NotNullable(false);
                 });
             });
@@ -96,7 +125,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Column("eh_vegetariano");
                 m.NotNullable(true);
             });
-            
+
             this.Property(x => x.Sexo, m =>
             {
                 m.Access(Accessor.Property);
@@ -109,21 +138,6 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Access(Accessor.Property);
                 m.Column("usa_adocante_diar");
                 m.NotNullable(false);
-            });
-
-            this.Property(x => x.UF, m =>
-            {
-                m.Access(Accessor.Property);
-                m.Column("uf");
-                m.NotNullable(false);
-            });
-
-            this.Property(x => x.Cidade, m =>
-            {
-                m.Access(Accessor.Property);
-                m.Column("cidade");
-                m.NotNullable(false);
-                m.Length(300);
             });
         }
     }

@@ -67,14 +67,16 @@ namespace EventoWeb.Comum.Testes.Negocio
         }
 
         [Fact]
-        public void CriarPessoaComDataNascimentoNula()
+        public void CriarPessoaComDataNascimentoNula_EhValida()
         {
-            Assert.Throws<ArgumentNullException>(() => new Pessoa(
+            var pessoa = new Pessoa(
                 new CPF("05506427654"),
                 new ("Nome da Pessoa"),
                 new EMail("joao@uol.com.br"),
                 new Telefone("37991925134")
-            ));
+            );
+
+            Assert.Null(pessoa.DataNascimento);
         }
 
         [Fact]
@@ -95,6 +97,93 @@ namespace EventoWeb.Comum.Testes.Negocio
             );
 
             Assert.NotEqual(pessoa1, pessoa2);
+        }
+
+        [Fact]
+        public void AtribuirUFValida_DeveFuncionar()
+        {
+            var pessoa = new Pessoa(
+                new CPF("05506427654"),
+                new ("Nome da Pessoa"),
+                new EMail("joao@uol.com.br"),
+                new Telefone("37991925134")
+            );
+
+            pessoa.UF = new UF("SP");
+            Assert.NotNull(pessoa.UF);
+            Assert.Equal("SP", pessoa.UF.Sigla);
+        }
+
+        [Fact]
+        public void AtribuirCidadeValida_DeveFuncionar()
+        {
+            var pessoa = new Pessoa(
+                new CPF("05506427654"),
+                new ("Nome da Pessoa"),
+                new EMail("joao@uol.com.br"),
+                new Telefone("37991925134")
+            );
+
+            pessoa.Cidade = new Cidade("São Paulo");
+            Assert.NotNull(pessoa.Cidade);
+            Assert.Equal("São Paulo", pessoa.Cidade.Nome);
+        }
+
+        [Fact]
+        public void AtribuirAlergiaAlimentarValida_DeveFuncionar()
+        {
+            var pessoa = new Pessoa(
+                new CPF("05506427654"),
+                new ("Nome da Pessoa"),
+                new EMail("joao@uol.com.br"),
+                new Telefone("37991925134")
+            );
+
+            pessoa.AlergiaAlimentos = new AlergiaAlimentar("Amendoim");
+            Assert.NotNull(pessoa.AlergiaAlimentos);
+            Assert.Equal("Amendoim", pessoa.AlergiaAlimentos.Descricao);
+        }
+
+        [Fact]
+        public void UFNulaEhValida()
+        {
+            var pessoa = new Pessoa(
+                new CPF("05506427654"),
+                new ("Nome da Pessoa"),
+                new EMail("joao@uol.com.br"),
+                new Telefone("37991925134")
+            );
+
+            pessoa.UF = null;
+            Assert.Null(pessoa.UF);
+        }
+
+        [Fact]
+        public void CidadeNulaEhValida()
+        {
+            var pessoa = new Pessoa(
+                new CPF("05506427654"),
+                new ("Nome da Pessoa"),
+                new EMail("joao@uol.com.br"),
+                new Telefone("37991925134")
+            );
+
+            pessoa.Cidade = null;
+            Assert.Null(pessoa.Cidade);
+        }
+
+        [Fact]
+        public void AlergiaAlimentarNulaEhValida()
+        {
+            var pessoa = new Pessoa(
+                new CPF("05506427654"),
+                new ("Nome da Pessoa"),
+                new EMail("joao@uol.com.br"),
+                new Telefone("37991925134")
+            );
+
+            pessoa.AlergiaAlimentos = null;
+            Assert.Null(pessoa.AlergiaAlimentos);
         }
     }
 }

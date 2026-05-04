@@ -78,11 +78,15 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes,
         pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento!.Value);
         pessoa.Email = new EMail(DtoInscricao.Pessoa.Email);
         pessoa.CelularWP = new Telefone(DtoInscricao.Pessoa.Celular);
-        pessoa.Cidade = DtoInscricao.Pessoa.Cidade;
-        pessoa.UF = DtoInscricao.Pessoa.UF;
+        pessoa.Cidade = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.Cidade) 
+            ? null 
+            : new Cidade(DtoInscricao.Pessoa.Cidade);
+        pessoa.UF = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.UF) 
+            ? null 
+            : new UF(DtoInscricao.Pessoa.UF);
 
         pessoas.Atualizar(pessoa);
-    }    
+    }
     
     private void AtualizarComum(Inscricao inscricao)
     {
