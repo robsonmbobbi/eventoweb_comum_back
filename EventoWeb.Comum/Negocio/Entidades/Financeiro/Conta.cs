@@ -5,7 +5,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
     public class Conta : Entidade
     {
         private ValorMonetario m_Valor;
-        private string? m_Descricao;
+        private StringClob? m_Descricao;
         private DateTime m_DataVencimento;
         private bool m_Liquidado;
         private IList<TransacaoConta> m_Transacoes;
@@ -54,7 +54,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 
         public virtual DateTime DataCriado { get; protected set; }
 
-        public virtual string? Descricao
+        public virtual StringClob? Descricao
         {
             get => m_Descricao;
             set

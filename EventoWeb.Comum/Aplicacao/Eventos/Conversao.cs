@@ -16,8 +16,8 @@ public static class Conversao
             IdadeMinimaAdulto = evento.IdadeMinimaInscricaoAdulto,
             Logotipo = evento.Logotipo == null ? null : Convert.ToBase64String(evento.Logotipo.Arquivo),
             Nome = evento.Nome.Nome,
-            Regulamento = evento.Regulamento
+            Regulamento = evento.Regulamento?.Valor
         };
     }
-    
+
 }

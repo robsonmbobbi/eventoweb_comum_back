@@ -48,10 +48,10 @@ public class AppInscricaoInclusao(
             pessoa,
             DateTime.Now)
         {
-            InstituicoesEspiritasFrequenta = DtoInscricao!.InstituicoesEspiritasFrequenta,
+            InstituicoesEspiritasFrequenta = DtoInscricao!.InstituicoesEspiritasFrequenta != null ? new String300(DtoInscricao.InstituicoesEspiritasFrequenta) : null,
             DormeEvento = DtoInscricao!.DormeEvento,
-            NomeCracha = DtoInscricao!.NomeCracha,
-            Observacoes = DtoInscricao!.Observacoes,
+            NomeCracha = DtoInscricao!.NomeCracha != null ? new NomeCompleto(DtoInscricao.NomeCracha) : null,
+            Observacoes = DtoInscricao!.Observacoes != null ? new StringClob(DtoInscricao.Observacoes) : null,
             Tipo = DtoInscricao!.TipoParticipante
         };
 
@@ -86,8 +86,8 @@ public class AppInscricaoInclusao(
             DateTime.Now,
             DtoInscricao!.DormeEvento)
         {
-            NomeCracha = DtoInscricao!.NomeCracha,
-            Observacoes = DtoInscricao!.Observacoes
+            NomeCracha = DtoInscricao!.NomeCracha != null ? new NomeCompleto(DtoInscricao.NomeCracha) : null,
+            Observacoes = DtoInscricao!.Observacoes != null ? new StringClob(DtoInscricao.Observacoes) : null
         };
 
         return inscricao;
@@ -106,7 +106,7 @@ public class AppInscricaoInclusao(
         if (pessoa == null)
         {
             ehInclusao = true;
-            
+
             pessoa = new Pessoa(
                 new CPF(DtoInscricao.Pessoa.CPF),
                 new NomeCompleto(DtoInscricao.Pessoa.Nome),
@@ -149,4 +149,5 @@ public class AppInscricaoInclusao(
 
         return pessoa;
     }
+
 }

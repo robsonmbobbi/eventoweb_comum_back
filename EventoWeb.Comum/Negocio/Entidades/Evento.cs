@@ -8,6 +8,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
         private DateTime m_DataRegistro;
         private Periodo m_PeriodoInscricaoOnLine;
         private Periodo m_PeriodoRealizacaoEvento;
+        private StringClob? m_Regulamento;
 
         protected Evento()
         {
@@ -46,6 +47,11 @@ namespace EventoWeb.Comum.Negocio.Entidades
 
         public virtual ArquivoBinario? Logotipo { get; set; }
         public virtual int IdadeMinimaInscricaoAdulto { get; set; }
-        public virtual String? Regulamento { get; set; }
+
+        public virtual StringClob? Regulamento
+        {
+            get => m_Regulamento;
+            set => m_Regulamento = value;
+        }
     }
 }

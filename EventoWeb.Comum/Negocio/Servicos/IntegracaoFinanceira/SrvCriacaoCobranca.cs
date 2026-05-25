@@ -1,6 +1,7 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 
 namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
@@ -41,8 +42,8 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
                 pedido.Conta,
                 pedido.Valor,
                 pedido.FormaPagamento!.Tipo,
-                retorno.IdTransacao,
-                pedido.FormaPagamento!.Tipo == EnumTipoPagamento.CartaoCredito ? numeroParcelas : null
+                new String1000(retorno.IdTransacao),
+                pedido.FormaPagamento!.Tipo == EnumTipoPagamento.CartaoCredito ? new InteiroPositivo(numeroParcelas ?? 1) : null
             );
 
             if (retorno.Status == EnumStatusTransacao.Recebida)

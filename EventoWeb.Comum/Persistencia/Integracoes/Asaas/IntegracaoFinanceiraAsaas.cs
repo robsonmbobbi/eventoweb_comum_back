@@ -64,7 +64,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                 customer.Id,
                 pedido.Valor.Valor,
                 integrador.FormaPagamento.Tipo,
-                integrador.FormaPagamento.NrParcelasMinima,
+                integrador.FormaPagamento.Parcelas?.Minimo ?? 1,
                 numeroParcelas,
                 $"Pagamento inscrições {pedido.Inscricoes.First().Evento.Nome.Nome}. Pedido: {pedido.Id}"
             );
@@ -85,7 +85,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                 customer.Id,
                 valor,
                 tipoPagamento,
-                integrador.FormaPagamento.NrParcelasMinima,
+                integrador.FormaPagamento.Parcelas?.Minimo ?? 1,
                 numeroParcelas,
                 $"Pagamento - Conta ID: {conta.Id}"
             );
@@ -102,7 +102,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
         /// </summary>
         private AsaasApi CriarAsaasApi(IntegradorFinanceiro integrador)
         {
-            return new AsaasApi(new(integrador.TokenAcesso, _appName, _environment));
+            return new AsaasApi(new(integrador.TokenAcesso?.Valor, _appName, _environment));
         }
 
         /// <summary>

@@ -8,8 +8,9 @@ public enum EnumTipoPedido { Debito, Desconto, Isencao }
 public class Pedido : Entidade
 {
     private IList<Inscricao> m_Inscricoes;
+    private StringClob? m_Motivo;
 
-    public Pedido(Pessoa pagador, IEnumerable<Inscricao> inscricoes, ValorMonetario valor, EnumTipoPedido tipo, FormaPagamento? forma, string? motivo)
+    public Pedido(Pessoa pagador, IEnumerable<Inscricao> inscricoes, ValorMonetario valor, EnumTipoPedido tipo, FormaPagamento? forma, StringClob? motivo)
     {
         if (!inscricoes.Any())
             throw new Exception($"{nameof(inscricoes)} não pode ser vazio.");
@@ -27,7 +28,7 @@ public class Pedido : Entidade
         FormaPagamento = forma;
 
         Conta = new Conta(pagador, EnumTipoTransacao.Receita, valor, DateTime.Now);
-        Motivo = motivo;
+        m_Motivo = motivo;
     }
 
     protected Pedido()
@@ -40,5 +41,10 @@ public class Pedido : Entidade
     public virtual FormaPagamento? FormaPagamento { get; protected set; }
     public virtual Conta Conta { get; protected set; }
     public virtual Pessoa Pagador { get; protected set; }
-    public virtual string? Motivo { get; protected set; }
+
+    public virtual StringClob? Motivo
+    {
+        get => m_Motivo;
+        protected set => m_Motivo = value;
+    }
 }

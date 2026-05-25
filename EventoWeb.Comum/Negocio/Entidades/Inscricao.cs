@@ -1,10 +1,15 @@
-﻿namespace EventoWeb.Comum.Negocio.Entidades
+﻿using EventoWeb.Comum.Negocio.ObjetosValor;
+
+namespace EventoWeb.Comum.Negocio.Entidades
 {    
     public enum EnumSituacaoInscricao { Limbo, Pendente, Aceita, Rejeitada }
 
     public abstract class Inscricao: Entidade
     {
         private EnumSituacaoInscricao m_Situacao;
+        private NomeCompleto? m_NomeCracha;
+        private StringClob? m_Observacoes;
+
         public Inscricao(Evento evento, Pessoa pessoa, DateTime dataRecebimento)
         {
             Pessoa = pessoa ?? throw new ArgumentNullException(nameof(pessoa));
@@ -30,9 +35,18 @@
         public virtual bool ConfirmadoNoEvento { get; set; }
 
         public virtual EnumSituacaoInscricao Situacao => m_Situacao; 
-        
-        public virtual String? NomeCracha { get; set; }
-        public virtual string? Observacoes { get; set; }  
+
+        public virtual NomeCompleto? NomeCracha
+        {
+            get => m_NomeCracha;
+            set => m_NomeCracha = value;
+        }
+
+        public virtual StringClob? Observacoes
+        {
+            get => m_Observacoes;
+            set => m_Observacoes = value;
+        }
 
         public abstract Boolean EhValidaIdade(int idade);
 

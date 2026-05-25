@@ -6,8 +6,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 public class RegistroIntegracaoFinanceira : Entidade
 {
     private IList<RegistroIntegracaoLog> m_Logs = [];
+    private String1000? m_IdentificacaoNoIntegrador;
+    private InteiroPositivo? m_NumeroParcelas;
 
-    public RegistroIntegracaoFinanceira(IntegradorFinanceiro integrador, Conta conta, ValorMonetario valor, EnumTipoPagamento tipo, string identificacaoNoIntegrador, int? numeroParcelas = null)
+    public RegistroIntegracaoFinanceira(IntegradorFinanceiro integrador, Conta conta, ValorMonetario valor, EnumTipoPagamento tipo, String1000 identificacaoNoIntegrador, InteiroPositivo? numeroParcelas = null)
     {
         Integrador = integrador ??  throw new ArgumentNullException(nameof(integrador));
         Conta = conta ??  throw new ArgumentNullException(nameof(conta));
@@ -18,9 +20,9 @@ public class RegistroIntegracaoFinanceira : Entidade
         DataRegistro = DateTime.Now;
         NumeroParcelas = numeroParcelas;
     }
-    
+
     protected RegistroIntegracaoFinanceira(){}
-    
+
     public virtual IntegradorFinanceiro Integrador { get; protected set; }
 
     public virtual Conta Conta { get; protected set; }
@@ -33,17 +35,25 @@ public class RegistroIntegracaoFinanceira : Entidade
 
     public virtual EnumSituacaoIntegracao Situacao { get; protected set;}
 
-    public virtual int? NumeroParcelas { get; protected set; }
+    public virtual InteiroPositivo? NumeroParcelas
+    {
+        get => m_NumeroParcelas;
+        protected set => m_NumeroParcelas = value;
+    }
 
     public virtual DateTime? DataConcluidoAbortado { get; protected set; }
 
-    public virtual string IdentificacaoNoIntegrador { get; protected set; }
+    public virtual String1000? IdentificacaoNoIntegrador
+    {
+        get => m_IdentificacaoNoIntegrador;
+        protected set => m_IdentificacaoNoIntegrador = value;
+    }
 
     public virtual Transacao Transacao { get; protected set; }
 
     public virtual IEnumerable<RegistroIntegracaoLog> Logs => m_Logs;
 
-   
+
     public virtual void Concluir(Transacao transacao)
     {
         ValidarSeConcluidoAbortado();
@@ -58,7 +68,7 @@ public class RegistroIntegracaoFinanceira : Entidade
     public virtual void NotificarErro(string descricaoErro, string? dados = null)
     {
         ValidarSeConcluidoAbortado();
-        
+
         Situacao = EnumSituacaoIntegracao.Erro;
         AdicionarLog(EnumTipoLog.Erro, descricaoErro, dados);
     }
@@ -71,7 +81,7 @@ public class RegistroIntegracaoFinanceira : Entidade
         Situacao = EnumSituacaoIntegracao.Abortado;
         AdicionarLog(EnumTipoLog.Info, descricaoMotivo, dados);
     }
-    
+
     private void ValidarSeConcluidoAbortado()
     {
         if (Situacao == EnumSituacaoIntegracao.Concluido)
@@ -83,6 +93,8 @@ public class RegistroIntegracaoFinanceira : Entidade
 
     public virtual void AdicionarLog(EnumTipoLog tipo, string mensagem, string? dados = null)
     {
-        m_Logs.Add(new RegistroIntegracaoLog(this, mensagem, tipo, dados));
+        var msg = new String500(mensagem);
+        var d = dados != null ? new String4000(dados) : null;
+        m_Logs.Add(new RegistroIntegracaoLog(this, msg, tipo, d));
     }
 }

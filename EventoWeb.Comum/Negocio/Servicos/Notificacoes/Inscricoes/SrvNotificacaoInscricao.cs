@@ -1,5 +1,6 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 using System.Text.Json;
 
@@ -29,7 +30,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes
                         destinatario = inscricao.Pessoa.CelularWP.Numero;
                     }
 
-                    var mensagem = new MensagemNotificacao(modelo, destinatario, GerarVariaveis(inscricao));
+                    var mensagem = new MensagemNotificacao(modelo, new String500(destinatario), new StringClob(GerarVariaveis(inscricao)));
                     m_Mensagens.Incluir(mensagem);
                 }
             }

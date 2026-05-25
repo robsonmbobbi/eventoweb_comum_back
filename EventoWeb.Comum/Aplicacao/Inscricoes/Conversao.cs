@@ -40,8 +40,8 @@ public static class Conversao
             DormeEvento = inscricao.DormeEvento,
             Id = inscricao.Id,
             IdEvento = inscricao.Evento.Id,
-            NomeCracha = inscricao.NomeCracha,
-            Observacoes = inscricao.Observacoes,
+            NomeCracha = inscricao.NomeCracha?.Nome,
+            Observacoes = inscricao.Observacoes?.Valor,
             Pessoa = inscricao.Pessoa.Converter(),
             Situacao = inscricao.Situacao
         };
@@ -49,7 +49,7 @@ public static class Conversao
         if (inscricao is InscricaoParticipante participante)
         {
             dto.Tipo = EnumTipoInscricao.Adulto;
-            dto.InstituicoesEspiritasFrequenta = participante.InstituicoesEspiritasFrequenta;
+            dto.InstituicoesEspiritasFrequenta = participante.InstituicoesEspiritasFrequenta?.Valor;
             dto.TipoParticipante = participante.Tipo;
         }
         else if (inscricao is InscricaoInfantil infantil)
@@ -62,3 +62,4 @@ public static class Conversao
         return dto;
     }
 }
+

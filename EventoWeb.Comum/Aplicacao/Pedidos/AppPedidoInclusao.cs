@@ -66,7 +66,7 @@ public class AppPedidoInclusao : AppBase
                 new ValorMonetario(dtoPedido.Valor),
                 dtoPedido.Tipo,
                 forma,
-                dtoPedido.Motivo
+                dtoPedido.Motivo == null ? null : new StringClob(dtoPedido.Motivo)
             );
 
             var servicoPedido = new SrvInclusaoPedido(

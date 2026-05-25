@@ -1,5 +1,6 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -20,7 +21,7 @@ public class FormaPagamentoMapping : ClassMapping<FormaPagamento>
                 g.Params(new { sequence = "gen_forma_pagamento" });
             });
         }); 
-        
+
         this.Component(x => x.Nome, c =>
         {
             c.Access(Accessor.NoSetter);
@@ -41,18 +42,21 @@ public class FormaPagamentoMapping : ClassMapping<FormaPagamento>
             m.Type<EnumGeneric<EnumTipoPagamento>>();
         });
 
-        Property(m => m.NrParcelasMinima, m =>
+        this.Component(x => x.Parcelas, c =>
         {
-            m.Access(Accessor.NoSetter);
-            m.Column("NR_PARCELAS_MINIMA");
-            m.NotNullable(true);
-        });
-
-        Property(m => m.NrParcelasMaxima, m =>
-        {
-            m.Access(Accessor.NoSetter);
-            m.Column("NR_PARCELAS_MAXIMA");
-            m.NotNullable(true);
+            c.Access(Accessor.NoSetter);
+            c.Property(y => y.Minimo, m =>
+            {
+                m.Access(Accessor.NoSetter);
+                m.Column("NR_PARCELAS_MINIMA");
+                m.NotNullable(true);
+            });
+            c.Property(y => y.Maximo, m =>
+            {
+                m.Access(Accessor.NoSetter);
+                m.Column("NR_PARCELAS_MAXIMA");
+                m.NotNullable(true);
+            });
         });
     }
 }

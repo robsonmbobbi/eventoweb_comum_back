@@ -1,6 +1,7 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 using System.Text.Json;
 
@@ -53,18 +54,20 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos
 
                 var mensagem = new MensagemNotificacao(
                     modelo, 
-                    destinatario,
-                    JsonSerializer.Serialize(
-                        new
-                        {
-                            NomeEvento = pedido.Inscricoes.First().Evento.Nome.Nome,
-                            pedido.Valor.Valor,
-                            TipoPedido = tipoPedido,
-                            TipoTransacao = tipoTransacao,
-                            dadosRetorno?.ImagemQRCodePixBase64,
-                            dadosRetorno?.PixCopiaECola,
-                            dadosRetorno?.LinkPagamento,
-                        }
+                    new String500(destinatario),
+                    new StringClob(
+                        JsonSerializer.Serialize(
+                            new
+                            {
+                                NomeEvento = pedido.Inscricoes.First().Evento.Nome.Nome,
+                                pedido.Valor.Valor,
+                                TipoPedido = tipoPedido,
+                                TipoTransacao = tipoTransacao,
+                                dadosRetorno?.ImagemQRCodePixBase64,
+                                dadosRetorno?.PixCopiaECola,
+                                dadosRetorno?.LinkPagamento,
+                            }
+                        )
                     )
                 );
                 m_Mensagens.Incluir(mensagem);

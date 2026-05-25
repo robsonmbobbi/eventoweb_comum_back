@@ -1,6 +1,7 @@
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 using System.Text.Json;
 
@@ -37,20 +38,23 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.RegistrosIntegracao
                         break;
                 }
 
+                var jsonVariaveis = JsonSerializer.Serialize(
+                    new
+                    {
+                        NomeEvento = modelo.Evento.Nome.Nome,
+                        TipoTransacao = tipoTransacao,
+                        registro.Transacao.Valor.Valor,
+                    }
+                );
+
                 var mensagem = new MensagemNotificacao(
                     modelo,
-                    destinatario,
-                    JsonSerializer.Serialize(
-                        new
-                        {
-                            NomeEvento = modelo.Evento.Nome.Nome,
-                            TipoTransacao = tipoTransacao,
-                            registro.Transacao.Valor.Valor,
-                        }
-                    )
+                    new String500(destinatario),
+                    new StringClob(jsonVariaveis)
                 );
                 m_Mensagens.Incluir(mensagem);
             }
         }
     }
 }
+

@@ -15,7 +15,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
             Desconto = desconto ?? new ValorMonetario(0);
 
             if (valorTransacao.Valor > 0)
-                Transacao = new Transacao(conta.Tipo, contaBancaria, data, valorTransacao, $"Referente conta id {conta.Id}");
+            {
+                var descricao = new String500($"Referente conta id {conta.Id}");
+                Transacao = new Transacao(conta.Tipo, contaBancaria, data, valorTransacao, descricao);
+            }
         }
 
         protected TransacaoConta() { }
