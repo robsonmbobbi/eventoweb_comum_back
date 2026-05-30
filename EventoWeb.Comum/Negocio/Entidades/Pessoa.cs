@@ -10,12 +10,12 @@ namespace EventoWeb.Comum.Negocio.Entidades
         private DataAniversario? m_DataNascimento;
         private EMail m_EMail;
         private Telefone m_CelularWP;
-        private NomeCompleto m_Nome;
+        private String200 m_Nome;
         private UF? m_UF;
-        private Cidade? m_Cidade;
-        private AlergiaAlimentar? m_AlergiaAlimentos;
+        private String300? m_Cidade;
+        private String100? m_AlergiaAlimentos;
 
-        public Pessoa(CPF cpf, NomeCompleto nome, EMail email, Telefone celularWP)
+        public Pessoa(CPF cpf, String200 nome, EMail email, Telefone celularWP)
         {
             CPF = cpf;
             Nome = nome;
@@ -37,7 +37,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
             get => m_DataNascimento;
             set => m_DataNascimento = value;
         }        
-        public virtual NomeCompleto Nome
+        public virtual String200 Nome
         {
             get => m_Nome;
             set => m_Nome = value ??
@@ -60,7 +60,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
 
         public virtual Boolean UsaAdocanteDiariamente { get; set; }
 
-        public virtual AlergiaAlimentar? AlergiaAlimentos
+        public virtual String100? AlergiaAlimentos
         {
             get => m_AlergiaAlimentos;
             set => m_AlergiaAlimentos = value;
@@ -72,7 +72,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
             set => m_UF = value;
         }
 
-        public virtual Cidade? Cidade
+        public virtual String300? Cidade
         {
             get => m_Cidade;
             set => m_Cidade = value;

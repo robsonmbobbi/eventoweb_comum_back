@@ -8,17 +8,17 @@ public static class Conversao
     {
         return new DTOPessoa
         {
-            Nome = pessoa.Nome.Nome,
+            Nome = pessoa.Nome.Valor,
             DataNascimento = pessoa.DataNascimento?.Data,
             CPF = pessoa.CPF.Numero,
-            AlergiaAlimentos = pessoa.AlergiaAlimentos?.Descricao,
+            AlergiaAlimentos = pessoa.AlergiaAlimentos?.Valor,
             Celular = pessoa.CelularWP.Numero,
             EhDiabetico = pessoa.EhDiabetico,
             EhVegetariano = pessoa.EhVegetariano,
             Email = pessoa.Email.Endereco,
             Sexo = pessoa.Sexo ?? EnumSexo.Feminino,
             UsaAdocanteDiariamente = pessoa.UsaAdocanteDiariamente,
-            Cidade = pessoa.Cidade?.Nome,
+            Cidade = pessoa.Cidade?.Valor,
             UF = pessoa.UF?.Sigla
         };
     }
@@ -28,7 +28,7 @@ public static class Conversao
         return new DTOResponsavel
         {
             CPF = inscricao.Pessoa.CPF.Numero,
-            Nome = inscricao.Pessoa.Nome.Nome,
+            Nome = inscricao.Pessoa.Nome.Valor,
             IdInscricao = inscricao.Id
         };
     }
@@ -40,8 +40,8 @@ public static class Conversao
             DormeEvento = inscricao.DormeEvento,
             Id = inscricao.Id,
             IdEvento = inscricao.Evento.Id,
-            NomeCracha = inscricao.NomeCracha,
-            Observacoes = inscricao.Observacoes,
+            NomeCracha = inscricao.NomeCracha?.Valor,
+            Observacoes = inscricao.Observacoes?.Valor,
             Pessoa = inscricao.Pessoa.Converter(),
             Situacao = inscricao.Situacao
         };
@@ -49,7 +49,7 @@ public static class Conversao
         if (inscricao is InscricaoParticipante participante)
         {
             dto.Tipo = EnumTipoInscricao.Adulto;
-            dto.InstituicoesEspiritasFrequenta = participante.InstituicoesEspiritasFrequenta;
+            dto.InstituicoesEspiritasFrequenta = participante.InstituicoesEspiritasFrequenta?.Valor;
             dto.TipoParticipante = participante.Tipo;
         }
         else if (inscricao is InscricaoInfantil infantil)
@@ -62,3 +62,4 @@ public static class Conversao
         return dto;
     }
 }
+

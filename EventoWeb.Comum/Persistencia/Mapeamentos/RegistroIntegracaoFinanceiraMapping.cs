@@ -1,5 +1,6 @@
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
+using NHibernate;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -70,11 +71,14 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Type<EnumGeneric<EnumSituacaoIntegracao>>();
             });
 
-            Property(x => x.NumeroParcelas, m =>
+            this.Component(x => x.NumeroParcelas, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("numero_parcelas");
-                m.NotNullable(false);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Column("numero_parcelas");
+                });
             });
 
             Property(x => x.DataConcluidoAbortado, m =>
@@ -83,12 +87,15 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Column("data_concluido_abortado");
             });
 
-            Property(x => x.IdentificacaoNoIntegrador, m =>
+            this.Component(x => x.IdentificacaoNoIntegrador, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("id_no_integrador");
-                m.Length(1000);
-                m.NotNullable(true);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("id_no_integrador");
+                    m.Length(1000);
+                });
             });
 
             ManyToOne(x => x.Transacao, m =>

@@ -1,9 +1,13 @@
-﻿namespace EventoWeb.Comum.Negocio.Entidades
+﻿using EventoWeb.Comum.Negocio.ObjetosValor;
+
+namespace EventoWeb.Comum.Negocio.Entidades
 {
     public enum EnumTipoParticipante { Participante, ParticipanteTrabalhador, Trabalhador }    
 
     public class InscricaoParticipante: Inscricao
     {
+        private String300? m_InstituicoesEspiritasFrequenta;
+
         public InscricaoParticipante(Evento evento, Pessoa pessoa, DateTime dataRecebimento) :
             base(evento, pessoa, dataRecebimento)
         {           
@@ -13,12 +17,16 @@
 
         public virtual EnumTipoParticipante? Tipo { get; set; }
 
-        
-        public virtual string? InstituicoesEspiritasFrequenta { get; set; }      
+
+        public virtual String300? InstituicoesEspiritasFrequenta
+        {
+            get => m_InstituicoesEspiritasFrequenta;
+            set => m_InstituicoesEspiritasFrequenta = value;
+        }
 
         public override bool EhValidaIdade(int idade)
         {
-            return idade >= Evento.IdadeMinimaInscricaoAdulto;
+            return idade >= Evento.IdadeMinimaInscricaoAdulto.Valor;
         }
 
         public override void Aceitar()

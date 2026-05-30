@@ -1,4 +1,5 @@
 using EventoWeb.Comum.Negocio.Entidades;
+using NHibernate;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -40,11 +41,15 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Type<EnumGeneric<EnumTipoPedido>>();
             });
 
-            Property(x => x.Motivo, m =>
+            this.Component(x => x.Motivo, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("motivo");
-                m.NotNullable(false);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Column("regulamento");
+                    m.Type(NHibernateUtil.StringClob);
+                });
             });
 
             ManyToOne(x => x.Pagador, m =>

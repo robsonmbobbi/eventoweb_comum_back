@@ -33,11 +33,16 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
                 m.NotNullable(true);
             });
 
-            Property(x => x.Descricao, m => 
-            { 
-                m.Column("descricao"); 
-                m.Length(200); 
-                m.NotNullable(false); 
+            Component(x => x.Descricao, c =>
+            {
+                c.Access(Accessor.NoSetter);
+                c.Property(y => y.Valor, m =>
+                {
+                    m.Access(Accessor.NoSetter);
+                    m.Column("descricao");
+                    m.Length(200);
+                    m.NotNullable(false);
+                });
             });
 
             Property(x => x.Tipo, m =>

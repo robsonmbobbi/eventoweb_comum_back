@@ -35,7 +35,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             this.Component(x => x.Nome, c =>
               {
                   c.Access(Accessor.NoSetter);
-                  c.Property(y=> y.Nome, m =>
+                  c.Property(y=> y.Valor, m =>
                   {
                       m.Access(Accessor.NoSetter);
                       m.Column("nome");
@@ -70,7 +70,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             this.Component(x => x.AlergiaAlimentos, c =>
             {
                 c.Access(Accessor.Property);
-                c.Property(y => y.Descricao, m =>
+                c.Property(y => y.Valor, m =>
                 {
                     m.Access(Accessor.NoSetter);
                     m.Column("alergia_alimentos");
@@ -105,7 +105,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             this.Component(x => x.Cidade, c =>
             {
                 c.Access(Accessor.Property);
-                c.Property(y => y.Nome, m =>
+                c.Property(y => y.Valor, m =>
                 {
                     m.Access(Accessor.NoSetter);
                     m.Column("cidade");

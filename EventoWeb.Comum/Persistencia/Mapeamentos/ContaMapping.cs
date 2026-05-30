@@ -1,10 +1,8 @@
-using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
-using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Persistencia.Mapeamentos;
+using NHibernate;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
-using System;
 
 namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
 {
@@ -53,14 +51,17 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
                 m.NotNullable(true);
             });
             
-            Property(x => x.Descricao, m => 
+            this.Component(x => x.Descricao, c =>
             {
-                m.Access(Accessor.NoSetter);
-                m.Column("descricao"); 
-                m.Length(200); 
-                m.NotNullable(false); 
+                c.Access(Accessor.NoSetter);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Column("descricao");
+                    m.Type(NHibernateUtil.StringClob);
+                });
             });
-            
+
             Property(x => x.DataVencimento, m => 
             {
                 m.Access(Accessor.NoSetter);
@@ -76,28 +77,40 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
                 m.Type<EnumGeneric<EnumTipoTransacao>>();
             });
 
-            Property(x => x.ValorTotalTransacoes, m => 
-            { 
-                m.Column("valor_total_transacoes");
-                m.NotNullable(true);
-            });
-            
-            Property(x => x.ValorTotalDesconto, m => 
-            { 
-                m.Column("valor_total_desconto");
-                m.NotNullable(true);
-            });
-            
-            Property(x => x.ValorTotalJuros, m =>
+            this.Component(x => x.ValorTotalTransacoes, c =>
             {
-                m.Column("valor_total_juros");
-                m.NotNullable(true);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("valor_total_transacoes");
+                });
             });
-            
-            Property(x => x.ValorTotalMulta, m =>
+
+            this.Component(x => x.ValorTotalDesconto, c =>
             {
-                m.Column("valor_total_multa");
-                m.NotNullable(true);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("valor_total_desconto");
+                });
+            });
+
+            this.Component(x => x.ValorTotalJuros, c =>
+            {
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("valor_total_juros");
+                });
+            });
+
+            this.Component(x => x.ValorTotalMulta, c =>
+            {
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("valor_total_multa");
+                });
             });
 
             Bag(x => x.Transacoes, c =>

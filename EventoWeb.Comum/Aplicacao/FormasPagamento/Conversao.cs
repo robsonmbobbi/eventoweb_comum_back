@@ -9,11 +9,11 @@ public static class Conversao
         return new DTOFormaPagamento
         {
             Id = forma.Id,
-            Nome = forma.Nome.Nome,
-            NrParcelasMinima = forma.NrParcelasMinima,
-            NrParcelasMaxima = forma.NrParcelasMaxima,
+            Nome = forma.Nome.Valor,
+            NrParcelasMinima = forma.Parcelas?.Minimo ?? 1,
+            NrParcelasMaxima = forma.Parcelas?.Maximo ?? 1,
             Tipo = forma.Tipo,
         };
     }
-    
+
 }

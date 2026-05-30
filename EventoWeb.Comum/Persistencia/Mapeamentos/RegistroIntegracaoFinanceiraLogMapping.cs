@@ -1,4 +1,5 @@
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
+using NHibernate;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -41,18 +42,26 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.NotNullable(true);
             });
             
-            Property(x => x.Mensagem, m =>
+            this.Component(x => x.Mensagem, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("mensagem");
-                m.Length(500);
-            });            
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("mensagem");
+                    m.Length(500);
+                });
+            });
 
-            Property(x => x.Dados, m =>
+            this.Component(x => x.Dados, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("dados");
-                m.Length(4000);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("dados");
+                    m.Length(4000);
+                });
             });
         }
     }

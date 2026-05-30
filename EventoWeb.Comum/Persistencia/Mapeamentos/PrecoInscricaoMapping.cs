@@ -1,4 +1,5 @@
 using EventoWeb.Comum.Negocio.Entidades;
+using NHibernate;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -27,11 +28,16 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.NotNullable(true);
             });
 
-            Property(x => x.IdadeMax, m =>
+            Component(x => x.IdadeMax, c =>
             {
-                m.Access(Accessor.Field);
-                m.Column("idade_max");
-                m.NotNullable(true);
+                c.Access(Accessor.Field);
+                c.Property(o => o.Valor, m =>
+                {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Column("idade_max");
+                    m.NotNullable(true);
+                });                
             });
 
             Bag(x => x.Valores, m =>

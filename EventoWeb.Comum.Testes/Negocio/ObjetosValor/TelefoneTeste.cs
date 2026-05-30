@@ -1,9 +1,6 @@
-using System;
-using EventoWeb.Comum.Negocio;
-using EventoWeb.Comum.Negocio.Entidades;
-using Xunit;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 
-namespace EventoWeb.Comum.Testes.Negocio
+namespace EventoWeb.Comum.Testes.Negocio.ObjetosValor
 {
     public class TelefoneTeste
     {

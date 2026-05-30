@@ -32,8 +32,8 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
 
             var integradorExterno = m_IntegracoesExternas[registro.Integrador.IntegracaoExterna];
 
-            var resultadoConsulta = await integradorExterno.ConsultarCobranca(registro.Integrador, registro.IdentificacaoNoIntegrador) ?? 
-                throw new InvalidOperationException($"Identificação não encontrada no integrador. Id {registro.IdentificacaoNoIntegrador}");
+            var resultadoConsulta = await integradorExterno.ConsultarCobranca(registro.Integrador, registro.IdentificacaoNoIntegrador?.Valor) ?? 
+                throw new InvalidOperationException($"Identificação não encontrada no integrador. Id {registro.IdentificacaoNoIntegrador?.Valor}");
             switch(resultadoConsulta.Status)
             {
                 case EnumStatusTransacao.Recebida:
@@ -43,7 +43,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
                             DateTime.Now,
                             registro.Valor
                         );
-                    //m_Contas.Atualizar(registro.Conta);
+
 
                     var transacao = registro.Conta.Transacoes.LastOrDefault();
 

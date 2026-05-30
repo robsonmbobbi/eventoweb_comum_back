@@ -1,13 +1,14 @@
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 
 namespace EventoWeb.Comum.Negocio.Entidades;
 
 public class PrecoInscricao : Entidade
 {
-    private int m_IdadeMax;
+    private InteiroPositivo m_IdadeMax;
     private IList<PrecoInscricaoValor> m_Valores = [];
 
-    public PrecoInscricao(Evento evento, int idadeMax)
+    public PrecoInscricao(Evento evento, InteiroPositivo idadeMax)
     {
         Evento = evento ?? throw new ArgumentNullException(nameof(evento));
         IdadeMax = idadeMax;
@@ -19,25 +20,20 @@ public class PrecoInscricao : Entidade
 
     public virtual Evento Evento { get; protected set; }
 
-    public virtual int IdadeMax
+    public virtual InteiroPositivo IdadeMax
     {
         get => m_IdadeMax;
-        set
-        {
-            if (value < 0)
-                throw new ArgumentOutOfRangeException($"{nameof(value)} deve ser maior ou igual a zero.");
-            m_IdadeMax = value;
-        }
+        set => m_IdadeMax = value ?? throw new ArgumentNullException(nameof(IdadeMax));
     }
-    
+
     public virtual IEnumerable<PrecoInscricaoValor> Valores => m_Valores;
 
     public virtual void AdicionarValor(FormaPagamento forma, decimal valor)
     {
         if (m_Valores.Any(x => x.Forma.Id == forma.Id))
             throw new Exception("Já existe um valor com aessa forma de pagamento.");
-        
-        m_Valores.Add(new PrecoInscricaoValor(this, forma, valor));
+
+        m_Valores.Add(new PrecoInscricaoValor(this, forma, new ValorMonetario(valor)));
     }
 
     public virtual void RemoverValor(PrecoInscricaoValor preco)

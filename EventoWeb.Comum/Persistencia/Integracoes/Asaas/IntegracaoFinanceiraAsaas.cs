@@ -58,15 +58,15 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
         public async Task<DadosRetornoIntegracaoExterna> CriarCobranca(IntegracaoFinanceiraPorFormaPag integrador, Pedido pedido, int? numeroParcelas)
         {
             var asaasApi = CriarAsaasApi(integrador.Integrador);
-            var customer = await ObterOuCriarCliente(asaasApi, pedido.Pagador.CPF.Numero, pedido.Pagador.Nome.Nome);
+            var customer = await ObterOuCriarCliente(asaasApi, pedido.Pagador.CPF.Numero, pedido.Pagador.Nome.Valor);
 
             var paymentRequest = ConstruirPaymentRequest(
                 customer.Id,
                 pedido.Valor.Valor,
                 integrador.FormaPagamento.Tipo,
-                integrador.FormaPagamento.NrParcelasMinima,
+                integrador.FormaPagamento.Parcelas?.Minimo ?? 1,
                 numeroParcelas,
-                $"Pagamento inscrições {pedido.Inscricoes.First().Evento.Nome.Nome}. Pedido: {pedido.Id}"
+                $"Pagamento inscrições {pedido.Inscricoes.First().Evento.Nome.Valor}. Pedido: {pedido.Id}"
             );
 
             var paymentResponse = await asaasApi.Payment.Create(paymentRequest);
@@ -79,13 +79,13 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
         public async Task<DadosRetornoIntegracaoExterna> CriarCobrancaPorConta(IntegracaoFinanceiraPorFormaPag integrador, Conta conta, decimal valor, EnumTipoPagamento tipoPagamento, int? numeroParcelas)
         {
             var asaasApi = CriarAsaasApi(integrador.Integrador);
-            var customer = await ObterOuCriarCliente(asaasApi, conta.Pessoa.CPF.Numero, conta.Pessoa.Nome.Nome);
+            var customer = await ObterOuCriarCliente(asaasApi, conta.Pessoa.CPF.Numero, conta.Pessoa.Nome.Valor);
 
             var paymentRequest = ConstruirPaymentRequest(
                 customer.Id,
                 valor,
                 tipoPagamento,
-                integrador.FormaPagamento.NrParcelasMinima,
+                integrador.FormaPagamento.Parcelas?.Minimo ?? 1,
                 numeroParcelas,
                 $"Pagamento - Conta ID: {conta.Id}"
             );
@@ -102,7 +102,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
         /// </summary>
         private AsaasApi CriarAsaasApi(IntegradorFinanceiro integrador)
         {
-            return new AsaasApi(new(integrador.TokenAcesso, _appName, _environment));
+            return new AsaasApi(new(integrador.TokenAcesso.Valor, _appName, _environment));
         }
 
         /// <summary>

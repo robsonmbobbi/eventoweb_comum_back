@@ -1,4 +1,5 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
+using NHibernate;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -26,21 +27,28 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.NotNullable(true);
             });
             
-            Property(x => x.Destinatario, m =>
+            Component(x => x.Destinatario, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("destinatario");
-                m.Length(500);
-                m.NotNullable(true);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("destinatario");
+                    m.Length(500);
+                });
             });
-            
-            Property(x => x.VariaveisJson, m =>
+
+            this.Component(x => x.VariaveisJson, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("variaveis_json");
-                m.NotNullable(false);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Column("variaveis_json");
+                    m.Type(NHibernateUtil.StringClob);
+                });
             });
-            
+
             Property(x => x.Situacao, m =>
             {
                 m.Access(Accessor.Property);
@@ -55,12 +63,16 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Column("data_situacao");
                 m.NotNullable(false);
             });
-            
-            Property(x => x.Erro, m =>
+
+            this.Component(x => x.Erro, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("erro");
-                m.NotNullable(false);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Column("erro");
+                    m.Type(NHibernateUtil.StringClob);
+                });
             });
         }
     }

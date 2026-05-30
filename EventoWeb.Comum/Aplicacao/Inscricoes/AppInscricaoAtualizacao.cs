@@ -47,7 +47,7 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes,
     {
         AtualizarPessoa(participante.Pessoa);
         AtualizarComum(participante);
-        participante.InstituicoesEspiritasFrequenta = DtoInscricao!.InstituicoesEspiritasFrequenta;
+        participante.InstituicoesEspiritasFrequenta = DtoInscricao!.InstituicoesEspiritasFrequenta != null ? new String300(DtoInscricao.InstituicoesEspiritasFrequenta) : null;
         participante.Tipo = DtoInscricao!.TipoParticipante;
     }
 
@@ -55,7 +55,7 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes,
     {
         AtualizarPessoa(infantil.Pessoa);
         AtualizarComum(infantil);
-        
+
         InscricaoParticipante responsavel1 = 
             Inscricoes.Obter(DtoInscricao!.Responsavel1.IdInscricao) as InscricaoParticipante ??
             throw new Exception($"Inscrição do primeiro responsável não encontrada ou não é do tipo Participante. Id {DtoInscricao.Responsavel1.IdInscricao}");
@@ -67,31 +67,31 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes,
                 Inscricoes.Obter(DtoInscricao.Responsavel2.IdInscricao) as InscricaoParticipante ??
                 throw new Exception($"Inscrição do segundo responsável não encontrada ou não é do tipo Participante. Id {DtoInscricao.Responsavel2.IdInscricao}");
         }  
-        
+
         infantil.AtribuirResponsaveis(responsavel1, responsavel2);
     }
-    
+
     private void AtualizarPessoa(Pessoa pessoa)
     {
-        pessoa.Nome = new NomeCompleto(DtoInscricao!.Pessoa.Nome);
+        pessoa.Nome = new String200(DtoInscricao!.Pessoa.Nome);
         pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
         pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento!.Value);
         pessoa.Email = new EMail(DtoInscricao.Pessoa.Email);
         pessoa.CelularWP = new Telefone(DtoInscricao.Pessoa.Celular);
         pessoa.Cidade = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.Cidade) 
             ? null 
-            : new Cidade(DtoInscricao.Pessoa.Cidade);
+            : new String300(DtoInscricao.Pessoa.Cidade);
         pessoa.UF = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.UF) 
             ? null 
             : new UF(DtoInscricao.Pessoa.UF);
 
         pessoas.Atualizar(pessoa);
     }
-    
+
     private void AtualizarComum(Inscricao inscricao)
     {
         inscricao.DormeEvento = DtoInscricao!.DormeEvento;
-        inscricao.NomeCracha = DtoInscricao!.NomeCracha;
-        inscricao.Observacoes = DtoInscricao!.Observacoes;
+        inscricao.NomeCracha = DtoInscricao!.NomeCracha != null ? new String200(DtoInscricao.NomeCracha) : null;
+        inscricao.Observacoes = DtoInscricao!.Observacoes != null ? new StringClob(DtoInscricao.Observacoes) : null;
     }
 }

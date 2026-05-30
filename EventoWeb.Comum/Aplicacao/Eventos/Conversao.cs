@@ -13,11 +13,11 @@ public static class Conversao
             DataInicialInscricao = evento.PeriodoInscricaoOnLine.DataInicial,
             DataFinalRealizacao = evento.PeriodoRealizacaoEvento.DataFinal,
             DataInicialRealizacao = evento.PeriodoRealizacaoEvento.DataInicial,
-            IdadeMinimaAdulto = evento.IdadeMinimaInscricaoAdulto,
+            IdadeMinimaAdulto = evento.IdadeMinimaInscricaoAdulto.Valor,
             Logotipo = evento.Logotipo == null ? null : Convert.ToBase64String(evento.Logotipo.Arquivo),
-            Nome = evento.Nome.Nome,
-            Regulamento = evento.Regulamento
+            Nome = evento.Nome.Valor,
+            Regulamento = evento.Regulamento?.Valor
         };
     }
-    
+
 }

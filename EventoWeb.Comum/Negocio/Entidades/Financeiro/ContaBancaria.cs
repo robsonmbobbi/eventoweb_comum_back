@@ -4,16 +4,16 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 {
     public class ContaBancaria: Entidade
     {
-        private NomeCompleto m_NomeConta;
+        private String200 m_NomeConta;
 
-        public ContaBancaria(NomeCompleto nomeConta)
+        public ContaBancaria(String200 nomeConta)
         {
             NomeConta = nomeConta;
         }
 
         protected ContaBancaria() { }
 
-        public virtual NomeCompleto NomeConta 
+        public virtual String200 NomeConta 
         {
             get => m_NomeConta;
             set
