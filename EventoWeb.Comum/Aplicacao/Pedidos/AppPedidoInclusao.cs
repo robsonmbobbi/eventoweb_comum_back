@@ -113,14 +113,14 @@ public class AppPedidoInclusao : AppBase
             
             pessoa = new Pessoa(
                 new CPF(dtoPedido.CPFPagador),
-                new NomeCompleto(dtoPedido.NomePagador),
+                new String200(dtoPedido.NomePagador),
                 new EMail(dtoPedido.EmailPagador),
                 new Telefone(dtoPedido.CelularPagador)
             );
         }
         else
         {
-            pessoa.Nome = new NomeCompleto(dtoPedido.NomePagador);
+            pessoa.Nome = new String200(dtoPedido.NomePagador);
             pessoa.Email = new EMail(dtoPedido.EmailPagador);
             pessoa.CelularWP = new Telefone(dtoPedido.CelularPagador);
         }

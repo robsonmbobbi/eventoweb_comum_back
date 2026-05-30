@@ -26,7 +26,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
 
         public override bool EhValidaIdade(int idade)
         {
-            return idade >= Evento.IdadeMinimaInscricaoAdulto;
+            return idade >= Evento.IdadeMinimaInscricaoAdulto.Valor;
         }
 
         public override void Aceitar()

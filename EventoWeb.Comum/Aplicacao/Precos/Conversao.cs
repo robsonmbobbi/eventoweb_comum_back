@@ -10,7 +10,7 @@ public static class Conversao
         return new DTOPrecoInscricao
         {
             Id = precoInscricao.Id,
-            IdadeMax = precoInscricao.IdadeMax?.Valor ?? 0,
+            IdadeMax = precoInscricao.IdadeMax.Valor,
             Valores = [.. precoInscricao
                 .Valores
                 .Select(x => x.Converter())]
@@ -22,7 +22,7 @@ public static class Conversao
         return new DTOPrecosInscricaoForma
         {
             Forma = valor.Forma.Converter(),
-            Preco = valor.Valor
+            Preco = valor.Valor.Valor
         };
     }
 }

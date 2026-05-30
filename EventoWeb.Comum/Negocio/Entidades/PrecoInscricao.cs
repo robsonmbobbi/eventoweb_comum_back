@@ -5,7 +5,7 @@ namespace EventoWeb.Comum.Negocio.Entidades;
 
 public class PrecoInscricao : Entidade
 {
-    private InteiroPositivo? m_IdadeMax;
+    private InteiroPositivo m_IdadeMax;
     private IList<PrecoInscricaoValor> m_Valores = [];
 
     public PrecoInscricao(Evento evento, InteiroPositivo idadeMax)
@@ -20,10 +20,10 @@ public class PrecoInscricao : Entidade
 
     public virtual Evento Evento { get; protected set; }
 
-    public virtual InteiroPositivo? IdadeMax
+    public virtual InteiroPositivo IdadeMax
     {
         get => m_IdadeMax;
-        set => m_IdadeMax = value;
+        set => m_IdadeMax = value ?? throw new ArgumentNullException(nameof(IdadeMax));
     }
 
     public virtual IEnumerable<PrecoInscricaoValor> Valores => m_Valores;
@@ -33,7 +33,7 @@ public class PrecoInscricao : Entidade
         if (m_Valores.Any(x => x.Forma.Id == forma.Id))
             throw new Exception("Já existe um valor com aessa forma de pagamento.");
 
-        m_Valores.Add(new PrecoInscricaoValor(this, forma, valor));
+        m_Valores.Add(new PrecoInscricaoValor(this, forma, new ValorMonetario(valor)));
     }
 
     public virtual void RemoverValor(PrecoInscricaoValor preco)

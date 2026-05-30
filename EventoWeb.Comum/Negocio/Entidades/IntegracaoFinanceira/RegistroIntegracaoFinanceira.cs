@@ -6,7 +6,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 public class RegistroIntegracaoFinanceira : Entidade
 {
     private IList<RegistroIntegracaoLog> m_Logs = [];
-    private String1000? m_IdentificacaoNoIntegrador;
+    private String1000 m_IdentificacaoNoIntegrador;
     private InteiroPositivo? m_NumeroParcelas;
 
     public RegistroIntegracaoFinanceira(IntegradorFinanceiro integrador, Conta conta, ValorMonetario valor, EnumTipoPagamento tipo, String1000 identificacaoNoIntegrador, InteiroPositivo? numeroParcelas = null)
@@ -43,7 +43,7 @@ public class RegistroIntegracaoFinanceira : Entidade
 
     public virtual DateTime? DataConcluidoAbortado { get; protected set; }
 
-    public virtual String1000? IdentificacaoNoIntegrador
+    public virtual String1000 IdentificacaoNoIntegrador
     {
         get => m_IdentificacaoNoIntegrador;
         protected set => m_IdentificacaoNoIntegrador = value;

@@ -59,7 +59,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos
                         JsonSerializer.Serialize(
                             new
                             {
-                                NomeEvento = pedido.Inscricoes.First().Evento.Nome.Nome,
+                                NomeEvento = pedido.Inscricoes.First().Evento.Nome.Valor,
                                 pedido.Valor.Valor,
                                 TipoPedido = tipoPedido,
                                 TipoTransacao = tipoTransacao,

@@ -1,4 +1,4 @@
-namespace EventoWeb.Comum.Negocio.Entidades
+namespace EventoWeb.Comum.Negocio.ObjetosValor
 {
     public partial class EMail
     {

@@ -41,7 +41,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.RegistrosIntegracao
                 var jsonVariaveis = JsonSerializer.Serialize(
                     new
                     {
-                        NomeEvento = modelo.Evento.Nome.Nome,
+                        NomeEvento = modelo.Evento.Nome.Valor,
                         TipoTransacao = tipoTransacao,
                         registro.Transacao.Valor.Valor,
                     }

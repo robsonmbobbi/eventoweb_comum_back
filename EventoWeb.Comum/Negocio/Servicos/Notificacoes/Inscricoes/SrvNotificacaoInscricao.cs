@@ -44,7 +44,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes
                 new
                 {
                     Tipo = inscricao is InscricaoInfantil ? "Infantil" : "Participante",
-                    inscricao.Pessoa.Nome.Nome,
+                    inscricao.Pessoa.Nome.Valor,
                     CPF = inscricao.Pessoa.CPF.Numero,
                     Email = inscricao.Pessoa.Email.Endereco,
                     Celular = inscricao.Pessoa.CelularWP.Numero,
@@ -52,12 +52,12 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes
                     inscricao.Pessoa.EhDiabetico,
                     inscricao.Pessoa.AlergiaAlimentos,
                     inscricao.Pessoa.UsaAdocanteDiariamente,
-                    Evento = inscricao.Evento.Nome.Nome,
-                    inscricao.NomeCracha,
+                    Evento = inscricao.Evento.Nome.Valor,
+                    NomeCracha = inscricao.NomeCracha?.Valor,
                     inscricao.DormeEvento,
-                    inscricao.Observacoes,
-                    Responsavel1 = infantil?.InscricaoResponsavel1.Pessoa.Nome.Nome,
-                    Responsavel2 = infantil?.InscricaoResponsavel2?.Pessoa.Nome.Nome
+                    Observacoes = inscricao.Observacoes?.Valor,
+                    Responsavel1 = infantil?.InscricaoResponsavel1.Pessoa.Nome.Valor,
+                    Responsavel2 = infantil?.InscricaoResponsavel2?.Pessoa.Nome.Valor
                 }
             );
         }

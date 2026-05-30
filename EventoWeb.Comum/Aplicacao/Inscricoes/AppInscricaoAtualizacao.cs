@@ -73,14 +73,14 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes,
 
     private void AtualizarPessoa(Pessoa pessoa)
     {
-        pessoa.Nome = new NomeCompleto(DtoInscricao!.Pessoa.Nome);
+        pessoa.Nome = new String200(DtoInscricao!.Pessoa.Nome);
         pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
         pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento!.Value);
         pessoa.Email = new EMail(DtoInscricao.Pessoa.Email);
         pessoa.CelularWP = new Telefone(DtoInscricao.Pessoa.Celular);
         pessoa.Cidade = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.Cidade) 
             ? null 
-            : new Cidade(DtoInscricao.Pessoa.Cidade);
+            : new String300(DtoInscricao.Pessoa.Cidade);
         pessoa.UF = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.UF) 
             ? null 
             : new UF(DtoInscricao.Pessoa.UF);
@@ -91,7 +91,7 @@ public class AppInscricaoAtualizacao(IContexto contexto, IInscricoes inscricoes,
     private void AtualizarComum(Inscricao inscricao)
     {
         inscricao.DormeEvento = DtoInscricao!.DormeEvento;
-        inscricao.NomeCracha = DtoInscricao!.NomeCracha != null ? new NomeCompleto(DtoInscricao.NomeCracha) : null;
+        inscricao.NomeCracha = DtoInscricao!.NomeCracha != null ? new String200(DtoInscricao.NomeCracha) : null;
         inscricao.Observacoes = DtoInscricao!.Observacoes != null ? new StringClob(DtoInscricao.Observacoes) : null;
     }
 }

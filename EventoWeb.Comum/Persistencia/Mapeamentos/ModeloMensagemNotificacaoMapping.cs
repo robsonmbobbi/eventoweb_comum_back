@@ -1,4 +1,5 @@
 ﻿using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
+using NHibernate;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -42,18 +43,22 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.NotNullable(true);
             });
 
-            Property(x => x.Assunto, m =>
+            Component(x => x.Assunto, c =>
             {
-                m.Column("assunto");
-                m.Length(600);
-                m.Access(Accessor.Property);
-                m.NotNullable(false);
+                c.Access(Accessor.Property);
+                c.Property(y => y.Valor, m =>
+                {
+                    m.Access(Accessor.NoSetter);
+                    m.Column("assunto");
+                    m.Length(200);
+                    m.NotNullable(false);
+                });
             });
 
             Component(x => x.Nome, c =>
             {
                 c.Access(Accessor.Property);
-                c.Property(y => y.Nome, m =>
+                c.Property(y => y.Valor, m =>
                 {
                     m.Access(Accessor.NoSetter);
                     m.Column("nome");
@@ -62,11 +67,15 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 });
             });
 
-            Property(x => x.Mensagem, m =>
+            Component(x => x.Mensagem, c =>
             {
-                m.Column("mensagem");
-                m.Access(Accessor.Property);
-                m.NotNullable(true);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("mensagem");
+                    m.Type(NHibernateUtil.StringClob);
+                });
             });
 
             Property(x => x.Ativo, m =>

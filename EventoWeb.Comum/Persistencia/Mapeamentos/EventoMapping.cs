@@ -23,7 +23,7 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
             this.Component(x => x.Nome, c =>
             {
                 c.Access(Accessor.NoSetter);
-                c.Property(o => o.Nome, m => 
+                c.Property(o => o.Valor, m => 
                 { 
                     m.Access(Accessor.NoSetter);
                     m.NotNullable(true);
@@ -73,20 +73,26 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.NotNullable(false);
                 m.Column("id_arquivo_logotipo");
             });
-            
-            this.Property(x => x.IdadeMinimaInscricaoAdulto, m =>
-             {
-                 m.Access(Accessor.Property);
-                 m.NotNullable(true);
-                 m.Column("idade_minima_insc_adulto");
-             });
-            
-            this.Property(x => x.Regulamento, m =>
+
+            this.Component(x => x.IdadeMinimaInscricaoAdulto, c =>
             {
-                m.Access(Accessor.Property);
-                m.NotNullable(false);
-                m.Column("regulamento");
-                m.Type(NHibernateUtil.StringClob);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(true);
+                    m.Column("idade_minima_insc_adulto");
+                });
+            });
+
+            this.Component(x => x.Regulamento, c =>
+            {
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m => {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Column("regulamento");
+                    m.Type(NHibernateUtil.StringClob);
+                });
             });
         }
     }

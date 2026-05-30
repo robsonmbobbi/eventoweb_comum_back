@@ -4,7 +4,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 
 public class RegistroIntegracaoLog : Entidade
 {
-    private String500? m_Mensagem;
+    private String500 m_Mensagem;
     private String4000? m_Dados;
 
     public RegistroIntegracaoLog(RegistroIntegracaoFinanceira registro, String500 mensagem, EnumTipoLog tipo, 
@@ -21,7 +21,7 @@ public class RegistroIntegracaoLog : Entidade
 
     public virtual RegistroIntegracaoFinanceira Registro { get; protected set; }
 
-    public virtual String500? Mensagem
+    public virtual String500 Mensagem
     {
         get => m_Mensagem;
         protected set => m_Mensagem = value;

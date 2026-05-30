@@ -16,7 +16,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 
             if (valorTransacao.Valor > 0)
             {
-                var descricao = new String500($"Referente conta id {conta.Id}");
+                var descricao = new String200($"Referente conta id {conta.Id}");
                 Transacao = new Transacao(conta.Tipo, contaBancaria, data, valorTransacao, descricao);
             }
         }

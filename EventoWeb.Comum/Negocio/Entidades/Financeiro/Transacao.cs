@@ -4,10 +4,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 {
     public class Transacao : Entidade
     {
-        private String500? m_Descricao;
+        private String200? m_Descricao;
         private ValorMonetario m_Valor;
 
-        public Transacao(EnumTipoTransacao tipo, ContaBancaria conta, DateTime dataHora, ValorMonetario valor, String500 descricao)
+        public Transacao(EnumTipoTransacao tipo, ContaBancaria conta, DateTime dataHora, ValorMonetario valor, String200 descricao)
         {
             ContaBancaria = conta ?? throw new Exception($"{nameof(conta)} não pode ser nula.");
 
@@ -23,7 +23,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 
         public virtual DateTime DataHora { get; protected set; }
 
-        public virtual String500? Descricao
+        public virtual String200? Descricao
         {
             get => m_Descricao;
             protected set => m_Descricao = value;

@@ -14,12 +14,12 @@ public class AppEventoInclusao: AppEventoBase
         ExecutarSeguramente(() =>
         {
             var evento = new Evento(
-                new NomeCompleto(dto.Nome), 
+                new String200(dto.Nome), 
                 new Periodo(dto.DataInicialInscricao, dto.DataFinalInscricao), 
                 new Periodo(dto.DataInicialRealizacao, dto.DataFinalRealizacao))
             {
                 Logotipo = (string.IsNullOrWhiteSpace(dto.Logotipo ?? "")? null: new ArquivoBinario(Convert.FromBase64String(dto.Logotipo!), EnumTipoArquivoBinario.ImagemJPEG)),
-                IdadeMinimaInscricaoAdulto = dto.IdadeMinimaAdulto
+                IdadeMinimaInscricaoAdulto = new InteiroPositivo(dto.IdadeMinimaAdulto)
             }; 
             
             Eventos.Incluir(evento);

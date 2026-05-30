@@ -25,7 +25,7 @@ public class FormaPagamentoMapping : ClassMapping<FormaPagamento>
         this.Component(x => x.Nome, c =>
         {
             c.Access(Accessor.NoSetter);
-            c.Property(y=> y.Nome, m =>
+            c.Property(y=> y.Valor, m =>
             {
                 m.Access(Accessor.NoSetter);
                 m.Column("nome");
@@ -37,7 +37,7 @@ public class FormaPagamentoMapping : ClassMapping<FormaPagamento>
         Property(m => m.Tipo, m =>
         {
             m.Access(Accessor.Property);
-            m.Column("TIPO");
+            m.Column("tipo");
             m.NotNullable(true);
             m.Type<EnumGeneric<EnumTipoPagamento>>();
         });
@@ -48,13 +48,13 @@ public class FormaPagamentoMapping : ClassMapping<FormaPagamento>
             c.Property(y => y.Minimo, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("NR_PARCELAS_MINIMA");
+                m.Column("nr_parcelas_minima");
                 m.NotNullable(true);
             });
             c.Property(y => y.Maximo, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("NR_PARCELAS_MAXIMA");
+                m.Column("nr_parcelas_maxima");
                 m.NotNullable(true);
             });
         });

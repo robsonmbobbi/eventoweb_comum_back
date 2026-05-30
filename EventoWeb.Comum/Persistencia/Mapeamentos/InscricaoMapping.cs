@@ -57,13 +57,18 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.NotNullable(true);
             });
 
-            Property(x => x.NomeCracha, m =>
+            this.Component(x => x.NomeCracha, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("nome_cracha");
-                m.Length(150);
-                m.NotNullable(false);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m =>
+                {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Length(200);
+                    m.Column("nome_cracha");
+                });
             });
+
             ManyToOne(x => x.Pessoa, m =>
             {
                 m.Access(Accessor.Property);
@@ -79,12 +84,16 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Type<EnumGeneric<EnumSituacaoInscricao>>();
             });
 
-            Property(x => x.Observacoes, m =>
+            this.Component(x => x.Observacoes, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("observacoes");
-                m.NotNullable(false);
-                m.Type(NHibernateUtil.StringClob);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m =>
+                {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Column("observacoes");
+                    m.Type(NHibernateUtil.StringClob);
+                });
             });
         }
     }
@@ -124,11 +133,17 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.NotNullable(false);
                 m.Type<EnumGeneric<EnumTipoParticipante>>();
             });
-            Property(x => x.InstituicoesEspiritasFrequenta, m =>
+
+            this.Component(x => x.InstituicoesEspiritasFrequenta, c =>
             {
-                m.Access(Accessor.Property);
-                m.Column("instituicoes_espiritas_freq");
-                m.NotNullable(false);
+                c.Access(Accessor.Property);
+                c.Property(o => o.Valor, m =>
+                {
+                    m.Access(Accessor.NoSetter);
+                    m.NotNullable(false);
+                    m.Column("instituicoes_espiritas_freq");
+                    m.Length(200);
+                });
             });
         }
     }

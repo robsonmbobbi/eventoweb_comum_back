@@ -31,12 +31,17 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 m.Column("id_forma_pagamento");
                 m.NotNullable(true);
             });
-            
-            Property(x => x.Valor, m =>
+
+            Component(x => x.Valor, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Column("valor");
-                m.NotNullable(true);
+
+                m.Property(c => c.Valor, y =>
+                {
+                    y.Access(Accessor.Property);
+                    y.Column("valor");
+                    y.NotNullable(true);
+                });
             });
         }
     }

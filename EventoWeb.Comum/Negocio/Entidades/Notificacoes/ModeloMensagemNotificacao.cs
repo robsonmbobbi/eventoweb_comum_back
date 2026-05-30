@@ -4,10 +4,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.Notificacoes
 {      
     public class ModeloMensagemNotificacao : Entidade
     {
-        private StringClob? m_Mensagem;
-        private StringClob? m_Assunto;
+        private StringClob m_Mensagem;
+        private String200? m_Assunto;
 
-        public ModeloMensagemNotificacao(Evento evento, EnumMeioNotificacao meio, EnumTipoNotificacao tipo, StringClob mensagem, StringClob? assunto, NomeCompleto nome)
+        public ModeloMensagemNotificacao(Evento evento, EnumMeioNotificacao meio, EnumTipoNotificacao tipo, StringClob mensagem, String200? assunto, String200 nome)
         {
             Evento = evento;
             Meio = meio;
@@ -24,19 +24,19 @@ namespace EventoWeb.Comum.Negocio.Entidades.Notificacoes
         public virtual EnumMeioNotificacao Meio { get; protected set; }
         public virtual EnumTipoNotificacao Tipo { get; protected set; }
 
-        public virtual StringClob? Mensagem
+        public virtual StringClob Mensagem
         {
             get => m_Mensagem;
             protected set => m_Mensagem = value;
         }
 
-        public virtual StringClob? Assunto
+        public virtual String200? Assunto
         {
             get => m_Assunto;
             protected set => m_Assunto = value;
         }
 
-        public virtual NomeCompleto Nome { get; protected set; }
+        public virtual String200 Nome { get; protected set; }
         public virtual bool Ativo { get; set; }
     }
 }

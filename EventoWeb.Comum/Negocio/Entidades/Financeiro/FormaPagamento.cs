@@ -4,10 +4,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro;
 
 public class FormaPagamento : Entidade
 {
-    private NomeCompleto m_Nome;
+    private String200 m_Nome;
     private IntervaloInteiroPositivo? m_Parcelas;
 
-    public FormaPagamento(NomeCompleto nome, EnumTipoPagamento tipo)
+    public FormaPagamento(String200 nome, EnumTipoPagamento tipo)
     {
         Nome = nome;
         Tipo = tipo;
@@ -18,7 +18,7 @@ public class FormaPagamento : Entidade
     {
     }
 
-    public virtual NomeCompleto Nome
+    public virtual String200 Nome
     {
         get => m_Nome;
         set
@@ -40,8 +40,7 @@ public class FormaPagamento : Entidade
 
     public virtual void DefinirParcelas(IntervaloInteiroPositivo parcelas)
     {
-        if (parcelas == null)
-            throw new ArgumentNullException(nameof(parcelas));
+        ArgumentNullException.ThrowIfNull(parcelas);
 
         m_Parcelas = parcelas;
     }

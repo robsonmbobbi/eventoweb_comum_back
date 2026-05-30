@@ -17,7 +17,7 @@ namespace EventoWeb.Comum.Testes.Negocio
             );
 
             Assert.Equal("05506427654", p.CPF.Numero);
-            Assert.Equal("Nome da Pessoa", p.Nome.Nome);
+            Assert.Equal("Nome da Pessoa", p.Nome.Valor);
             Assert.Equal("joao@uol.com.br", p.Email.Endereco);
             Assert.Equal("37991925134", p.CelularWP.Numero);
         }
@@ -124,9 +124,9 @@ namespace EventoWeb.Comum.Testes.Negocio
                 new Telefone("37991925134")
             );
 
-            pessoa.Cidade = new Cidade("São Paulo");
+            pessoa.Cidade = new String300("São Paulo");
             Assert.NotNull(pessoa.Cidade);
-            Assert.Equal("São Paulo", pessoa.Cidade.Nome);
+            Assert.Equal("São Paulo", pessoa.Cidade.Valor);
         }
 
         [Fact]
@@ -139,9 +139,9 @@ namespace EventoWeb.Comum.Testes.Negocio
                 new Telefone("37991925134")
             );
 
-            pessoa.AlergiaAlimentos = new AlergiaAlimentar("Amendoim");
+            pessoa.AlergiaAlimentos = new String100("Amendoim");
             Assert.NotNull(pessoa.AlergiaAlimentos);
-            Assert.Equal("Amendoim", pessoa.AlergiaAlimentos.Descricao);
+            Assert.Equal("Amendoim", pessoa.AlergiaAlimentos.Valor);
         }
 
         [Fact]

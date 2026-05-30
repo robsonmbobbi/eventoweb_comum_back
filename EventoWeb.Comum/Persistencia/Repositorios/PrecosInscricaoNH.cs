@@ -10,8 +10,8 @@ public class PrecosInscricaoNH(ISession sessao) : PersistenciaNH<PrecoInscricao>
     {
         return Sessao
             .QueryOver<PrecoInscricao>()
-            .Where(preco => preco.Evento.Id == idEvento && preco.IdadeMax!.Valor >= idade)
-            .OrderBy(preco => preco.IdadeMax!.Valor).Asc
+            .Where(preco => preco.Evento.Id == idEvento && preco.IdadeMax.Valor >= idade)
+            .OrderBy(preco => preco.IdadeMax.Valor).Asc
             .Take(1)
             .SingleOrDefault();
     }

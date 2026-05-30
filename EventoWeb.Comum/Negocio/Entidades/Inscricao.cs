@@ -7,7 +7,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
     public abstract class Inscricao: Entidade
     {
         private EnumSituacaoInscricao m_Situacao;
-        private NomeCompleto? m_NomeCracha;
+        private String200? m_NomeCracha;
         private StringClob? m_Observacoes;
 
         public Inscricao(Evento evento, Pessoa pessoa, DateTime dataRecebimento)
@@ -36,7 +36,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
 
         public virtual EnumSituacaoInscricao Situacao => m_Situacao; 
 
-        public virtual NomeCompleto? NomeCracha
+        public virtual String200? NomeCracha
         {
             get => m_NomeCracha;
             set => m_NomeCracha = value;

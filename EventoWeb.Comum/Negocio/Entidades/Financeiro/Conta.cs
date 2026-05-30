@@ -22,10 +22,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 
             m_Transacoes = new List<TransacaoConta>();
 
-            ValorTotalTransacoes = 0;
-            ValorTotalDesconto = 0;
-            ValorTotalJuros = 0;
-            ValorTotalMulta = 0;
+            ValorTotalTransacoes = new (0);
+            ValorTotalDesconto = new (0);
+            ValorTotalJuros = new (0);
+            ValorTotalMulta = new (0);
         }
 
         protected Conta() { }
@@ -84,10 +84,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
             }
         }
 
-        public virtual decimal ValorTotalTransacoes { get; protected set; }
-        public virtual decimal ValorTotalDesconto { get; protected set; }
-        public virtual decimal ValorTotalJuros { get; protected set; }
-        public virtual decimal ValorTotalMulta { get; protected set; }
+        public virtual ValorMonetario ValorTotalTransacoes { get; protected set; }
+        public virtual ValorMonetario ValorTotalDesconto { get; protected set; }
+        public virtual ValorMonetario ValorTotalJuros { get; protected set; }
+        public virtual ValorMonetario ValorTotalMulta { get; protected set; }
 
         public virtual IEnumerable<TransacaoConta> Transacoes => m_Transacoes;       
 
@@ -104,12 +104,12 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 
             m_Transacoes.Add(new TransacaoConta(contaBancaria, this, data, valorTransacao, multa, juros, desconto));
 
-            ValorTotalTransacoes = m_Transacoes.Sum(tc => tc.ValorTransacao.Valor);
-            ValorTotalDesconto = m_Transacoes.Sum(tc => tc.Desconto.Valor);
-            ValorTotalJuros = m_Transacoes.Sum(tc => tc.Juros.Valor);
-            ValorTotalMulta = m_Transacoes.Sum(tc => tc.Multa.Valor);
+            ValorTotalTransacoes = new (m_Transacoes.Sum(tc => tc.ValorTransacao.Valor));
+            ValorTotalDesconto = new (m_Transacoes.Sum(tc => tc.Desconto.Valor));
+            ValorTotalJuros = new (m_Transacoes.Sum(tc => tc.Juros.Valor));
+            ValorTotalMulta = new (m_Transacoes.Sum(tc => tc.Multa.Valor));
 
-            if (ValorTotalTransacoes >= Valor.Valor)
+            if (ValorTotalTransacoes.Valor >= Valor.Valor)
                 Liquidado = true;
         }
 
@@ -120,10 +120,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
             if (!m_Transacoes.Remove(transacaoConta))
                 throw new Exception("A transação informada não pertence a esta conta.");
 
-            ValorTotalTransacoes = m_Transacoes.Sum(tc => tc.ValorTransacao.Valor);
-            ValorTotalDesconto = m_Transacoes.Sum(tc => tc.Desconto.Valor);
-            ValorTotalJuros = m_Transacoes.Sum(tc => tc.Juros.Valor);
-            ValorTotalMulta = m_Transacoes.Sum(tc => tc.Multa.Valor);
+            ValorTotalTransacoes = new (m_Transacoes.Sum(tc => tc.ValorTransacao.Valor));
+            ValorTotalDesconto = new (m_Transacoes.Sum(tc => tc.Desconto.Valor));
+            ValorTotalJuros = new (m_Transacoes.Sum(tc => tc.Juros.Valor));
+            ValorTotalMulta = new (m_Transacoes.Sum(tc => tc.Multa.Valor));
         }
 
         public virtual void Reabrir()
@@ -134,10 +134,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
             Liquidado = false;
             m_Transacoes.Clear();
 
-            ValorTotalTransacoes = 0;
-            ValorTotalDesconto = 0;
-            ValorTotalJuros = 0;
-            ValorTotalMulta = 0;
+            ValorTotalTransacoes = new (0);
+            ValorTotalDesconto = new (0);
+            ValorTotalJuros = new (0);
+            ValorTotalMulta = new (0);
         }
     }
 }

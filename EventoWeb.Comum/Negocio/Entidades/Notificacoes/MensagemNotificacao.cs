@@ -4,14 +4,14 @@ namespace EventoWeb.Comum.Negocio.Entidades.Notificacoes
 {
     public class MensagemNotificacao : Entidade
     {
-        private String500? m_Destinatario;
+        private String500 m_Destinatario;
         private StringClob? m_VariaveisJson;
         private StringClob? m_Erro;
 
         public MensagemNotificacao(ModeloMensagemNotificacao modelo, String500 destinatario, StringClob? variaveisJson)
         {
-            Modelo = modelo;
-            Destinatario = destinatario;
+            Modelo = modelo ?? throw new ArgumentNullException(nameof(modelo));
+            Destinatario = destinatario ?? throw new ArgumentNullException(nameof(destinatario));
             VariaveisJson = variaveisJson;
             Situacao = EnumSituacaoEnvioNotificacao.Pendente;
         }
@@ -20,7 +20,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Notificacoes
 
         public virtual ModeloMensagemNotificacao Modelo { get; protected set; }
 
-        public virtual String500? Destinatario
+        public virtual String500 Destinatario
         {
             get => m_Destinatario;
             protected set => m_Destinatario = value;

@@ -6,7 +6,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira
     public class IntegradorFinanceiro : Entidade
     {
         private ContaBancaria m_ContaBancaria;
-        private String1000? m_TokenAcesso;
+        private String1000 m_TokenAcesso;
 
         public IntegradorFinanceiro(ContaBancaria contaBancaria, String1000 tokenAcesso, EnumIntegracaoExterna integracaoExterna)
         {
@@ -26,10 +26,10 @@ namespace EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira
             }
         }
 
-        public virtual String1000? TokenAcesso 
+        public virtual String1000 TokenAcesso 
         { 
             get => m_TokenAcesso;
-            set => m_TokenAcesso = value;
+            set => m_TokenAcesso = value ?? throw new ArgumentNullException(nameof(TokenAcesso));
         }
 
         public virtual EnumIntegracaoExterna IntegracaoExterna { get; set; }

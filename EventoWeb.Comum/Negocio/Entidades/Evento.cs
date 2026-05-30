@@ -4,7 +4,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
 {
     public class Evento: Entidade
     {
-        private NomeCompleto m_Nome;
+        private String200 m_Nome;
         private DateTime m_DataRegistro;
         private Periodo m_PeriodoInscricaoOnLine;
         private Periodo m_PeriodoRealizacaoEvento;
@@ -14,16 +14,16 @@ namespace EventoWeb.Comum.Negocio.Entidades
         {
         }
 
-        public Evento(NomeCompleto nome, Periodo periodoInscricaoOnline, Periodo periodoRealizacaoEvento)
+        public Evento(String200 nome, Periodo periodoInscricaoOnline, Periodo periodoRealizacaoEvento)
         {
             Nome = nome;
             PeriodoInscricaoOnLine = periodoInscricaoOnline;
             PeriodoRealizacaoEvento = periodoRealizacaoEvento;
             m_DataRegistro = DateTime.Today;
-            IdadeMinimaInscricaoAdulto = 13;
+            IdadeMinimaInscricaoAdulto = new InteiroPositivo(13);
         }
 
-        public virtual NomeCompleto Nome 
+        public virtual String200 Nome 
         {
             get => m_Nome; 
             set => m_Nome = value ?? throw new ArgumentNullException(nameof(Nome));
@@ -46,7 +46,7 @@ namespace EventoWeb.Comum.Negocio.Entidades
         public virtual DateTime DataRegistro { get { return m_DataRegistro; } }
 
         public virtual ArquivoBinario? Logotipo { get; set; }
-        public virtual int IdadeMinimaInscricaoAdulto { get; set; }
+        public virtual InteiroPositivo IdadeMinimaInscricaoAdulto { get; set; }
 
         public virtual StringClob? Regulamento
         {

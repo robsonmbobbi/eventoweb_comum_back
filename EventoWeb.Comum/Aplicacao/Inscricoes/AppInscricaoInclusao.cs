@@ -50,7 +50,7 @@ public class AppInscricaoInclusao(
         {
             InstituicoesEspiritasFrequenta = DtoInscricao!.InstituicoesEspiritasFrequenta != null ? new String300(DtoInscricao.InstituicoesEspiritasFrequenta) : null,
             DormeEvento = DtoInscricao!.DormeEvento,
-            NomeCracha = DtoInscricao!.NomeCracha != null ? new NomeCompleto(DtoInscricao.NomeCracha) : null,
+            NomeCracha = DtoInscricao!.NomeCracha != null ? new String200(DtoInscricao.NomeCracha) : null,
             Observacoes = DtoInscricao!.Observacoes != null ? new StringClob(DtoInscricao.Observacoes) : null,
             Tipo = DtoInscricao!.TipoParticipante
         };
@@ -86,7 +86,7 @@ public class AppInscricaoInclusao(
             DateTime.Now,
             DtoInscricao!.DormeEvento)
         {
-            NomeCracha = DtoInscricao!.NomeCracha != null ? new NomeCompleto(DtoInscricao.NomeCracha) : null,
+            NomeCracha = DtoInscricao!.NomeCracha != null ? new String200(DtoInscricao.NomeCracha) : null,
             Observacoes = DtoInscricao!.Observacoes != null ? new StringClob(DtoInscricao.Observacoes) : null
         };
 
@@ -109,14 +109,14 @@ public class AppInscricaoInclusao(
 
             pessoa = new Pessoa(
                 new CPF(DtoInscricao.Pessoa.CPF),
-                new NomeCompleto(DtoInscricao.Pessoa.Nome),
+                new String200(DtoInscricao.Pessoa.Nome),
                 new EMail(DtoInscricao.Pessoa.Email),
                 new Telefone(DtoInscricao.Pessoa.Celular)
             );
         }
         else
         {
-            pessoa.Nome = new NomeCompleto(DtoInscricao.Pessoa.Nome);
+            pessoa.Nome = new String200(DtoInscricao.Pessoa.Nome);
             pessoa.Sexo = DtoInscricao.Pessoa.Sexo;
             pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento!.Value);
             pessoa.Email = new EMail(DtoInscricao.Pessoa.Email);
@@ -127,13 +127,13 @@ public class AppInscricaoInclusao(
         pessoa.DataNascimento = new DataAniversario(DtoInscricao.Pessoa.DataNascimento!.Value);
         pessoa.AlergiaAlimentos = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.AlergiaAlimentos) 
             ? null 
-            : new AlergiaAlimentar(DtoInscricao.Pessoa.AlergiaAlimentos);
+            : new String100(DtoInscricao.Pessoa.AlergiaAlimentos);
         pessoa.EhDiabetico = DtoInscricao.Pessoa.EhDiabetico;
         pessoa.EhVegetariano = DtoInscricao.Pessoa.EhVegetariano;
         pessoa.UsaAdocanteDiariamente = DtoInscricao.Pessoa.UsaAdocanteDiariamente;
         pessoa.Cidade = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.Cidade) 
             ? null 
-            : new Cidade(DtoInscricao.Pessoa.Cidade);
+            : new String300(DtoInscricao.Pessoa.Cidade);
         pessoa.UF = string.IsNullOrWhiteSpace(DtoInscricao.Pessoa.UF) 
             ? null 
             : new UF(DtoInscricao.Pessoa.UF);

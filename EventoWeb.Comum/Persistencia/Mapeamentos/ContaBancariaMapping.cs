@@ -23,7 +23,7 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
             Component(x => x.NomeConta, c =>
             {
                 c.Access(Accessor.NoSetter);
-                c.Property(o => o.Nome, m =>
+                c.Property(o => o.Valor, m =>
                 {
                     m.Access(Accessor.NoSetter);
                     m.NotNullable(true);
