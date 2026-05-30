@@ -29,8 +29,4 @@
     <ProjectReference Include="..\EventoWeb.Comum\EventoWeb.Comum.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Negocio\ObjetosValor\" />
-  </ItemGroup>
-
 </Project>

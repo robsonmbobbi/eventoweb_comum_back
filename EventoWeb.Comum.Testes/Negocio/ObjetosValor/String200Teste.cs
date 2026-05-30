@@ -4,7 +4,7 @@ using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using Xunit;
 
-namespace EventoWeb.Comum.Testes.Negocio
+namespace EventoWeb.Comum.Testes.Negocio.ObjetosValor
 {
     public class String200Teste
     {
