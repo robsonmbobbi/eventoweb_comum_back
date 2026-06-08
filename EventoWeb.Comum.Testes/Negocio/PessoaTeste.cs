@@ -185,5 +185,171 @@ namespace EventoWeb.Comum.Testes.Negocio
             pessoa.AlergiaAlimentos = null;
             Assert.Null(pessoa.AlergiaAlimentos);
         }
+
+        // ============ TESTES FALTANTES CONFORME PLANO ============
+
+        [Fact]
+        public void CriarPessoaComDadosValidos_DeveTerValoresPadrao()
+        {
+            // Arrange & Act
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Assert
+            Assert.NotNull(pessoa);
+            Assert.Equal("05506427654", pessoa.CPF.Numero);
+            Assert.Equal("João Silva", pessoa.Nome.Valor);
+            Assert.Equal("joao@example.com", pessoa.Email.Endereco);
+            Assert.Equal("37991925134", pessoa.CelularWP.Numero);
+            Assert.Null(pessoa.Sexo);
+            Assert.Null(pessoa.DataNascimento);
+            Assert.False(pessoa.EhVegetariano);
+            Assert.False(pessoa.EhDiabetico);
+            Assert.False(pessoa.UsaAdocanteDiariamente);
+        }
+
+        [Fact]
+        public void AtribuirCPFNuloAoSetter_DeveLancarExcecao()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => pessoa.CPF = null);
+        }
+
+        [Fact]
+        public void AtribuirNomeNuloAoSetter_DeveLancarExcecao()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => pessoa.Nome = null);
+        }
+
+        [Fact]
+        public void AtribuirEmailNuloAoSetter_DeveLancarExcecao()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => pessoa.Email = null);
+        }
+
+        [Fact]
+        public void AtribuirCelularNuloAoSetter_DeveLancarExcecao()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => pessoa.CelularWP = null);
+        }
+
+        [Fact]
+        public void AtribuirSexoValido_DeveAlterarPropriedade()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Act
+            pessoa.Sexo = EnumSexo.Masculino;
+
+            // Assert
+            Assert.Equal(EnumSexo.Masculino, pessoa.Sexo);
+        }
+
+        [Fact]
+        public void AtribuirDataNascimentoValida_DeveAlterarPropriedade()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var data = new DataAniversario(new DateTime(1990, 6, 15));
+
+            // Act
+            pessoa.DataNascimento = data;
+
+            // Assert
+            Assert.NotNull(pessoa.DataNascimento);
+            Assert.Equal(data, pessoa.DataNascimento);
+        }
+
+        [Fact]
+        public void AtribuirBooleanoEhVegetariano_DeveAlterarPropriedade()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Act
+            pessoa.EhVegetariano = true;
+
+            // Assert
+            Assert.True(pessoa.EhVegetariano);
+        }
+
+        [Fact]
+        public void AtribuirBooleanoEhDiabetico_DeveAlterarPropriedade()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Act
+            pessoa.EhDiabetico = true;
+
+            // Assert
+            Assert.True(pessoa.EhDiabetico);
+        }
+
+        [Fact]
+        public void AtribuirBooleanoUsaAdocanteDiariamente_DeveAlterarPropriedade()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Act
+            pessoa.UsaAdocanteDiariamente = true;
+
+            // Assert
+            Assert.True(pessoa.UsaAdocanteDiariamente);
+        }
+
+        [Fact]
+        public void SexoNuloEhValido()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            pessoa.Sexo = EnumSexo.Masculino;
+
+            // Act
+            pessoa.Sexo = null;
+
+            // Assert
+            Assert.Null(pessoa.Sexo);
+        }
+
+        [Fact]
+        public void DataNascimentoNulaEhValida()
+        {
+            // Arrange
+            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            pessoa.DataNascimento = new DataAniversario(new DateTime(1990, 6, 15));
+
+            // Act
+            pessoa.DataNascimento = null;
+
+            // Assert
+            Assert.Null(pessoa.DataNascimento);
+        }
+
+        [Fact]
+        public void DuasPessoasSemIdSaoMesmaReferencia()
+        {
+            // Arrange
+            var pessoa1 = TestFixtures.Pessoas.CriarPessoaValida();
+
+            // Act & Assert
+            Assert.Equal(pessoa1, pessoa1);
+        }
     }
 }
