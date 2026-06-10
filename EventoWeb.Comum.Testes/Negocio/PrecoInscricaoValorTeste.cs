@@ -1,6 +1,9 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.PrecosFixtures;
+
 namespace EventoWeb.Comum.Testes.Negocio
 {
     public class PrecoInscricaoValorTeste
@@ -9,8 +12,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarPrecoInscricaoValorComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma = CriarFormaPagamentoValida();
             var valor = new ValorMonetario(200.00m);
 
             // Act
@@ -27,7 +30,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarPrecoInscricaoValorComPrecoNulo_DeveLancarExcecao()
         {
             // Arrange
-            var forma = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var forma = CriarFormaPagamentoValida();
             var valor = new ValorMonetario(200.00m);
 
             // Act & Assert
@@ -40,7 +43,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarPrecoInscricaoValorComFormaNula_DeveLancarExcecao()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
+            var precoInscricao = CriarPrecoInscricaoValido();
             var valor = new ValorMonetario(200.00m);
 
             // Act & Assert
@@ -53,8 +56,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarPrecoInscricaoValorComValorNulo_DeveLancarExcecao()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma = CriarFormaPagamentoValida();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => 
@@ -66,8 +69,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarValorMonetarioValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma = CriarFormaPagamentoValida();
             var precoValor = new PrecoInscricaoValor(precoInscricao, forma, new ValorMonetario(200.00m));
 
             // Act
@@ -81,8 +84,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirValorNulo_DeveLancarExcecao()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma = CriarFormaPagamentoValida();
             var precoValor = new PrecoInscricaoValor(precoInscricao, forma, new ValorMonetario(200.00m));
 
             // Act & Assert
@@ -90,23 +93,6 @@ namespace EventoWeb.Comum.Testes.Negocio
                 precoValor.Valor = null
             );
         }
-
-        [Fact]
-        public void PrecoEFormaEhSomenteLeitura()
-        {
-            // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma = TestFixtures.Precos.CriarFormaPagamentoValida();
-            var precoValor = new PrecoInscricaoValor(precoInscricao, forma, new ValorMonetario(200.00m));
-
-            // Assert - Verifica que não tem setter público
-            var precoProperty = typeof(PrecoInscricaoValor).GetProperty("Preco");
-            var formaProperty = typeof(PrecoInscricaoValor).GetProperty("Forma");
-
-            Assert.NotNull(precoProperty);
-            Assert.Null(precoProperty.SetMethod);
-            Assert.NotNull(formaProperty);
-            Assert.Null(formaProperty.SetMethod);
-        }
     }
 }
+

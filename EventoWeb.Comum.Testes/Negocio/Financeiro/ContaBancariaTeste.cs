@@ -1,7 +1,9 @@
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 
-namespace EventoWeb.Comum.Testes.Negocio
+namespace EventoWeb.Comum.Testes.Negocio.Financeiro
 {
     public class ContaBancariaTeste
     {
@@ -32,7 +34,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarNomeContaValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida();
             var novoNome = new String200("Novo Banco");
 
             // Act
@@ -46,7 +48,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirNomeNulo_DeveLancarExcecao()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida();
 
             // Act & Assert
             Assert.Throws<Exception>(() => 
@@ -55,3 +57,4 @@ namespace EventoWeb.Comum.Testes.Negocio
         }
     }
 }
+

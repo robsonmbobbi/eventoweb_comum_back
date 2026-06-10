@@ -1,5 +1,9 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.InscricoesFixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.PessoasFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio
 {
@@ -9,10 +13,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoInfantilComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoComIdadeMinima(13);
-            var crianca = TestFixtures.Pessoas.CriarCrianca(idade: 10);
-            var pessoaResponsavel1 = TestFixtures.Pessoas.CriarAdulto();
-            var pessoaResponsavel2 = TestFixtures.Pessoas.CriarAdulto();
+            var evento = CriarEventoComIdadeMinima(13);
+            var crianca = CriarCrianca(idade: 10);
+            var pessoaResponsavel1 = CriarAdulto();
+            var pessoaResponsavel2 = CriarAdulto();
             var responsavel1 = new InscricaoParticipante(evento, pessoaResponsavel1, DateTime.Now);
             var responsavel2 = new InscricaoParticipante(evento, pessoaResponsavel2, DateTime.Now);
 
@@ -40,9 +44,9 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoInfantilComIdadeSuperiorAoMinimo_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoComIdadeMinima(13);
-            var pessoa = TestFixtures.Pessoas.CriarPessoaComIdade(13); // Não é criança
-            var responsavel1 = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida(evento);
+            var evento = CriarEventoComIdadeMinima(13);
+            var pessoa = CriarPessoaComIdade(13); // Não é criança
+            var responsavel1 = CriarInscricaoParticipanteValida(evento);
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => 
@@ -54,11 +58,11 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoInfantilComResponsaveisDeEventosDiferentes_DeveLancarExcecao()
         {
             // Arrange
-            var evento1 = TestFixtures.Eventos.CriarEventoValido();
-            var evento2 = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var responsavel1 = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida(evento1);
-            var responsavel2 = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida(evento2);
+            var evento1 = CriarEventoValido();
+            var evento2 = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var responsavel1 = CriarInscricaoParticipanteValida(evento1);
+            var responsavel2 = CriarInscricaoParticipanteValida(evento2);
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => 
@@ -70,9 +74,9 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoInfantilComResponsaveisDuplicados_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var responsavel = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida(evento);
+            var evento = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var responsavel = CriarInscricaoParticipanteValida(evento);
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => 
@@ -84,9 +88,9 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoInfantilComUmResponsavelApenasQuandoNaoDorme_DeveFuncionar()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var responsavel = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida(evento);
+            var evento = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var responsavel = CriarInscricaoParticipanteValida(evento);
             responsavel.DormeEvento = false;
 
             // Act
@@ -109,10 +113,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoInfantilQueDormeComResponsaveisSemDormirDeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var pessoaResponsavel1 = TestFixtures.Pessoas.CriarAdulto();
-            var pessoaResponsavel2 = TestFixtures.Pessoas.CriarAdulto();
+            var evento = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var pessoaResponsavel1 = CriarAdulto();
+            var pessoaResponsavel2 = CriarAdulto();
             var responsavel1 = new InscricaoParticipante(evento, pessoaResponsavel1, DateTime.Now);
             var responsavel2 = new InscricaoParticipante(evento, pessoaResponsavel2, DateTime.Now);
 
@@ -129,10 +133,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoInfantilQueDormeComPeloMenosUmResponsavelDormindo_DeveFuncionar()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var pessoaResponsavel1 = TestFixtures.Pessoas.CriarAdulto();
-            var pessoaResponsavel2 = TestFixtures.Pessoas.CriarAdulto();
+            var evento = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var pessoaResponsavel1 = CriarAdulto();
+            var pessoaResponsavel2 = CriarAdulto();
             var responsavel1 = new InscricaoParticipante(evento, pessoaResponsavel1, DateTime.Now);
             var responsavel2 = new InscricaoParticipante(evento, pessoaResponsavel2, DateTime.Now);
 
@@ -158,10 +162,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AceitarInscricaoInfantilComResponsaveisPendentes_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var pessoaResponsavel1 = TestFixtures.Pessoas.CriarAdulto();
-            var pessoaResponsavel2 = TestFixtures.Pessoas.CriarAdulto();
+            var evento = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var pessoaResponsavel1 = CriarAdulto();
+            var pessoaResponsavel2 = CriarAdulto();
             var responsavel1 = new InscricaoParticipante(evento, pessoaResponsavel1, DateTime.Now);
             var responsavel2 = new InscricaoParticipante(evento, pessoaResponsavel2, DateTime.Now);
 
@@ -184,10 +188,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AceitarInscricaoInfantilComResponsavelPrincipalAceito_DeveFuncionar()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var responsavel1 = TestFixtures.Inscricoes.CriarInscricaoParticipanteAceita(evento);
-            var responsavel2 = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida(evento);
+            var evento = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var responsavel1 = CriarInscricaoParticipanteAceita(evento);
+            var responsavel2 = CriarInscricaoParticipanteValida(evento);
 
             var inscricao = new InscricaoInfantil(
                 crianca,
@@ -211,10 +215,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AceitarInscricaoInfantilComResponsavelSecundarioAceito_DeveFuncionar()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var responsavel1 = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida(evento);
-            var responsavel2 = TestFixtures.Inscricoes.CriarInscricaoParticipanteAceita(evento);
+            var evento = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var responsavel1 = CriarInscricaoParticipanteValida(evento);
+            var responsavel2 = CriarInscricaoParticipanteAceita(evento);
 
             var inscricao = new InscricaoInfantil(
                 crianca,
@@ -238,10 +242,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void ReatribuirResponsaveisValidos_DeveAlterarResponsaveis()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var pessoaResponsavel1 = TestFixtures.Pessoas.CriarAdulto();
-            var pessoaResponsavel2 = TestFixtures.Pessoas.CriarAdulto();
+            var evento = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var pessoaResponsavel1 = CriarAdulto();
+            var pessoaResponsavel2 = CriarAdulto();
             var responsavel1 = new InscricaoParticipante(evento, pessoaResponsavel1, DateTime.Now);
             var responsavel2 = new InscricaoParticipante(evento, pessoaResponsavel2, DateTime.Now);
 
@@ -254,8 +258,8 @@ namespace EventoWeb.Comum.Testes.Negocio
                 false
             );
 
-            var pessoaNova1 = TestFixtures.Pessoas.CriarAdulto();
-            var pessoaNova2 = TestFixtures.Pessoas.CriarAdulto();
+            var pessoaNova1 = CriarAdulto();
+            var pessoaNova2 = CriarAdulto();
             var novoResponsavel1 = new InscricaoParticipante(evento, pessoaNova1, DateTime.Now);
             var novoResponsavel2 = new InscricaoParticipante(evento, pessoaNova2, DateTime.Now);
 
@@ -271,9 +275,9 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void ReatribuirComResponsaveisDuplicados_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var crianca = TestFixtures.Pessoas.CriarCrianca();
-            var responsavel = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida(evento);
+            var evento = CriarEventoValido();
+            var crianca = CriarCrianca();
+            var responsavel = CriarInscricaoParticipanteValida(evento);
 
             var inscricao = new InscricaoInfantil(
                 crianca,
@@ -291,3 +295,4 @@ namespace EventoWeb.Comum.Testes.Negocio
         }
     }
 }
+

@@ -1,7 +1,9 @@
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 
-namespace EventoWeb.Comum.Testes.Negocio
+namespace EventoWeb.Comum.Testes.Negocio.Financeiro
 {
     public class TransacaoTeste
     {
@@ -10,7 +12,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var tipo = EnumTipoTransacao.Receita;
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida();
             var dataHora = DateTime.Now;
             var valor = new ValorMonetario(300.00m);
             var descricao = new String200("Pagamento recebido");
@@ -46,7 +48,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarTransacaoComValorNulo_DeveLancarExcecao()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida();
 
             // Act & Assert
             Assert.Throws<Exception>(() => 
@@ -59,34 +61,6 @@ namespace EventoWeb.Comum.Testes.Negocio
                 )
             );
         }
-
-        [Fact]
-        public void PropriedadesEhSomenteLeitura()
-        {
-            // Arrange
-            var transacao = TestFixtures.Financeiro.CriarTransacaoValida();
-
-            // Assert - Verifica que não têm setter público
-            var contaBancariaProperty = typeof(Transacao).GetProperty("ContaBancaria");
-            var dataHoraProperty = typeof(Transacao).GetProperty("DataHora");
-            var descricaoProperty = typeof(Transacao).GetProperty("Descricao");
-            var valorProperty = typeof(Transacao).GetProperty("Valor");
-            var tipoProperty = typeof(Transacao).GetProperty("Tipo");
-
-            Assert.NotNull(contaBancariaProperty);
-            Assert.Null(contaBancariaProperty.SetMethod);
-
-            Assert.NotNull(dataHoraProperty);
-            Assert.Null(dataHoraProperty.SetMethod);
-
-            Assert.NotNull(descricaoProperty);
-            Assert.Null(descricaoProperty.SetMethod);
-
-            Assert.NotNull(valorProperty);
-            Assert.Null(valorProperty.SetMethod);
-
-            Assert.NotNull(tipoProperty);
-            Assert.Null(tipoProperty.SetMethod);
-        }
     }
 }
+

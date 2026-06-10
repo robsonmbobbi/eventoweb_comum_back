@@ -1,8 +1,11 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.PessoasFixtures;
 
-namespace EventoWeb.Comum.Testes.Negocio
+namespace EventoWeb.Comum.Testes.Negocio.Financeiro
 {
     public class ContaTeste
     {
@@ -10,7 +13,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarContaComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
             var tipo = EnumTipoTransacao.Receita;
             var valor = new ValorMonetario(500.00m);
             var dataVencimento = DateTime.Now.AddDays(30);
@@ -45,7 +48,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarContaComValorNulo_DeveLancarExcecao()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Act & Assert
             Assert.Throws<Exception>(() => 
@@ -57,8 +60,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AdicionarTransacaoComValorMenorQueTotalConta_DeveAdicionarSemLiquidar()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida(valor: 500.00m);
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida(valor: 500.00m);
+            var contaBancaria = CriarContaBancariaValida();
             var valorTransacao = new ValorMonetario(200.00m);
 
             // Act
@@ -74,8 +77,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AdicionarTransacaoQueAtingeValorTotalDaConta_DeveLiquidar()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida(valor: 500.00m);
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida(valor: 500.00m);
+            var contaBancaria = CriarContaBancariaValida();
             var valorTransacao = new ValorMonetario(500.00m);
 
             // Act
@@ -91,8 +94,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AdicionarTransacaoSuperandoValorTotalDaConta_DeveLiquidar()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida(valor: 500.00m);
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida(valor: 500.00m);
+            var contaBancaria = CriarContaBancariaValida();
 
             // Act
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(300.00m));
@@ -108,8 +111,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AdicionarTransacaoComDescontoJurosMulta_DeveCalcularTotais()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida();
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
 
             // Act
             conta.AdicionarTransacao(
@@ -133,8 +136,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AdicionarTransacaoEmContaLiquidada_DeveLancarExcecao()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida(valor: 100.00m);
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida(valor: 100.00m);
+            var contaBancaria = CriarContaBancariaValida();
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(100.00m));
             Assert.True(conta.Liquidado);
@@ -149,10 +152,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RemoverTransacaoExistente_DeveRemoverERecalcularTotais()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida();
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
 
-            conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(200.00m));
+            conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(150.00m));
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(300.00m));
 
             var transacao1 = conta.Transacoes.First();
@@ -169,11 +172,11 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RemoverTransacaoInexistente_DeveLancarExcecao()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida();
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(200.00m));
 
-            var outraConta = TestFixtures.Financeiro.CriarContaValida();
+            var outraConta = CriarContaValida();
             var transacaoOutra = new TransacaoConta(
                 contaBancaria,
                 outraConta,
@@ -191,8 +194,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RemoverTransacaoEmContaLiquidada_DeveLancarExcecao()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida(valor: 100.00m);
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida(valor: 100.00m);
+            var contaBancaria = CriarContaBancariaValida();
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(100.00m));
             var transacao = conta.Transacoes.First();
@@ -207,10 +210,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RemoverTransacaoRecalculaTotaisCorretamente()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida();
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
 
-            conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(200.00m), desconto: new ValorMonetario(50.00m));
+            conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(150.00m), desconto: new ValorMonetario(50.00m));
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(300.00m), desconto: new ValorMonetario(100.00m));
 
             var primeiraTransacao = conta.Transacoes.First();
@@ -228,8 +231,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void ReiniciarContaLiquidada_DeveReabrirELimparTransacoes()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida(valor: 100.00m);
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida(valor: 100.00m);
+            var contaBancaria = CriarContaBancariaValida();
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(100.00m));
             Assert.True(conta.Liquidado);
@@ -250,7 +253,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void ReiniciarContaNaoLiquidada_DeveLancarExcecao()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var conta = CriarContaValida();
             Assert.False(conta.Liquidado);
 
             // Act & Assert
@@ -263,7 +266,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarValorEmContaNaoLiquidada_DeveAlterarPropriedade()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var conta = CriarContaValida();
 
             // Act
             conta.Valor = new ValorMonetario(1000.00m);
@@ -276,8 +279,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarValorEmContaLiquidada_DeveLancarExcecao()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida(valor: 100.00m);
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var conta = CriarContaValida(valor: 100.00m);
+            var contaBancaria = CriarContaBancariaValida();
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(100.00m));
             Assert.True(conta.Liquidado);
@@ -292,7 +295,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarDescricao_DeveAlterarPropriedade()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var conta = CriarContaValida();
             var novaDescricao = new StringClob("Nova descrição");
 
             // Act
@@ -306,7 +309,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarDataVencimento_DeveAlterarPropriedade()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var conta = CriarContaValida();
             var novaData = DateTime.Now.AddDays(60);
 
             // Act
@@ -320,7 +323,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarTipo_DeveAlterarPropriedade()
         {
             // Arrange
-            var conta = TestFixtures.Financeiro.CriarContaValida(tipo: EnumTipoTransacao.Receita);
+            var conta = CriarContaValida(tipo: EnumTipoTransacao.Receita);
 
             // Act
             conta.Tipo = EnumTipoTransacao.Despesa;
@@ -330,3 +333,5 @@ namespace EventoWeb.Comum.Testes.Negocio
         }
     }
 }
+
+

@@ -17,7 +17,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
             DataCriado = DateTime.Now;
             Liquidado = false;
             DataVencimento = dataVencimento;
-            Valor = valor;
+            Valor = valor ?? throw new Exception($"{nameof(valor)} não pode ser nulo.");
             Tipo = tipo;
 
             m_Transacoes = new List<TransacaoConta>();
@@ -45,9 +45,8 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
         public virtual bool Liquidado
         {
             get => m_Liquidado;
-            set
+            protected set
             {
-                ValidarSeContaLiquidada();
                 m_Liquidado = value;
             }
         }
@@ -97,12 +96,12 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
                 throw new Exception("A conta já está liquidada");
         }
 
-        public virtual void AdicionarTransacao(ContaBancaria contaBancaria, DateTime data, ValorMonetario valorTransacao,
+        public virtual void AdicionarTransacao(ContaBancaria contaBancaria, DateTime data, ValorMonetario valorEfetivamenteRecebido,
             ValorMonetario? multa = null, ValorMonetario? juros = null, ValorMonetario? desconto = null)
         {
             ValidarSeContaLiquidada();
 
-            m_Transacoes.Add(new TransacaoConta(contaBancaria, this, data, valorTransacao, multa, juros, desconto));
+            m_Transacoes.Add(new TransacaoConta(contaBancaria, this, data, valorEfetivamenteRecebido, multa, juros, desconto));
 
             ValorTotalTransacoes = new (m_Transacoes.Sum(tc => tc.ValorTransacao.Valor));
             ValorTotalDesconto = new (m_Transacoes.Sum(tc => tc.Desconto.Valor));

@@ -30,8 +30,8 @@ public class PrecoInscricao : Entidade
 
     public virtual void AdicionarValor(FormaPagamento forma, decimal valor)
     {
-        if (m_Valores.Any(x => x.Forma.Id == forma.Id))
-            throw new Exception("Já existe um valor com aessa forma de pagamento.");
+        if (m_Valores.Any(x => x.Forma == forma))
+            throw new Exception("Já existe um valor com essa forma de pagamento.");
 
         m_Valores.Add(new PrecoInscricaoValor(this, forma, new ValorMonetario(valor)));
     }

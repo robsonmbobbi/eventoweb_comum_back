@@ -1,5 +1,9 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.InscricoesFixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.PessoasFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio
 {
@@ -9,8 +13,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoParticipanteComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var pessoa = TestFixtures.Pessoas.CriarAdulto();
+            var evento = CriarEventoValido();
+            var pessoa = CriarAdulto();
 
             // Act
             var inscricao = new InscricaoParticipante(evento, pessoa, DateTime.Now);
@@ -30,7 +34,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoParticipanteComPessoaNula_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => 
@@ -42,7 +46,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoParticipanteComEventoNulo_DeveLancarExcecao()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarAdulto();
+            var pessoa = CriarAdulto();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => 
@@ -54,8 +58,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoParticipanteComIdadeInsuficiente_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoComIdadeMinima(13);
-            var pessoa = TestFixtures.Pessoas.CriarCrianca(idade: 12);
+            var evento = CriarEventoComIdadeMinima(13);
+            var pessoa = CriarCrianca(idade: 12);
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => 
@@ -67,8 +71,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoParticipanteComIdadeIgualAoMinimo_DeveFuncionar()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoComIdadeMinima(13);
-            var pessoa = TestFixtures.Pessoas.CriarPessoaComIdade(13);
+            var evento = CriarEventoComIdadeMinima(13);
+            var pessoa = CriarPessoaComIdade(13);
 
             // Act
             var inscricao = new InscricaoParticipante(evento, pessoa, DateTime.Now);
@@ -82,8 +86,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarInscricaoParticipanteComIdadeSuperiorAoMinimo_DeveFuncionar()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoComIdadeMinima(13);
-            var pessoa = TestFixtures.Pessoas.CriarPessoaComIdade(25);
+            var evento = CriarEventoComIdadeMinima(13);
+            var pessoa = CriarPessoaComIdade(25);
 
             // Act
             var inscricao = new InscricaoParticipante(evento, pessoa, DateTime.Now);
@@ -96,7 +100,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirTipoParticipanteValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
 
             // Act
             inscricao.Tipo = EnumTipoParticipante.Participante;
@@ -109,7 +113,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirInstituicoesEspiritasFrequenta_DeveAlterarPropriedade()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
             var instituicoes = new String300("Instituição A");
 
             // Act
@@ -123,7 +127,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void InstituicoesEspiritasFrequentaNuloEhValido()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
             inscricao.InstituicoesEspiritasFrequenta = new String300("Instituição A");
 
             // Act
@@ -137,7 +141,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirNomeCracha_DeveAlterarPropriedade()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
             var nomeCracha = new String200("João da Silva");
 
             // Act
@@ -151,7 +155,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirObservacoes_DeveAlterarPropriedade()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
             var observacoes = new StringClob("Observação de teste");
 
             // Act
@@ -165,7 +169,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirDormeEvento_DeveAlterarPropriedade()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
 
             // Act
             inscricao.DormeEvento = false;
@@ -178,7 +182,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirConfirmadoNoEvento_DeveAlterarPropriedade()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
 
             // Act
             inscricao.ConfirmadoNoEvento = true;
@@ -191,7 +195,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void TornarInscricaoPendente_DeveAlterarSituacao()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
             Assert.Equal(EnumSituacaoInscricao.Limbo, inscricao.Situacao);
 
             // Act
@@ -205,7 +209,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void TornarPendenteAPartirDeNaoLimbo_DeveLancarExcecao()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteEmPendente();
+            var inscricao = CriarInscricaoParticipanteEmPendente();
 
             // Act & Assert
             Assert.Throws<Exception>(() => inscricao.TornarPendente());
@@ -215,7 +219,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AceitarInscricao_DeveAlterarSituacao()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteEmPendente();
+            var inscricao = CriarInscricaoParticipanteEmPendente();
             inscricao.Tipo = EnumTipoParticipante.Participante;
 
             // Act
@@ -229,7 +233,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AceitarSemDefinirTipo_DeveLancarExcecao()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteEmPendente();
+            var inscricao = CriarInscricaoParticipanteEmPendente();
             // Tipo não foi definido, permanece null
 
             // Act & Assert
@@ -240,7 +244,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AceitarAPartirDeNaoPendente_DeveLancarExcecao()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
+            inscricao.Tipo = EnumTipoParticipante.Participante;
             // Permanece em Limbo
 
             // Act & Assert
@@ -251,7 +256,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RejeitarInscricao_DeveAlterarSituacao()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteEmPendente();
+            var inscricao = CriarInscricaoParticipanteEmPendente();
 
             // Act
             inscricao.Rejeitar();
@@ -264,7 +269,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RejeitarAPartirDeNaoPendente_DeveLancarExcecao()
         {
             // Arrange
-            var inscricao = TestFixtures.Inscricoes.CriarInscricaoParticipanteValida();
+            var inscricao = CriarInscricaoParticipanteValida();
             // Permanece em Limbo
 
             // Act & Assert
@@ -272,3 +277,4 @@ namespace EventoWeb.Comum.Testes.Negocio
         }
     }
 }
+

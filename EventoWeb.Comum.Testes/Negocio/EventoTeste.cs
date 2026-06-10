@@ -1,5 +1,8 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.ArquivosFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio
 {
@@ -76,7 +79,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarNomeValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
             var novoNome = new String200("Novo Nome");
 
             // Act
@@ -90,7 +93,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirNomeNuloAoSetter_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => evento.Nome = null);
@@ -100,7 +103,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarPeriodoInscricaoValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
             var novoPeriodo = new Periodo(
                 DateTime.Now.AddDays(10),
                 DateTime.Now.AddDays(40)
@@ -117,7 +120,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirPeriodoInscricaoNuloAoSetter_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => evento.PeriodoInscricaoOnLine = null);
@@ -127,7 +130,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarPeriodoRealizacaoValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
             var novoPeriodo = new Periodo(
                 DateTime.Now.AddDays(50),
                 DateTime.Now.AddDays(60)
@@ -144,7 +147,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirPeriodoRealizacaoNuloAoSetter_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => evento.PeriodoRealizacaoEvento = null);
@@ -154,8 +157,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirLogotipo_DeveAlterarPropriedade()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            var logotipo = TestFixtures.Arquivos.CriarImagemPNG();
+            var evento = CriarEventoValido();
+            var logotipo = CriarImagemPNG();
 
             // Act
             evento.Logotipo = logotipo;
@@ -168,8 +171,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void LogotipoNuloEhValido()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
-            evento.Logotipo = TestFixtures.Arquivos.CriarImagemPNG();
+            var evento = CriarEventoValido();
+            evento.Logotipo = CriarImagemPNG();
 
             // Act
             evento.Logotipo = null;
@@ -182,7 +185,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirRegulamento_DeveAlterarPropriedade()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
             var regulamento = new StringClob("Texto do regulamento do evento");
 
             // Act
@@ -196,7 +199,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RegulamentoNuloEhValido()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
             evento.Regulamento = new StringClob("Texto do regulamento");
 
             // Act
@@ -210,7 +213,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarIdadeMinimaInscricao_DeveAlterarPropriedade()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
 
             // Act
             evento.IdadeMinimaInscricaoAdulto = new InteiroPositivo(18);
@@ -241,7 +244,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void DataRegistroEhSomenteLeitura()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
             var propriedade = typeof(Evento).GetProperty("DataRegistro");
 
             // Assert - Verifica que não tem setter público
@@ -250,3 +253,5 @@ namespace EventoWeb.Comum.Testes.Negocio
         }
     }
 }
+
+

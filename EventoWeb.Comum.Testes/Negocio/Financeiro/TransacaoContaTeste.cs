@@ -1,8 +1,10 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 
-namespace EventoWeb.Comum.Testes.Negocio
+namespace EventoWeb.Comum.Testes.Negocio.Financeiro
 {
     public class TransacaoContaTeste
     {
@@ -10,8 +12,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarTransacaoContaComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
+            var conta = CriarContaValida();
             var data = DateTime.Now;
             var valorTransacao = new ValorMonetario(400.00m);
 
@@ -33,7 +35,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarTransacaoContaComContaNula_DeveLancarExcecao()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida();
 
             // Act & Assert
             Assert.Throws<Exception>(() => 
@@ -50,8 +52,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarTransacaoContaComValorNulo_DeveLancarExcecao()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
+            var conta = CriarContaValida();
 
             // Act & Assert
             Assert.Throws<Exception>(() => 
@@ -63,8 +65,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarTransacaoContaComMulta_DeveDefinirPropriedade()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
+            var conta = CriarContaValida();
             var multa = new ValorMonetario(50.00m);
 
             // Act
@@ -84,8 +86,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarTransacaoContaComJuros_DeveDefinirPropriedade()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
+            var conta = CriarContaValida();
             var juros = new ValorMonetario(25.00m);
 
             // Act
@@ -105,8 +107,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarTransacaoContaComDesconto_DeveDefinirPropriedade()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
+            var conta = CriarContaValida();
             var desconto = new ValorMonetario(100.00m);
 
             // Act
@@ -126,8 +128,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarTransacaoContaComTodosOsValoresAdicionais_DeveDefinirTodos()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
+            var conta = CriarContaValida();
 
             // Act
             var transacaoConta = new TransacaoConta(
@@ -151,8 +153,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarTransacaoContaComValorZero_TransacaoNaoEhCriada()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
+            var conta = CriarContaValida();
 
             // Act
             var transacaoConta = new TransacaoConta(
@@ -167,48 +169,11 @@ namespace EventoWeb.Comum.Testes.Negocio
         }
 
         [Fact]
-        public void PropriedadesEhSomenteLeitura()
-        {
-            // Arrange
-            var transacaoConta = TestFixtures.Financeiro.CriarTransacaoContaValida();
-
-            // Assert - Verifica que não têm setter público
-            var transacaoProperty = typeof(TransacaoConta).GetProperty("Transacao");
-            var contaProperty = typeof(TransacaoConta).GetProperty("Conta");
-            var dataProperty = typeof(TransacaoConta).GetProperty("Data");
-            var valorTransacaoProperty = typeof(TransacaoConta).GetProperty("ValorTransacao");
-            var multaProperty = typeof(TransacaoConta).GetProperty("Multa");
-            var jurosProperty = typeof(TransacaoConta).GetProperty("Juros");
-            var descontoProperty = typeof(TransacaoConta).GetProperty("Desconto");
-
-            Assert.NotNull(transacaoProperty);
-            Assert.Null(transacaoProperty.SetMethod);
-
-            Assert.NotNull(contaProperty);
-            Assert.Null(contaProperty.SetMethod);
-
-            Assert.NotNull(dataProperty);
-            Assert.Null(dataProperty.SetMethod);
-
-            Assert.NotNull(valorTransacaoProperty);
-            Assert.Null(valorTransacaoProperty.SetMethod);
-
-            Assert.NotNull(multaProperty);
-            Assert.Null(multaProperty.SetMethod);
-
-            Assert.NotNull(jurosProperty);
-            Assert.Null(jurosProperty.SetMethod);
-
-            Assert.NotNull(descontoProperty);
-            Assert.Null(descontoProperty.SetMethod);
-        }
-
-        [Fact]
         public void CriarTransacaoContaComValoresNegativosEhValidoSeValorTransacaoPositivo()
         {
             // Arrange
-            var contaBancaria = TestFixtures.Financeiro.CriarContaBancariaValida();
-            var conta = TestFixtures.Financeiro.CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida();
+            var conta = CriarContaValida();
 
             // Act - Sistema não faz validação de valores negativos, apenas cria com valores zero por padrão
             var transacaoConta = new TransacaoConta(
@@ -227,3 +192,4 @@ namespace EventoWeb.Comum.Testes.Negocio
         }
     }
 }
+

@@ -1,6 +1,8 @@
 using EventoWeb.Comum.Negocio;
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.PessoasFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio
 {
@@ -192,7 +194,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarPessoaComDadosValidos_DeveTerValoresPadrao()
         {
             // Arrange & Act
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Assert
             Assert.NotNull(pessoa);
@@ -211,7 +213,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirCPFNuloAoSetter_DeveLancarExcecao()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => pessoa.CPF = null);
@@ -221,7 +223,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirNomeNuloAoSetter_DeveLancarExcecao()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => pessoa.Nome = null);
@@ -231,7 +233,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirEmailNuloAoSetter_DeveLancarExcecao()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => pessoa.Email = null);
@@ -241,7 +243,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirCelularNuloAoSetter_DeveLancarExcecao()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => pessoa.CelularWP = null);
@@ -251,7 +253,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirSexoValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Act
             pessoa.Sexo = EnumSexo.Masculino;
@@ -264,7 +266,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirDataNascimentoValida_DeveAlterarPropriedade()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
             var data = new DataAniversario(new DateTime(1990, 6, 15));
 
             // Act
@@ -279,7 +281,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirBooleanoEhVegetariano_DeveAlterarPropriedade()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Act
             pessoa.EhVegetariano = true;
@@ -292,7 +294,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirBooleanoEhDiabetico_DeveAlterarPropriedade()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Act
             pessoa.EhDiabetico = true;
@@ -305,7 +307,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirBooleanoUsaAdocanteDiariamente_DeveAlterarPropriedade()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
 
             // Act
             pessoa.UsaAdocanteDiariamente = true;
@@ -318,7 +320,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void SexoNuloEhValido()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
             pessoa.Sexo = EnumSexo.Masculino;
 
             // Act
@@ -332,7 +334,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void DataNascimentoNulaEhValida()
         {
             // Arrange
-            var pessoa = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa = CriarPessoaValida();
             pessoa.DataNascimento = new DataAniversario(new DateTime(1990, 6, 15));
 
             // Act
@@ -346,7 +348,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void DuasPessoasSemIdSaoMesmaReferencia()
         {
             // Arrange
-            var pessoa1 = TestFixtures.Pessoas.CriarPessoaValida();
+            var pessoa1 = CriarPessoaValida();
 
             // Act & Assert
             Assert.Equal(pessoa1, pessoa1);

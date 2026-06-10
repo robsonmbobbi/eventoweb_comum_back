@@ -1,5 +1,8 @@
 using EventoWeb.Comum.Negocio.Entidades;
 
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.ArquivosFixtures;
+
 namespace EventoWeb.Comum.Testes.Negocio
 {
     public class ArquivoBinarioTeste
@@ -28,7 +31,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarArquivoBinarioComTipoImagemPNG_DeveDefinirCorretamente()
         {
             // Arrange
-            var arquivo = TestFixtures.Arquivos.CriarImagemPNG();
+            var arquivo = CriarImagemPNG();
 
             // Act & Assert
             Assert.Equal(EnumTipoArquivoBinario.ImagemPNG, arquivo.Tipo);
@@ -38,7 +41,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarArquivoBinarioComTipoImagemJPEG_DeveDefinirCorretamente()
         {
             // Arrange
-            var arquivo = TestFixtures.Arquivos.CriarImagemJPEG();
+            var arquivo = CriarImagemJPEG();
 
             // Act & Assert
             Assert.Equal(EnumTipoArquivoBinario.ImagemJPEG, arquivo.Tipo);
@@ -66,7 +69,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarArquivoValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var arquivoBinario = TestFixtures.Arquivos.CriarArquivoBinarioValido(100);
+            var arquivoBinario = CriarArquivoBinarioValido(100);
             var novoArquivo = new byte[50];
 
             // Act
@@ -80,7 +83,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirArquivoNulo_DeveLancarExcecao()
         {
             // Arrange
-            var arquivoBinario = TestFixtures.Arquivos.CriarArquivoBinarioValido();
+            var arquivoBinario = CriarArquivoBinarioValido();
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => 
@@ -92,7 +95,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirArquivoVazio_DeveLancarExcecao()
         {
             // Arrange
-            var arquivoBinario = TestFixtures.Arquivos.CriarArquivoBinarioValido();
+            var arquivoBinario = CriarArquivoBinarioValido();
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => 
@@ -104,7 +107,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarTipoValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var arquivoBinario = TestFixtures.Arquivos.CriarArquivoBinarioValido();
+            var arquivoBinario = CriarArquivoBinarioValido();
 
             // Act
             arquivoBinario.Tipo = EnumTipoArquivoBinario.ImagemJPEG;
@@ -117,10 +120,11 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarArquivoBinarioPDF_DeveDefinirTipoPDF()
         {
             // Arrange
-            var arquivo = TestFixtures.Arquivos.CriarPDF();
+            var arquivo = CriarPDF();
 
             // Assert
             Assert.Equal(EnumTipoArquivoBinario.PDF, arquivo.Tipo);
         }
     }
 }
+

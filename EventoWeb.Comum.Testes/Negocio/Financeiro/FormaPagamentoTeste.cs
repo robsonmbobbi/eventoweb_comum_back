@@ -1,7 +1,9 @@
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.PrecosFixtures;
 
-namespace EventoWeb.Comum.Testes.Negocio
+namespace EventoWeb.Comum.Testes.Negocio.Financeiro
 {
     public class FormaPagamentoTeste
     {
@@ -37,7 +39,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarNomeValido_DeveAlterarPropriedade()
         {
             // Arrange
-            var formaPagamento = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var formaPagamento = CriarFormaPagamentoValida();
             var novoNome = new String200("PIX");
 
             // Act
@@ -51,7 +53,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirNomeNulo_DeveLancarExcecao()
         {
             // Arrange
-            var formaPagamento = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var formaPagamento = CriarFormaPagamentoValida();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => 
@@ -63,7 +65,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarTipoPagamento_DeveAlterarPropriedade()
         {
             // Arrange
-            var formaPagamento = TestFixtures.Precos.CriarFormaPagamentoValida(tipo: EnumTipoPagamento.CartaoCredito);
+            var formaPagamento = CriarFormaPagamentoValida(tipoPagamento: EnumTipoPagamento.CartaoCredito);
 
             // Act
             formaPagamento.Tipo = EnumTipoPagamento.PIX;
@@ -76,7 +78,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void DefinirParcelasValidas_DeveAlterarPropriedade()
         {
             // Arrange
-            var formaPagamento = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var formaPagamento = CriarFormaPagamentoValida();
             var novasParcelas = new IntervaloInteiroPositivo(1, 12);
 
             // Act
@@ -92,7 +94,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void DefinirParcelasNula_DeveLancarExcecao()
         {
             // Arrange
-            var formaPagamento = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var formaPagamento = CriarFormaPagamentoValida();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => 
@@ -104,7 +106,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarFormaPagamentoComTipoCaraodCredito_DeveDefinirCorreatamente()
         {
             // Arrange & Act
-            var formaPagamento = TestFixtures.Precos.CriarFormaPagamentoValida(tipo: EnumTipoPagamento.CartaoCredito);
+            var formaPagamento = CriarFormaPagamentoValida(tipoPagamento: EnumTipoPagamento.CartaoCredito);
 
             // Assert
             Assert.Equal(EnumTipoPagamento.CartaoCredito, formaPagamento.Tipo);
@@ -114,10 +116,12 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarFormaPagamentoComTipoPIX_DeveDefinirCorretamente()
         {
             // Arrange & Act
-            var formaPagamento = TestFixtures.Precos.CriarFormaPagamentoValida(tipo: EnumTipoPagamento.PIX);
+            var formaPagamento = CriarFormaPagamentoValida(tipoPagamento: EnumTipoPagamento.PIX);
 
             // Assert
             Assert.Equal(EnumTipoPagamento.PIX, formaPagamento.Tipo);
         }
     }
 }
+
+

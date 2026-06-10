@@ -9,12 +9,12 @@ namespace EventoWeb.Comum.Negocio.Entidades.Notificacoes
 
         public ModeloMensagemNotificacao(Evento evento, EnumMeioNotificacao meio, EnumTipoNotificacao tipo, StringClob mensagem, String200? assunto, String200 nome)
         {
-            Evento = evento;
+            Evento = evento ?? throw new ArgumentNullException(nameof(evento));
             Meio = meio;
             Tipo = tipo;
-            Mensagem = mensagem;
+            Mensagem = mensagem ?? throw new ArgumentNullException(nameof(mensagem));
             Assunto = assunto;
-            Nome = nome;
+            Nome = nome ?? throw new ArgumentNullException(nameof(nome));
             Ativo = true;
         }
 

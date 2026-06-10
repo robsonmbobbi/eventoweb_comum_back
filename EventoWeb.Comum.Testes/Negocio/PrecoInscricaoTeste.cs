@@ -1,6 +1,10 @@
 using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 
+using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.PrecosFixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
+
 namespace EventoWeb.Comum.Testes.Negocio
 {
     public class PrecoInscricaoTeste
@@ -9,7 +13,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarPrecoInscricaoComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
             var idadeMax = new InteiroPositivo(17);
 
             // Act
@@ -38,7 +42,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void CriarPrecoInscricaoComIdadeMaxNula_DeveLancarExcecao()
         {
             // Arrange
-            var evento = TestFixtures.Eventos.CriarEventoValido();
+            var evento = CriarEventoValido();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => 
@@ -50,8 +54,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AdicionarValorComDadosValidos_DeveAdicionarALista()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma = CriarFormaPagamentoValida();
 
             // Act
             precoInscricao.AdicionarValor(forma, 150.00m);
@@ -66,10 +70,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AdicionarMultiplosValoresComFormasPagementoDiferentes_DeveAdicionarTodos()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma1 = TestFixtures.Precos.CriarFormaPagamentoValida("Cartão de Crédito");
-            var forma2 = TestFixtures.Precos.CriarFormaPagamentoValida("Boleto");
-            var forma3 = TestFixtures.Precos.CriarFormaPagamentoValida("PIX");
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma1 = CriarFormaPagamentoValida("Cartão de Crédito");
+            var forma2 = CriarFormaPagamentoValida("Boleto");
+            var forma3 = CriarFormaPagamentoValida("PIX");
 
             // Act
             precoInscricao.AdicionarValor(forma1, 100.00m);
@@ -84,8 +88,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AdicionarValorParaMesmaFormaPagamentoDuasVezes_DeveLancarExcecao()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma = CriarFormaPagamentoValida();
 
             precoInscricao.AdicionarValor(forma, 150.00m);
 
@@ -99,9 +103,9 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RemoverValorExistente_DeveRemoverDaLista()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma1 = TestFixtures.Precos.CriarFormaPagamentoValida("Cartão de Crédito");
-            var forma2 = TestFixtures.Precos.CriarFormaPagamentoValida("Boleto");
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma1 = CriarFormaPagamentoValida("Cartão de Crédito");
+            var forma2 = CriarFormaPagamentoValida("Boleto");
 
             precoInscricao.AdicionarValor(forma1, 100.00m);
             precoInscricao.AdicionarValor(forma2, 105.00m);
@@ -120,13 +124,13 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RemoverValorInexistente_DeveLancarExcecao()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma = TestFixtures.Precos.CriarFormaPagamentoValida();
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma = CriarFormaPagamentoValida();
             precoInscricao.AdicionarValor(forma, 150.00m);
 
             var outroPreco = new PrecoInscricaoValor(
                 precoInscricao,
-                TestFixtures.Precos.CriarFormaPagamentoValida("Outra Forma"),
+                CriarFormaPagamentoValida("Outra Forma"),
                 new ValorMonetario(200.00m)
             );
 
@@ -140,10 +144,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void RemoverTodosOsValores_DeveEsvaziarLista()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
-            var forma1 = TestFixtures.Precos.CriarFormaPagamentoValida("Forma 1");
-            var forma2 = TestFixtures.Precos.CriarFormaPagamentoValida("Forma 2");
-            var forma3 = TestFixtures.Precos.CriarFormaPagamentoValida("Forma 3");
+            var precoInscricao = CriarPrecoInscricaoValido();
+            var forma1 = CriarFormaPagamentoValida("Forma 1");
+            var forma2 = CriarFormaPagamentoValida("Forma 2");
+            var forma3 = CriarFormaPagamentoValida("Forma 3");
 
             precoInscricao.AdicionarValor(forma1, 100.00m);
             precoInscricao.AdicionarValor(forma2, 105.00m);
@@ -165,7 +169,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AlterarIdadeMaxValida_DeveAlterarPropriedade()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
+            var precoInscricao = CriarPrecoInscricaoValido();
 
             // Act
             precoInscricao.IdadeMax = new InteiroPositivo(25);
@@ -178,7 +182,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         public void AtribuirIdadeMaxNula_DeveLancarExcecao()
         {
             // Arrange
-            var precoInscricao = TestFixtures.Precos.CriarPrecoInscricaoValido();
+            var precoInscricao = CriarPrecoInscricaoValido();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => 
@@ -187,3 +191,5 @@ namespace EventoWeb.Comum.Testes.Negocio
         }
     }
 }
+
+
