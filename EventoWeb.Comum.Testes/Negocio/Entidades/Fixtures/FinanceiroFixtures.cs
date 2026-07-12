@@ -2,6 +2,7 @@ using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.ObjetosValor;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
 using static EventoWeb.Comum.Testes.Negocio.Fixtures.PessoasFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio.Fixtures
@@ -11,21 +12,25 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
     /// </summary>
     public static class FinanceiroFixtures
     {
-        public static ContaBancaria CriarContaBancariaValida(string nome = "Banco Brasil - Corrente")
+        public static ContaBancaria CriarContaBancariaValida(string nome = "Banco Brasil - Corrente", Evento? evento = null)
         {
-            return new ContaBancaria(new String200(nome));
+            evento ??= CriarEventoValido();
+            return new ContaBancaria(evento, new String200(nome));
         }
 
         public static Conta CriarContaValida(
             Pessoa? pessoa = null,
             EnumTipoTransacao tipo = EnumTipoTransacao.Receita,
             decimal valor = 500.00m,
-            DateTime? dataVencimento = null)
+            DateTime? dataVencimento = null,
+            Evento? evento = null)
         {
             pessoa ??= CriarPessoaValida();
+            evento ??= CriarEventoValido();
             dataVencimento ??= DateTime.Now.AddDays(30);
 
             return new Conta(
+                evento,
                 pessoa,
                 tipo,
                 new ValorMonetario(valor),
@@ -37,12 +42,15 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
             ContaBancaria? contaBancaria = null,
             EnumTipoTransacao tipo = EnumTipoTransacao.Receita,
             decimal valor = 300.00m,
-            string? descricao = null)
+            string? descricao = null,
+            Evento? evento = null)
         {
-            contaBancaria ??= CriarContaBancariaValida();
+            contaBancaria ??= CriarContaBancariaValida(evento: evento);
+            evento ??= contaBancaria.Evento;
             descricao ??= "Pagamento recebido";
 
             return new Transacao(
+                evento,
                 tipo,
                 contaBancaria,
                 DateTime.Now,
@@ -61,7 +69,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
             conta ??= CriarContaValida();
 
             return new TransacaoConta(
-                CriarContaBancariaValida(),
+                CriarContaBancariaValida(evento: conta.Evento),
                 conta,
                 DateTime.Now,
                 new ValorMonetario(valorTransacao),
@@ -81,11 +89,14 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
         public static IntegradorFinanceiro CriarIntegradorFinanceiroValido(
             ContaBancaria? contaBancaria = null,
             string tokenAcesso = "token_teste_123",
-            EnumIntegracaoExterna integracaoExterna = EnumIntegracaoExterna.Asaas)
+            EnumIntegracaoExterna integracaoExterna = EnumIntegracaoExterna.Asaas,
+            Evento? evento = null)
         {
-            contaBancaria ??= CriarContaBancariaValida();
+            evento ??= CriarEventoValido();
+            contaBancaria ??= CriarContaBancariaValida(evento: evento);
 
             return new IntegradorFinanceiro(
+                evento,
                 contaBancaria,
                 new String1000(tokenAcesso),
                 integracaoExterna
@@ -99,7 +110,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
             integrador ??= CriarIntegradorFinanceiroValido();
             formaPagamento ??= CriarFormaPagamentoValida();
 
-            return new IntegracaoFinanceiraPorFormaPag(integrador, formaPagamento);
+            return new IntegracaoFinanceiraPorFormaPag(integrador.Evento, integrador, formaPagamento);
         }
 
         public static RegistroIntegracaoFinanceira CriarRegistroIntegracaoFinanceiraValida(
@@ -111,9 +122,10 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
             int? numeroParcelas = null)
         {
             integrador ??= CriarIntegradorFinanceiroValido();
-            conta ??= CriarContaValida();
+            conta ??= CriarContaValida(evento: integrador.Evento);
 
             return new RegistroIntegracaoFinanceira(
+                integrador.Evento,
                 integrador,
                 conta,
                 new ValorMonetario(valor),

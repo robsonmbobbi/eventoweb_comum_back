@@ -14,7 +14,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos
 
         public void Notificar(Pedido pedido, DadosRetornoIntegracaoExterna? dadosRetorno)
         {
-            var modelos = m_ModelosNotificacao.ListarPorTipo(pedido.Inscricoes.First().Evento.Id, EnumTipoNotificacao.PedidoRealizado);
+            var modelos = m_ModelosNotificacao.ListarPorTipo(pedido.Evento.Id, EnumTipoNotificacao.PedidoRealizado);
             foreach (var modelo in modelos)
             {
                 var destinatario = "";
@@ -59,7 +59,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos
                         JsonSerializer.Serialize(
                             new
                             {
-                                NomeEvento = pedido.Inscricoes.First().Evento.Nome.Valor,
+                                NomeEvento = pedido.Evento.Nome.Valor,
                                 pedido.Valor.Valor,
                                 TipoPedido = tipoPedido,
                                 TipoTransacao = tipoTransacao,

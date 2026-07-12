@@ -1,4 +1,5 @@
-﻿using EventoWeb.Comum.Negocio.ObjetosValor;
+﻿using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 
 namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 {
@@ -6,12 +7,15 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
     {
         private String200 m_NomeConta;
 
-        public ContaBancaria(String200 nomeConta)
+        public ContaBancaria(Evento evento, String200 nomeConta)
         {
+            Evento = evento ?? throw new Exception($"{nameof(Evento)} não pode ser nulo");
             NomeConta = nomeConta;
         }
 
         protected ContaBancaria() { }
+
+        public virtual Evento Evento { get; protected set; }
 
         public virtual String200 NomeConta 
         {

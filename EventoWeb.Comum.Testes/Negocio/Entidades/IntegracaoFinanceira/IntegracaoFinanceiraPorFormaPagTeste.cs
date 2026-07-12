@@ -1,6 +1,7 @@
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
 using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
@@ -15,7 +16,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
             var formaPagamento = CriarFormaPagamentoValida();
 
             // Act
-            var integracao = new IntegracaoFinanceiraPorFormaPag(integrador, formaPagamento);
+            var integracao = new IntegracaoFinanceiraPorFormaPag(integrador.Evento, integrador, formaPagamento);
 
             // Assert
             Assert.NotNull(integracao);
@@ -31,7 +32,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                new IntegracaoFinanceiraPorFormaPag(null, formaPagamento)
+                new IntegracaoFinanceiraPorFormaPag(CriarEventoValido(), null, formaPagamento)
             );
         }
 
@@ -43,7 +44,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                new IntegracaoFinanceiraPorFormaPag(integrador, null)
+                new IntegracaoFinanceiraPorFormaPag(integrador.Evento, integrador, null)
             );
         }
     }

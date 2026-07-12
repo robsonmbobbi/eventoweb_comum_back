@@ -1,4 +1,5 @@
-﻿using EventoWeb.Comum.Negocio.Entidades.Financeiro;
+﻿using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace EventoWeb.Comum.Negocio.Repositorios
 {
     public interface IIntegracaoFinanceiraPorFormasPagamentos : IPersistencia<IntegracaoFinanceiraPorFormaPag>
     {
-        IntegracaoFinanceiraPorFormaPag ObterPorFormaPagamento(FormaPagamento forma);
+        IntegracaoFinanceiraPorFormaPag ObterPorFormaPagamento(Evento evento, FormaPagamento forma);
     }
 }

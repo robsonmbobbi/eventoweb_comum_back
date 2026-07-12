@@ -14,6 +14,7 @@ public class AppPedidoInclusao : AppBase
     private readonly IInscricoes m_Inscricoes;
     private readonly IPedidos m_Pedidos;
     private readonly IPessoas m_Pessoas;
+    private readonly IEventos m_Eventos;
     private readonly IFormasPagamento m_FormasPagamento;
     private readonly IIntegracaoFinanceiraPorFormasPagamentos m_Integracoes;
     private readonly IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> m_IntegracoesExternas;
@@ -25,6 +26,7 @@ public class AppPedidoInclusao : AppBase
         IContexto contexto, 
         IInscricoes inscricoes,
         IPedidos pedidos,
+        IEventos eventos,
         IFormasPagamento formasPagamento,
         IPessoas pessoas,
         IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, 
@@ -35,6 +37,7 @@ public class AppPedidoInclusao : AppBase
     {
         m_Inscricoes = inscricoes;
         m_Pedidos = pedidos;
+        m_Eventos = eventos;
         m_Pessoas = pessoas;
         m_FormasPagamento = formasPagamento;
         m_IntegracoesExternas = integracoesExternas;
@@ -49,6 +52,9 @@ public class AppPedidoInclusao : AppBase
         DTOResultadoPedido? resultado = null;
         ExecutarSeguramente(() =>
         {
+            var evento = m_Eventos.Obter(dtoPedido.IdEvento) ??
+                throw new Exception($"Evento não encontrado com o id {dtoPedido.IdEvento}");
+
             var pessoa = GerenciarPessoa(dtoPedido);
             FormaPagamento? forma = null;
 
@@ -59,10 +65,14 @@ public class AppPedidoInclusao : AppBase
                     : throw new Exception("Forma de pagamento deve ser informada para pedidos do tipo débito.");
             }
             
+            var inscricoes = dtoPedido.IdsInscricoes.Select(id =>
+                    m_Inscricoes.Obter(id) ?? throw new Exception($"Inscrição não encontrada com o id {id}"))
+                .ToList();
+
             var pedido = new Pedido(
+                evento,
                 pessoa,
-                dtoPedido.IdsInscricoes.Select(id =>
-                    m_Inscricoes.Obter(id) ?? throw new Exception($"Inscrição não encontrada com o id {id}")),
+                inscricoes,
                 new ValorMonetario(dtoPedido.Valor),
                 dtoPedido.Tipo,
                 forma,
@@ -83,6 +93,7 @@ public class AppPedidoInclusao : AppBase
             resultado = new DTOResultadoPedido
             {
                 IdPedido = pedido.Id,
+                IdEvento = pedido.Evento.Id,
                 Valor = pedido.Valor.Valor,
                 Tipo = pedido.Tipo,
                 IdFormaPagamento = pedido.FormaPagamento?.Id

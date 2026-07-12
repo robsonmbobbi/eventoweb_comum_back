@@ -2,6 +2,7 @@ using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
 using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
@@ -13,13 +14,13 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
         {
             // Arrange
             var integrador = CriarIntegradorFinanceiroValido();
-            var conta = CriarContaValida();
+            var conta = CriarContaValida(evento: integrador.Evento);
             var valor = new ValorMonetario(150.00m);
             var tipo = EnumTipoPagamento.CartaoCredito;
             var identificacao = new String1000("INTEG_001");
 
             // Act
-            var registro = new RegistroIntegracaoFinanceira(integrador, conta, valor, tipo, identificacao);
+            var registro = new RegistroIntegracaoFinanceira(integrador.Evento, integrador, conta, valor, tipo, identificacao);
 
             // Assert
             Assert.NotNull(registro);
@@ -40,7 +41,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                new RegistroIntegracaoFinanceira(null, conta, valor, EnumTipoPagamento.CartaoCredito, identificacao)
+                new RegistroIntegracaoFinanceira(CriarEventoValido(), null, conta, valor, EnumTipoPagamento.CartaoCredito, identificacao)
             );
         }
 
@@ -54,7 +55,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                new RegistroIntegracaoFinanceira(integrador, null, valor, EnumTipoPagamento.CartaoCredito, identificacao)
+                new RegistroIntegracaoFinanceira(integrador.Evento, integrador, null, valor, EnumTipoPagamento.CartaoCredito, identificacao)
             );
         }
 
@@ -63,12 +64,12 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
         {
             // Arrange
             var integrador = CriarIntegradorFinanceiroValido();
-            var conta = CriarContaValida();
+            var conta = CriarContaValida(evento: integrador.Evento);
             var identificacao = new String1000("INTEG_001");
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                new RegistroIntegracaoFinanceira(integrador, conta, null, EnumTipoPagamento.CartaoCredito, identificacao)
+                new RegistroIntegracaoFinanceira(integrador.Evento, integrador, conta, null, EnumTipoPagamento.CartaoCredito, identificacao)
             );
         }
 
@@ -77,12 +78,12 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
         {
             // Arrange
             var integrador = CriarIntegradorFinanceiroValido();
-            var conta = CriarContaValida();
+            var conta = CriarContaValida(evento: integrador.Evento);
             var valor = new ValorMonetario(150.00m);
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                new RegistroIntegracaoFinanceira(integrador, conta, valor, EnumTipoPagamento.CartaoCredito, null)
+                new RegistroIntegracaoFinanceira(integrador.Evento, integrador, conta, valor, EnumTipoPagamento.CartaoCredito, null)
             );
         }
 
@@ -101,7 +102,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
         {
             // Arrange
             var registro = CriarRegistroIntegracaoFinanceiraValida();
-            var transacao = CriarTransacaoValida();
+            var transacao = CriarTransacaoValida(evento: registro.Evento);
 
             // Act
             registro.Concluir(transacao);
@@ -168,7 +169,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
         {
             // Arrange
             var registro = CriarRegistroIntegracaoFinanceiraValida();
-            var transacao = CriarTransacaoValida();
+            var transacao = CriarTransacaoValida(evento: registro.Evento);
             registro.Concluir(transacao);
 
             // Act & Assert
@@ -182,7 +183,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
         {
             // Arrange
             var registro = CriarRegistroIntegracaoFinanceiraValida();
-            var transacao = CriarTransacaoValida();
+            var transacao = CriarTransacaoValida(evento: registro.Evento);
             registro.Concluir(transacao);
 
             // Act & Assert

@@ -4,6 +4,7 @@ namespace EventoWeb.Comum.Aplicacao.Pedidos;
 
 public class DTOPedidoInclusao
 {
+    public int IdEvento { get; set; }
     public IList<int> IdsInscricoes { get; set; }
     public decimal Valor { get; set; }
     public EnumTipoPedido Tipo { get; set; }

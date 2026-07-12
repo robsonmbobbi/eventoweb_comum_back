@@ -1,6 +1,7 @@
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
 using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio.Financeiro
@@ -11,14 +12,15 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
+            var evento = CriarEventoValido();
             var tipo = EnumTipoTransacao.Receita;
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: evento);
             var dataHora = DateTime.Now;
             var valor = new ValorMonetario(300.00m);
             var descricao = new String200("Pagamento recebido");
 
             // Act
-            var transacao = new Transacao(tipo, contaBancaria, dataHora, valor, descricao);
+            var transacao = new Transacao(evento, tipo, contaBancaria, dataHora, valor, descricao);
 
             // Assert
             Assert.NotNull(transacao);
@@ -35,6 +37,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
             // Arrange & Act & Assert
             Assert.Throws<Exception>(() => 
                 new Transacao(
+                    CriarEventoValido(),
                     EnumTipoTransacao.Receita,
                     null,
                     DateTime.Now,
@@ -53,6 +56,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
             // Act & Assert
             Assert.Throws<Exception>(() => 
                 new Transacao(
+                    CriarEventoValido(),
                     EnumTipoTransacao.Receita,
                     contaBancaria,
                     DateTime.Now,

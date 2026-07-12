@@ -2,6 +2,7 @@ using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
 using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
@@ -12,12 +13,13 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
         public void CriarComDadosValidos_DeveDefinirPropriedadesCorretamente()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
+            var evento = CriarEventoValido();
+            var contaBancaria = CriarContaBancariaValida(evento: evento);
             var tokenAcesso = new String1000("token_teste_123");
             var integracaoExterna = EnumIntegracaoExterna.Asaas;
 
             // Act
-            var integrador = new IntegradorFinanceiro(contaBancaria, tokenAcesso, integracaoExterna);
+            var integrador = new IntegradorFinanceiro(evento, contaBancaria, tokenAcesso, integracaoExterna);
 
             // Assert
             Assert.NotNull(integrador);
@@ -34,7 +36,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                new IntegradorFinanceiro(null, tokenAcesso, EnumIntegracaoExterna.Asaas)
+                new IntegradorFinanceiro(null, CriarContaBancariaValida(), tokenAcesso, EnumIntegracaoExterna.Asaas)
             );
         }
 
@@ -42,11 +44,12 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
         public void CriarComTokenAcessoNulo_DeveLancarExcecao()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
+            var evento = CriarEventoValido();
+            var contaBancaria = CriarContaBancariaValida(evento: evento);
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                new IntegradorFinanceiro(contaBancaria, null, EnumIntegracaoExterna.Asaas)
+                new IntegradorFinanceiro(evento, contaBancaria, null, EnumIntegracaoExterna.Asaas)
             );
         }
 
@@ -55,7 +58,7 @@ namespace EventoWeb.Comum.Testes.Negocio.IntegracaoFinanceira
         {
             // Arrange
             var integrador = CriarIntegradorFinanceiroValido();
-            var novaContaBancaria = new ContaBancaria(new String200("Banco Itaú - Corrente"));
+            var novaContaBancaria = new ContaBancaria(integrador.Evento, new String200("Banco Itaú - Corrente"));
 
             // Act
             integrador.ContaBancaria = novaContaBancaria;

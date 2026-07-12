@@ -5,7 +5,7 @@ namespace EventoWeb.Comum.Negocio.Repositorios
 {
     public interface IRegistrosIntegracoesFinanceiras : IPersistencia<RegistroIntegracaoFinanceira>
     {
-        IList<RegistroIntegracaoFinanceira> ListarPendentes();
+        IList<RegistroIntegracaoFinanceira> ListarPendentes(int idEvento);
         IList<RegistroIntegracaoFinanceira> ListarPorConta(int idConta);
     }
 }

@@ -1,4 +1,5 @@
-﻿using EventoWeb.Comum.Negocio.Entidades.Financeiro;
+﻿using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 
 namespace EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira
@@ -8,8 +9,9 @@ namespace EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira
         private ContaBancaria m_ContaBancaria;
         private String1000 m_TokenAcesso;
 
-        public IntegradorFinanceiro(ContaBancaria contaBancaria, String1000 tokenAcesso, EnumIntegracaoExterna integracaoExterna)
+        public IntegradorFinanceiro(Evento evento, ContaBancaria contaBancaria, String1000 tokenAcesso, EnumIntegracaoExterna integracaoExterna)
         {
+            Evento = evento ?? throw new ArgumentNullException(nameof(evento));
             ContaBancaria = contaBancaria ?? throw new ArgumentNullException(nameof(contaBancaria));
             TokenAcesso = tokenAcesso ?? throw new ArgumentNullException(nameof(tokenAcesso));
             IntegracaoExterna = integracaoExterna;
@@ -17,11 +19,16 @@ namespace EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira
 
         protected IntegradorFinanceiro() { }
 
+        public virtual Evento Evento { get; protected set; }
+
         public virtual ContaBancaria ContaBancaria 
         { 
             get => m_ContaBancaria;
             set
             {
+                if (value != null && Evento != null && value.Evento != Evento)
+                    throw new ArgumentException("A conta bancária deve ser do mesmo evento do integrador.", nameof(ContaBancaria));
+
                 m_ContaBancaria = value ?? throw new ArgumentNullException(nameof(ContaBancaria));
             }
         }

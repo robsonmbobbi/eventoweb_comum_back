@@ -66,7 +66,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                 integrador.FormaPagamento.Tipo,
                 integrador.FormaPagamento.Parcelas?.Minimo ?? 1,
                 numeroParcelas,
-                $"Pagamento inscrições {pedido.Inscricoes.First().Evento.Nome.Valor}. Pedido: {pedido.Id}"
+                $"Pagamento inscrições {pedido.Evento.Nome.Valor}. Pedido: {pedido.Id}"
             );
 
             var paymentResponse = await asaasApi.Payment.Create(paymentRequest);
@@ -87,7 +87,7 @@ namespace EventoWeb.Comum.Persistencia.Integracoes.Asaas
                 tipoPagamento,
                 integrador.FormaPagamento.Parcelas?.Minimo ?? 1,
                 numeroParcelas,
-                $"Pagamento - Conta ID: {conta.Id}"
+                $"Pagamento - Conta ID: {conta.Id} - Evento: {conta.Evento.Nome.Valor}"
             );
 
             var paymentResponse = await asaasApi.Payment.Create(paymentRequest);

@@ -25,6 +25,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
             var forma = CriarFormaPagamentoValida();
 
             return new Pedido(
+                evento,
                 pagador,
                 new[] { inscricao },
                 new ValorMonetario(100.00m),
@@ -46,6 +47,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
             var inscricao = new InscricaoParticipante(evento, pessoaInscricao, DateTime.Now);
 
             return new Pedido(
+                evento,
                 pagador,
                 new[] { inscricao },
                 new ValorMonetario(100.00m),
@@ -67,6 +69,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
             var inscricao = new InscricaoParticipante(evento, pessoaInscricao, DateTime.Now);
 
             return new Pedido(
+                evento,
                 pagador,
                 new[] { inscricao },
                 new ValorMonetario(0.00m),

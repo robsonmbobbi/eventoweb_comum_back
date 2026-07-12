@@ -10,11 +10,11 @@ namespace EventoWeb.Comum.Persistencia.Repositorios
         {
         }
 
-        public IList<RegistroIntegracaoFinanceira> ListarPendentes()
+        public IList<RegistroIntegracaoFinanceira> ListarPendentes(int idEvento)
         {
             return Sessao
                 .QueryOver<RegistroIntegracaoFinanceira>()
-                .Where(r => r.Situacao == EnumSituacaoIntegracao.Pendente)
+                .Where(r => r.Situacao == EnumSituacaoIntegracao.Pendente && r.Evento.Id == idEvento)
                 .List();
         }
 

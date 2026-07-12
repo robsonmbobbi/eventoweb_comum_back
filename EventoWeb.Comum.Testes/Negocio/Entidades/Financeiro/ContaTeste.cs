@@ -2,6 +2,7 @@ using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
 using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 using static EventoWeb.Comum.Testes.Negocio.Fixtures.PessoasFixtures;
 
@@ -13,13 +14,14 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarContaComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
+            var evento = CriarEventoValido();
             var pessoa = CriarPessoaValida();
             var tipo = EnumTipoTransacao.Receita;
             var valor = new ValorMonetario(500.00m);
             var dataVencimento = DateTime.Now.AddDays(30);
 
             // Act
-            var conta = new Conta(pessoa, tipo, valor, dataVencimento);
+            var conta = new Conta(evento, pessoa, tipo, valor, dataVencimento);
 
             // Assert
             Assert.NotNull(conta);
@@ -40,7 +42,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange & Act & Assert
             Assert.Throws<Exception>(() => 
-                new Conta(null, EnumTipoTransacao.Receita, new ValorMonetario(500.00m), DateTime.Now.AddDays(30))
+                new Conta(null, CriarPessoaValida(), EnumTipoTransacao.Receita, new ValorMonetario(500.00m), DateTime.Now.AddDays(30))
             );
         }
 
@@ -52,7 +54,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
 
             // Act & Assert
             Assert.Throws<Exception>(() => 
-                new Conta(pessoa, EnumTipoTransacao.Receita, null, DateTime.Now.AddDays(30))
+                new Conta(CriarEventoValido(), pessoa, EnumTipoTransacao.Receita, null, DateTime.Now.AddDays(30))
             );
         }
 
@@ -61,7 +63,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida(valor: 500.00m);
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
             var valorTransacao = new ValorMonetario(200.00m);
 
             // Act
@@ -78,7 +80,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida(valor: 500.00m);
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
             var valorTransacao = new ValorMonetario(500.00m);
 
             // Act
@@ -95,7 +97,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida(valor: 500.00m);
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             // Act
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(300.00m));
@@ -112,7 +114,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida();
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             // Act
             conta.AdicionarTransacao(
@@ -137,7 +139,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida(valor: 100.00m);
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(100.00m));
             Assert.True(conta.Liquidado);
@@ -153,7 +155,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida();
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(150.00m));
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(300.00m));
@@ -173,10 +175,10 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida();
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(200.00m));
 
-            var outraConta = CriarContaValida();
+            var outraConta = CriarContaValida(evento: conta.Evento);
             var transacaoOutra = new TransacaoConta(
                 contaBancaria,
                 outraConta,
@@ -195,7 +197,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida(valor: 100.00m);
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(100.00m));
             var transacao = conta.Transacoes.First();
@@ -211,7 +213,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida();
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(150.00m), desconto: new ValorMonetario(50.00m));
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(300.00m), desconto: new ValorMonetario(100.00m));
@@ -232,7 +234,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida(valor: 100.00m);
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(100.00m));
             Assert.True(conta.Liquidado);
@@ -280,7 +282,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Arrange
             var conta = CriarContaValida(valor: 100.00m);
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             conta.AdicionarTransacao(contaBancaria, DateTime.Now, new ValorMonetario(100.00m));
             Assert.True(conta.Liquidado);

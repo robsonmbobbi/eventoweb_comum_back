@@ -1,4 +1,5 @@
-﻿using EventoWeb.Comum.Negocio.ObjetosValor;
+﻿using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 
 namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 {
@@ -7,9 +8,13 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
         private String200? m_Descricao;
         private ValorMonetario m_Valor;
 
-        public Transacao(EnumTipoTransacao tipo, ContaBancaria conta, DateTime dataHora, ValorMonetario valor, String200 descricao)
+        public Transacao(Evento evento, EnumTipoTransacao tipo, ContaBancaria conta, DateTime dataHora, ValorMonetario valor, String200 descricao)
         {
+            Evento = evento ?? throw new Exception($"{nameof(evento)} não pode ser nulo.");
             ContaBancaria = conta ?? throw new Exception($"{nameof(conta)} não pode ser nula.");
+
+            if (ContaBancaria.Evento != Evento)
+                throw new Exception("A conta bancária deve ser do mesmo evento da transação.");
 
             DataHora = dataHora;           
             Valor = valor;
@@ -19,6 +24,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 
         protected Transacao() { }
 
+        public virtual Evento Evento { get; protected set; }
         public virtual ContaBancaria ContaBancaria { get; protected set; }
 
         public virtual DateTime DataHora { get; protected set; }

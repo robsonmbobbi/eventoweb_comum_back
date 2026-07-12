@@ -1,6 +1,7 @@
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
 using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio.Financeiro
@@ -14,7 +15,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
             var nomeConta = new String200("Banco Brasil - Corrente");
 
             // Act
-            var contaBancaria = new ContaBancaria(nomeConta);
+            var contaBancaria = new ContaBancaria(CriarEventoValido(), nomeConta);
 
             // Assert
             Assert.NotNull(contaBancaria);
@@ -26,7 +27,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         {
             // Act & Assert
             Assert.Throws<Exception>(() => 
-                new ContaBancaria(null)
+                new ContaBancaria(null, null)
             );
         }
 

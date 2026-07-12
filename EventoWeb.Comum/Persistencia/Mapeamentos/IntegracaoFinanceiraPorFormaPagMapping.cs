@@ -21,6 +21,13 @@ namespace EventoWeb.Comum.Persistencia.Mapeamentos
                 });
             });
 
+            ManyToOne(x => x.Evento, m =>
+            {
+                m.Access(Accessor.Property);
+                m.Column("id_evento");
+                m.NotNullable(true);
+            });
+
             ManyToOne(x => x.Integrador, m =>
             {
                 m.Column("id_integrador_financeiro");

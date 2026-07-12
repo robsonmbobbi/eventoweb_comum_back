@@ -2,6 +2,7 @@ using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Testes.Negocio.Fixtures;
+using static EventoWeb.Comum.Testes.Negocio.Fixtures.EventosFixtures;
 using static EventoWeb.Comum.Testes.Negocio.Fixtures.FinanceiroFixtures;
 
 namespace EventoWeb.Comum.Testes.Negocio.Financeiro
@@ -12,8 +13,8 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoContaComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
             var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
             var data = DateTime.Now;
             var valorTransacao = new ValorMonetario(400.00m);
 
@@ -35,7 +36,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoContaComContaNula_DeveLancarExcecao()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: CriarEventoValido());
 
             // Act & Assert
             Assert.Throws<Exception>(() => 
@@ -52,8 +53,8 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoContaComValorNulo_DeveLancarExcecao()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
             var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             // Act & Assert
             Assert.Throws<Exception>(() => 
@@ -65,8 +66,8 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoContaComMulta_DeveDefinirPropriedade()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
             var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
             var multa = new ValorMonetario(50.00m);
 
             // Act
@@ -86,8 +87,8 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoContaComJuros_DeveDefinirPropriedade()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
             var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
             var juros = new ValorMonetario(25.00m);
 
             // Act
@@ -107,8 +108,8 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoContaComDesconto_DeveDefinirPropriedade()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
             var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
             var desconto = new ValorMonetario(100.00m);
 
             // Act
@@ -128,8 +129,8 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoContaComTodosOsValoresAdicionais_DeveDefinirTodos()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
             var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             // Act
             var transacaoConta = new TransacaoConta(
@@ -153,8 +154,8 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoContaComValorZero_TransacaoNaoEhCriada()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
             var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             // Act
             var transacaoConta = new TransacaoConta(
@@ -172,8 +173,8 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarTransacaoContaComValoresNegativosEhValidoSeValorTransacaoPositivo()
         {
             // Arrange
-            var contaBancaria = CriarContaBancariaValida();
             var conta = CriarContaValida();
+            var contaBancaria = CriarContaBancariaValida(evento: conta.Evento);
 
             // Act - Sistema não faz validação de valores negativos, apenas cria com valores zero por padrão
             var transacaoConta = new TransacaoConta(

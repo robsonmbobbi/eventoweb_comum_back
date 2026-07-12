@@ -10,6 +10,7 @@ namespace EventoWeb.Comum.Aplicacao.Pedidos
     public class DTOResultadoPedido
     {
         public required int IdPedido { get; set; }
+        public required int IdEvento { get; set; }
         public decimal Valor { get; set; }
         public EnumTipoPedido Tipo { get; set; }
         public int? IdFormaPagamento { get; set; }

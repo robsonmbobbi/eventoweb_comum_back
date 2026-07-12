@@ -12,9 +12,9 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.RegistrosIntegracao
         private readonly IModelosMensagemNotificacao m_ModelosNotificacao = modelosNotificacao;
         private readonly IMensagens m_Mensagens = mensagens;
 
-        public void Notificar(RegistroIntegracaoFinanceira registro, int idEvento)
+        public void Notificar(RegistroIntegracaoFinanceira registro)
         {
-            var modelos = m_ModelosNotificacao.ListarPorTipo(idEvento, EnumTipoNotificacao.PagamentoRecebido);
+            var modelos = m_ModelosNotificacao.ListarPorTipo(registro.Evento.Id, EnumTipoNotificacao.PagamentoRecebido);
             foreach (var modelo in modelos)
             {
                 var destinatario = "";

@@ -1,4 +1,5 @@
-﻿using EventoWeb.Comum.Negocio.ObjetosValor;
+﻿using EventoWeb.Comum.Negocio.Entidades;
+using EventoWeb.Comum.Negocio.ObjetosValor;
 
 namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 {
@@ -11,8 +12,9 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
         private IList<TransacaoConta> m_Transacoes;
         private EnumTipoTransacao m_Tipo;
 
-        public Conta(Pessoa pessoa, EnumTipoTransacao tipo, ValorMonetario valor, DateTime dataVencimento)
+        public Conta(Evento evento, Pessoa pessoa, EnumTipoTransacao tipo, ValorMonetario valor, DateTime dataVencimento)
         {
+            Evento = evento ?? throw new Exception($"{nameof(evento)} não pode ser nulo.");
             Pessoa = pessoa ?? throw new Exception($"{nameof(pessoa)} não pode ser nulo.");
             DataCriado = DateTime.Now;
             Liquidado = false;
@@ -30,6 +32,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
 
         protected Conta() { }
 
+        public virtual Evento Evento { get; protected set; }
         public virtual Pessoa Pessoa { get; protected set; }
 
         public virtual ValorMonetario Valor
@@ -100,6 +103,12 @@ namespace EventoWeb.Comum.Negocio.Entidades.Financeiro
             ValorMonetario? multa = null, ValorMonetario? juros = null, ValorMonetario? desconto = null)
         {
             ValidarSeContaLiquidada();
+
+            if (contaBancaria == null)
+                throw new Exception($"{nameof(contaBancaria)} não pode ser nula.");
+
+            if (contaBancaria.Evento != Evento)
+                throw new Exception("A conta bancária deve ser do mesmo evento da conta.");
 
             m_Transacoes.Add(new TransacaoConta(contaBancaria, this, data, valorEfetivamenteRecebido, multa, juros, desconto));
 
