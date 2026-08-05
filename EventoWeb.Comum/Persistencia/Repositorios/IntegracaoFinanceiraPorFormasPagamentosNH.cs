@@ -8,11 +8,11 @@ namespace EventoWeb.Comum.Persistencia.Repositorios
 {
     public class IntegracaoFinanceiraPorFormasPagamentosNH(ISession sessao) : PersistenciaNH<IntegracaoFinanceiraPorFormaPag>(sessao), IIntegracaoFinanceiraPorFormasPagamentos
     {
-        public IntegracaoFinanceiraPorFormaPag ObterPorFormaPagamento(Evento evento, FormaPagamento forma)
+        public IntegracaoFinanceiraPorFormaPag ObterPorFormaPagamento(int idEvento, int idForma)
         {
             return Sessao
                 .QueryOver<IntegracaoFinanceiraPorFormaPag>()
-                .Where(x => x.Evento.Id == evento.Id && x.FormaPagamento.Id == forma.Id)
+                .Where(x => x.Evento.Id == idEvento && x.FormaPagamento.Id == idForma)
                 .SingleOrDefault();
         }
     }

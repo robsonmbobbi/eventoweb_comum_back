@@ -11,6 +11,6 @@ namespace EventoWeb.Comum.Negocio.Repositorios
 {
     public interface IIntegracaoFinanceiraPorFormasPagamentos : IPersistencia<IntegracaoFinanceiraPorFormaPag>
     {
-        IntegracaoFinanceiraPorFormaPag ObterPorFormaPagamento(Evento evento, FormaPagamento forma);
+        IntegracaoFinanceiraPorFormaPag ObterPorFormaPagamento(int idEvento, int idForma);
     }
 }

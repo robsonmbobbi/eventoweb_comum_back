@@ -6,9 +6,12 @@ namespace EventoWeb.Comum.Persistencia.Repositorios
 {
     internal class FormasPagamentoNH(ISession sessao) : PersistenciaNH<FormaPagamento>(sessao), IFormasPagamento
     {
-        public IEnumerable<FormaPagamento> ListarTodas()
+        public IEnumerable<FormaPagamento> ListarTodas(int idEvento)
         {
-            return Sessao.Query<FormaPagamento>().ToList();
+            return Sessao
+                .QueryOver<FormaPagamento>()
+                .Where(f => f.Evento.Id == idEvento)
+                .List();
         }
     }
 }

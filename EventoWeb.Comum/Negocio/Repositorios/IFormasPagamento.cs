@@ -4,6 +4,6 @@ namespace EventoWeb.Comum.Negocio.Repositorios
 {
     public interface IFormasPagamento : IPersistencia<FormaPagamento>
     {
-        IEnumerable<FormaPagamento> ListarTodas();
+        IEnumerable<FormaPagamento> ListarTodas(int idEvento);
     }
 }

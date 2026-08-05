@@ -3,7 +3,7 @@ using System.Data;
 
 namespace EventoWeb.Comum.Persistencia.MigracoesBD
 {
-    [Migration(02)]
+    [Migration(110720261700000)]
     public class Migracao02 : Migration
     {
         public override void Down()
@@ -23,6 +23,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
         {
             AdicionarColunaEvento("pedidos");
             AdicionarColunaEvento("contas");
+            AdicionarColunaEvento("formas_pagamento");
             AdicionarColunaEvento("transacoes");
             AdicionarColunaEvento("transacoes_conta");
             AdicionarColunaEvento("contas_bancarias");
@@ -32,6 +33,7 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
 
             PopularEventosParaPedidos();
             PopularEventosParaContas();
+            PopularEventosParaFormasPagamento();
             PopularEventosParaTransacoes();
             PopularEventosParaTransacoesConta();
             PopularEventosParaContasBancarias();
@@ -86,6 +88,15 @@ namespace EventoWeb.Comum.Persistencia.MigracoesBD
                     ),
                     (SELECT MIN(id) FROM eventos)
                 )
+                WHERE id_evento IS NULL;
+            ");
+        }
+
+        private void PopularEventosParaFormasPagamento()
+        {
+            Execute.Sql(@"
+                UPDATE formas_pagamento
+                SET id_evento = 1
                 WHERE id_evento IS NULL;
             ");
         }

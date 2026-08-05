@@ -7,8 +7,9 @@ public class FormaPagamento : Entidade
     private String200 m_Nome;
     private IntervaloInteiroPositivo? m_Parcelas;
 
-    public FormaPagamento(String200 nome, EnumTipoPagamento tipo)
+    public FormaPagamento(Evento evento, String200 nome, EnumTipoPagamento tipo)
     {
+        Evento = evento ?? throw new Exception($"{nameof(Evento)} não pode ser nulo");
         Nome = nome;
         Tipo = tipo;
         m_Parcelas = new IntervaloInteiroPositivo(1, 1);
@@ -17,6 +18,8 @@ public class FormaPagamento : Entidade
     protected FormaPagamento()
     {
     }
+
+    public virtual Evento Evento { get; protected set; }
 
     public virtual String200 Nome
     {
