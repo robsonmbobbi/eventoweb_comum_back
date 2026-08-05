@@ -1,0 +1,3 @@
+[submodule "external/asaas-sdk-net"]
+	path = external/asaas-sdk-net
+	url = https://github.com/cloviscoli/asaas-sdk-net.git

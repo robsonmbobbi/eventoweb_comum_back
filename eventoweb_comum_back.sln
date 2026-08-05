@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventoWeb.Comum.Testes", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventoWeb.Comum", "EventoWeb.Comum\EventoWeb.Comum.csproj", "{A462E189-F042-437E-6A95-8E23EA0048D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsaasClient", "..\..\asaas-sdk-net\AsaasClient\AsaasClient.csproj", "{1830BA8E-0410-46DA-809F-650654E087A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsaasClient", "external\asaas-sdk-net\AsaasClient\AsaasClient.csproj", "{1830BA8E-0410-46DA-809F-650654E087A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

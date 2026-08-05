@@ -13,7 +13,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma = CriarFormaPagamentoValida();
+            var forma = CriarFormaPagamentoValida(evento: precoInscricao.Evento);
             var valor = new ValorMonetario(200.00m);
 
             // Act
@@ -57,10 +57,10 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma = CriarFormaPagamentoValida();
+            var forma = CriarFormaPagamentoValida(evento: precoInscricao.Evento);
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => 
+            Assert.Throws<ArgumentNullException>(() =>
                 new PrecoInscricaoValor(precoInscricao, forma, null)
             );
         }
@@ -70,7 +70,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma = CriarFormaPagamentoValida();
+            var forma = CriarFormaPagamentoValida(evento: precoInscricao.Evento);
             var precoValor = new PrecoInscricaoValor(precoInscricao, forma, new ValorMonetario(200.00m));
 
             // Act
@@ -85,11 +85,11 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma = CriarFormaPagamentoValida();
+            var forma = CriarFormaPagamentoValida(evento: precoInscricao.Evento);
             var precoValor = new PrecoInscricaoValor(precoInscricao, forma, new ValorMonetario(200.00m));
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => 
+            Assert.Throws<ArgumentNullException>(() =>
                 precoValor.Valor = null
             );
         }

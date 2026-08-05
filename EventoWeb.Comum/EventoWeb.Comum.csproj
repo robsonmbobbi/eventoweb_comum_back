@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\asaas-sdk-net\AsaasClient\AsaasClient.csproj" />
+    <ProjectReference Include="..\external\asaas-sdk-net\AsaasClient\AsaasClient.csproj" />
   </ItemGroup>
 
 </Project>

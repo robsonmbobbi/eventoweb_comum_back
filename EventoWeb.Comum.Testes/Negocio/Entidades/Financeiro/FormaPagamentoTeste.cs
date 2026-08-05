@@ -11,11 +11,12 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarFormaPagamentoComDadosValidos_DeveDefinirPropriedadesCorretas()
         {
             // Arrange
+            var evento = EventosFixtures.CriarEventoValido();
             var nome = new String200("Cartão de Crédito");
             var tipo = EnumTipoPagamento.CartaoCredito;
 
             // Act
-            var formaPagamento = new FormaPagamento(nome, tipo);
+            var formaPagamento = new FormaPagamento(evento, nome, tipo);
 
             // Assert
             Assert.NotNull(formaPagamento);
@@ -30,8 +31,8 @@ namespace EventoWeb.Comum.Testes.Negocio.Financeiro
         public void CriarFormaPagamentoComNomeNulo_DeveLancarExcecao()
         {
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => 
-                new FormaPagamento(null, EnumTipoPagamento.CartaoCredito)
+            Assert.Throws<ArgumentNullException>(() =>
+                new FormaPagamento(EventosFixtures.CriarEventoValido(), null, EnumTipoPagamento.CartaoCredito)
             );
         }
 

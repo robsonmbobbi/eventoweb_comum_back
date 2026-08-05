@@ -81,9 +81,11 @@ namespace EventoWeb.Comum.Testes.Negocio.Fixtures
 
         public static FormaPagamento CriarFormaPagamentoValida(
             string nome = "Cartão de Crédito",
-            EnumTipoPagamento tipoPagamento = EnumTipoPagamento.CartaoCredito)
+            EnumTipoPagamento tipoPagamento = EnumTipoPagamento.CartaoCredito,
+            Evento? evento = null)
         {
-            return new FormaPagamento(new String200(nome), tipoPagamento);
+            evento ??= CriarEventoValido();
+            return new FormaPagamento(evento, new String200(nome), tipoPagamento);
         }
 
         public static IntegradorFinanceiro CriarIntegradorFinanceiroValido(

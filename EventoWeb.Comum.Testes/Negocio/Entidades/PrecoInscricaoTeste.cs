@@ -55,7 +55,7 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma = CriarFormaPagamentoValida();
+            var forma = CriarFormaPagamentoValida(evento: precoInscricao.Evento);
 
             // Act
             precoInscricao.AdicionarValor(forma, 150.00m);
@@ -71,9 +71,9 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma1 = CriarFormaPagamentoValida("Cartão de Crédito");
-            var forma2 = CriarFormaPagamentoValida("Boleto");
-            var forma3 = CriarFormaPagamentoValida("PIX");
+            var forma1 = CriarFormaPagamentoValida("Cartão de Crédito", evento: precoInscricao.Evento);
+            var forma2 = CriarFormaPagamentoValida("Boleto", evento: precoInscricao.Evento);
+            var forma3 = CriarFormaPagamentoValida("PIX", evento: precoInscricao.Evento);
 
             // Act
             precoInscricao.AdicionarValor(forma1, 100.00m);
@@ -89,12 +89,12 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma = CriarFormaPagamentoValida();
+            var forma = CriarFormaPagamentoValida(evento: precoInscricao.Evento);
 
             precoInscricao.AdicionarValor(forma, 150.00m);
 
             // Act & Assert
-            Assert.Throws<Exception>(() => 
+            Assert.Throws<Exception>(() =>
                 precoInscricao.AdicionarValor(forma, 160.00m)
             );
         }
@@ -104,8 +104,8 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma1 = CriarFormaPagamentoValida("Cartão de Crédito");
-            var forma2 = CriarFormaPagamentoValida("Boleto");
+            var forma1 = CriarFormaPagamentoValida("Cartão de Crédito", evento: precoInscricao.Evento);
+            var forma2 = CriarFormaPagamentoValida("Boleto", evento: precoInscricao.Evento);
 
             precoInscricao.AdicionarValor(forma1, 100.00m);
             precoInscricao.AdicionarValor(forma2, 105.00m);
@@ -125,12 +125,12 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma = CriarFormaPagamentoValida();
+            var forma = CriarFormaPagamentoValida(evento: precoInscricao.Evento);
             precoInscricao.AdicionarValor(forma, 150.00m);
 
             var outroPreco = new PrecoInscricaoValor(
                 precoInscricao,
-                CriarFormaPagamentoValida("Outra Forma"),
+                CriarFormaPagamentoValida("Outra Forma", evento: precoInscricao.Evento),
                 new ValorMonetario(200.00m)
             );
 
@@ -145,9 +145,9 @@ namespace EventoWeb.Comum.Testes.Negocio
         {
             // Arrange
             var precoInscricao = CriarPrecoInscricaoValido();
-            var forma1 = CriarFormaPagamentoValida("Forma 1");
-            var forma2 = CriarFormaPagamentoValida("Forma 2");
-            var forma3 = CriarFormaPagamentoValida("Forma 3");
+            var forma1 = CriarFormaPagamentoValida("Forma 1", evento: precoInscricao.Evento);
+            var forma2 = CriarFormaPagamentoValida("Forma 2", evento: precoInscricao.Evento);
+            var forma3 = CriarFormaPagamentoValida("Forma 3", evento: precoInscricao.Evento);
 
             precoInscricao.AdicionarValor(forma1, 100.00m);
             precoInscricao.AdicionarValor(forma2, 105.00m);
