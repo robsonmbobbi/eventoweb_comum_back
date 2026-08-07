@@ -3,14 +3,16 @@ using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
+using EventoWeb.Comum.Negocio.Servicos.Notificacoes;
 using System.Text.Json;
 
 namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos
 {
-    public class SrvNotificacaoPedidoRealizado(IModelosMensagemNotificacao modelosNotificacao, IPersistencia<MensagemNotificacao> mensagens)
+    public class SrvNotificacaoPedidoRealizado(IModelosMensagemNotificacao modelosNotificacao, IPersistencia<MensagemNotificacao> mensagens, IEnvioNotificacao envioNotificacao)
     {
         private readonly IModelosMensagemNotificacao m_ModelosNotificacao = modelosNotificacao;
         private readonly IPersistencia<MensagemNotificacao> m_Mensagens = mensagens;
+        private readonly IEnvioNotificacao m_EnvioNotificacao = envioNotificacao;
 
         public void Notificar(Pedido pedido, DadosRetornoIntegracaoExterna? dadosRetorno)
         {
@@ -71,6 +73,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos
                     )
                 );
                 m_Mensagens.Incluir(mensagem);
+                m_EnvioNotificacao.EnviarERegistrar(m_Mensagens, mensagem);
             }
         }
     }

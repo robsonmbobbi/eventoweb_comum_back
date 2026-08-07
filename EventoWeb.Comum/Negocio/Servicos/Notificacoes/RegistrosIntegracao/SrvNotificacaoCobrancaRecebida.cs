@@ -3,14 +3,16 @@ using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
+using EventoWeb.Comum.Negocio.Servicos.Notificacoes;
 using System.Text.Json;
 
 namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.RegistrosIntegracao
 {
-    public class SrvNotificacaoCobrancaRecebida(IModelosMensagemNotificacao modelosNotificacao, IMensagens mensagens)
+    public class SrvNotificacaoCobrancaRecebida(IModelosMensagemNotificacao modelosNotificacao, IMensagens mensagens, IEnvioNotificacao envioNotificacao)
     {
         private readonly IModelosMensagemNotificacao m_ModelosNotificacao = modelosNotificacao;
         private readonly IMensagens m_Mensagens = mensagens;
+        private readonly IEnvioNotificacao m_EnvioNotificacao = envioNotificacao;
 
         public void Notificar(RegistroIntegracaoFinanceira registro)
         {
@@ -53,6 +55,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.RegistrosIntegracao
                     new StringClob(jsonVariaveis)
                 );
                 m_Mensagens.Incluir(mensagem);
+                m_EnvioNotificacao.EnviarERegistrar(m_Mensagens, mensagem);
             }
         }
     }

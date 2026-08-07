@@ -23,7 +23,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Notificacoes
             Assert.Equal(modelo, mensagem.Modelo);
             Assert.Equal(destinatario, mensagem.Destinatario);
             Assert.Equal(variaveisJson, mensagem.VariaveisJson);
-            Assert.Equal(EnumSituacaoEnvioNotificacao.Pendente, mensagem.Situacao);
+            Assert.Equal(EnumSituacaoEnvioNotificacao.EmFila, mensagem.Situacao);
             Assert.Null(mensagem.DataSituacao);
             Assert.Null(mensagem.Erro);
         }
@@ -61,7 +61,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Notificacoes
             var mensagem = CriarMensagemNotificacaoValida();
 
             // Assert
-            Assert.Equal(EnumSituacaoEnvioNotificacao.Pendente, mensagem.Situacao);
+            Assert.Equal(EnumSituacaoEnvioNotificacao.EmFila, mensagem.Situacao);
         }
 
         [Fact]
@@ -103,13 +103,13 @@ namespace EventoWeb.Comum.Testes.Negocio.Notificacoes
         {
             // Arrange
             var mensagem = CriarMensagemNotificacaoValida();
-            Assert.Equal(EnumSituacaoEnvioNotificacao.Pendente, mensagem.Situacao);
+            Assert.Equal(EnumSituacaoEnvioNotificacao.EmFila, mensagem.Situacao);
 
             // Act
             mensagem.RegistrarEnvio();
 
             // Assert
-            Assert.Equal(EnumSituacaoEnvioNotificacao.Enviada, mensagem.Situacao);
+            Assert.Equal(EnumSituacaoEnvioNotificacao.Enviado, mensagem.Situacao);
         }
 
         [Fact]
@@ -146,35 +146,35 @@ namespace EventoWeb.Comum.Testes.Negocio.Notificacoes
         }
 
         [Fact]
-        public void RegistrarErro_DeveAtualizarSituacaoParaError()
+        public void RegistrarErroEnvio_DeveAtualizarSituacaoParaEnvioErro()
         {
             // Arrange
             var mensagem = CriarMensagemNotificacaoValida();
             var erro = new StringClob("Erro ao enviar a notificação");
 
             // Act
-            mensagem.RegistrarErro(erro);
+            mensagem.RegistrarErroEnvio(erro);
 
             // Assert
-            Assert.Equal(EnumSituacaoEnvioNotificacao.Error, mensagem.Situacao);
+            Assert.Equal(EnumSituacaoEnvioNotificacao.EnvioErro, mensagem.Situacao);
         }
 
         [Fact]
-        public void RegistrarErro_DeveDefinirMensagemErro()
+        public void RegistrarErroEnvio_DeveDefinirMensagemErro()
         {
             // Arrange
             var mensagem = CriarMensagemNotificacaoValida();
             var erro = new StringClob("Erro de conexão com o servidor SMTP");
 
             // Act
-            mensagem.RegistrarErro(erro);
+            mensagem.RegistrarErroEnvio(erro);
 
             // Assert
             Assert.Equal(erro, mensagem.Erro);
         }
 
         [Fact]
-        public void RegistrarErro_DeveDefinirDataSituacao()
+        public void RegistrarErroEnvio_DeveDefinirDataSituacao()
         {
             // Arrange
             var mensagem = CriarMensagemNotificacaoValida();
@@ -182,7 +182,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Notificacoes
             var dataAntes = DateTime.Now;
 
             // Act
-            mensagem.RegistrarErro(erro);
+            mensagem.RegistrarErroEnvio(erro);
 
             // Assert
             Assert.NotNull(mensagem.DataSituacao);
@@ -191,7 +191,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Notificacoes
         }
 
         [Fact]
-        public void RegistrarErro_DevePreservarModeloEDestinatario()
+        public void RegistrarErroEnvio_DevePreservarModeloEDestinatario()
         {
             // Arrange
             var mensagem = CriarMensagemNotificacaoValida();
@@ -200,7 +200,7 @@ namespace EventoWeb.Comum.Testes.Negocio.Notificacoes
             var erro = new StringClob("Erro ao enviar");
 
             // Act
-            mensagem.RegistrarErro(erro);
+            mensagem.RegistrarErroEnvio(erro);
 
             // Assert
             Assert.Equal(modeloOriginal, mensagem.Modelo);
@@ -208,19 +208,81 @@ namespace EventoWeb.Comum.Testes.Negocio.Notificacoes
         }
 
         [Fact]
-        public void RegistrarEnvioAposErro_DeveAtualizarSituacaoParaEnviada()
+        public void RegistrarEnvioAposErroEnvio_DeveAtualizarSituacaoParaEnviado()
         {
             // Arrange
             var mensagem = CriarMensagemNotificacaoValida();
             var erro = new StringClob("Erro inicial");
-            mensagem.RegistrarErro(erro);
-            Assert.Equal(EnumSituacaoEnvioNotificacao.Error, mensagem.Situacao);
+            mensagem.RegistrarErroEnvio(erro);
+            Assert.Equal(EnumSituacaoEnvioNotificacao.EnvioErro, mensagem.Situacao);
 
             // Act
             mensagem.RegistrarEnvio();
 
             // Assert
-            Assert.Equal(EnumSituacaoEnvioNotificacao.Enviada, mensagem.Situacao);
+            Assert.Equal(EnumSituacaoEnvioNotificacao.Enviado, mensagem.Situacao);
+        }
+
+        [Fact]
+        public void RegistrarErroFila_DeveAtualizarSituacaoParaFilaErro()
+        {
+            // Arrange
+            var mensagem = CriarMensagemNotificacaoValida();
+            var erro = new StringClob("Erro ao conectar na fila");
+
+            // Act
+            mensagem.RegistrarErroFila(erro);
+
+            // Assert
+            Assert.Equal(EnumSituacaoEnvioNotificacao.FilaErro, mensagem.Situacao);
+        }
+
+        [Fact]
+        public void RegistrarErroFila_DeveDefinirMensagemErro()
+        {
+            // Arrange
+            var mensagem = CriarMensagemNotificacaoValida();
+            var erro = new StringClob("Erro de conexão com o RabbitMQ");
+
+            // Act
+            mensagem.RegistrarErroFila(erro);
+
+            // Assert
+            Assert.Equal(erro, mensagem.Erro);
+        }
+
+        [Fact]
+        public void RegistrarErroFila_DeveDefinirDataSituacao()
+        {
+            // Arrange
+            var mensagem = CriarMensagemNotificacaoValida();
+            var erro = new StringClob("Erro ao processar");
+            var dataAntes = DateTime.Now;
+
+            // Act
+            mensagem.RegistrarErroFila(erro);
+
+            // Assert
+            Assert.NotNull(mensagem.DataSituacao);
+            Assert.True(mensagem.DataSituacao >= dataAntes);
+            Assert.True(mensagem.DataSituacao <= DateTime.Now);
+        }
+
+        [Fact]
+        public void RegistrarErroFila_DevePreservarModeloEDestinatario()
+        {
+            // Arrange
+            var mensagem = CriarMensagemNotificacaoValida();
+            var modeloOriginal = mensagem.Modelo;
+            var destinatarioOriginal = mensagem.Destinatario;
+            var erro = new StringClob("Erro ao enfileirar");
+
+            // Act
+            mensagem.RegistrarErroFila(erro);
+
+            // Assert
+            Assert.Equal(modeloOriginal, mensagem.Modelo);
+            Assert.Equal(destinatarioOriginal, mensagem.Destinatario);
         }
 
         [Fact]

@@ -11,7 +11,7 @@ namespace EventoWeb.Comum.Persistencia.Repositorios
         {
             return Sessao
                 .QueryOver<MensagemNotificacao>()
-                .Where(m => m.Situacao == EnumSituacaoEnvioNotificacao.Pendente)
+                .Where(m => m.Situacao == EnumSituacaoEnvioNotificacao.EmFila)
                 .JoinQueryOver(m => m.Modelo)
                 .Where(m=> m.Meio == meio)
                 .List();

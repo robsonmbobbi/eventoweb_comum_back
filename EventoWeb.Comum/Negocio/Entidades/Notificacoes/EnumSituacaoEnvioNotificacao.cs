@@ -2,9 +2,9 @@
 {
     public enum EnumSituacaoEnvioNotificacao
     {
-        Enviada,
-        Pendente,
-        Error,
-        Cancelada
+        Enviado,
+        EmFila,
+        EnvioErro,
+        FilaErro
     }
 }

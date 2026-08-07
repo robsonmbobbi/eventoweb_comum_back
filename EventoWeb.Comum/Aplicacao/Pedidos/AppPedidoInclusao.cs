@@ -4,6 +4,7 @@ using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 using EventoWeb.Comum.Negocio.Servicos;
+using EventoWeb.Comum.Negocio.Servicos.Notificacoes;
 using EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes;
 using EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos;
 
@@ -21,19 +22,21 @@ public class AppPedidoInclusao : AppBase
     private readonly IRegistrosIntegracoesFinanceiras m_RegistrosIntegracao;
     private readonly IModelosMensagemNotificacao m_ModelosNotificacao;
     private readonly IMensagens m_Mensagens;
+    private readonly IEnvioNotificacao m_EnvioNotificacao;
 
     public AppPedidoInclusao(
-        IContexto contexto, 
+        IContexto contexto,
         IInscricoes inscricoes,
         IPedidos pedidos,
         IEventos eventos,
         IFormasPagamento formasPagamento,
         IPessoas pessoas,
-        IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, 
+        IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas,
         IIntegracaoFinanceiraPorFormasPagamentos integracoes,
         IRegistrosIntegracoesFinanceiras registrosIntegracao,
         IModelosMensagemNotificacao modelosNotificacao,
-        IMensagens mensagens) : base(contexto)
+        IMensagens mensagens,
+        IEnvioNotificacao envioNotificacao) : base(contexto)
     {
         m_Inscricoes = inscricoes;
         m_Pedidos = pedidos;
@@ -45,6 +48,7 @@ public class AppPedidoInclusao : AppBase
         m_RegistrosIntegracao = registrosIntegracao;
         m_ModelosNotificacao = modelosNotificacao;
         m_Mensagens = mensagens;
+        m_EnvioNotificacao = envioNotificacao;
     }
 
     public DTOResultadoPedido Incluir(DTOPedidoInclusao dtoPedido)
@@ -85,8 +89,8 @@ public class AppPedidoInclusao : AppBase
                 m_IntegracoesExternas,
                 m_Integracoes,
                 m_RegistrosIntegracao,
-                new SrvNotificacaoInscricao(m_ModelosNotificacao, m_Mensagens),
-                new SrvNotificacaoPedidoRealizado(m_ModelosNotificacao, m_Mensagens)
+                new SrvNotificacaoInscricao(m_ModelosNotificacao, m_Mensagens, m_EnvioNotificacao),
+                new SrvNotificacaoPedidoRealizado(m_ModelosNotificacao, m_Mensagens, m_EnvioNotificacao)
             );
             var resultadoIntegracao = servicoPedido.Incluir(pedido, dtoPedido.NumeroParcelas);
 
