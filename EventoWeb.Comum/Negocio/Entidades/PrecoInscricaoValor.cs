@@ -11,6 +11,12 @@ public class PrecoInscricaoValor: Entidade
     {
         Preco = preco ?? throw new Exception($"{nameof(preco)} não pode ser nulo");
         Forma = forma ?? throw new Exception($"{nameof(forma)} não pode ser nulo");
+
+        if (preco.Evento != forma.Evento)
+        {
+            throw new Exception("O evento do preço de inscrição e da forma de pagamento devem ser iguais.");
+        }
+
         Valor = valor; 
     }
     

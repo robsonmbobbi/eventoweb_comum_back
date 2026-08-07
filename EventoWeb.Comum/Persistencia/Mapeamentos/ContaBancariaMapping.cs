@@ -20,6 +20,13 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
                 });
             });
 
+            ManyToOne(x => x.Evento, m =>
+            {
+                m.Access(Accessor.Property);
+                m.Column("id_evento");
+                m.NotNullable(true);
+            });
+
             Component(x => x.NomeConta, c =>
             {
                 c.Access(Accessor.NoSetter);

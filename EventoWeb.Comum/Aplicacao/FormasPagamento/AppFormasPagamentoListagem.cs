@@ -11,7 +11,7 @@ public class AppFormasPagamentoListagem: AppBase
         m_Formas = formasPagamento;
     }
 
-    public IList<DTOFormaPagamento> ListarTodas()
+    public IList<DTOFormaPagamento> ListarTodas(int idEvento)
     {
         List<DTOFormaPagamento> lista = [];
         
@@ -19,7 +19,7 @@ public class AppFormasPagamentoListagem: AppBase
         {
             lista.AddRange(
                 m_Formas
-                    .ListarTodas()
+                    .ListarTodas(idEvento)
                     .Select( x=> x.Converter())
                     .ToList()
             );

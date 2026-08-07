@@ -10,10 +10,15 @@ public class Pedido : Entidade
     private IList<Inscricao> m_Inscricoes;
     private StringClob? m_Motivo;
 
-    public Pedido(Pessoa pagador, IEnumerable<Inscricao> inscricoes, ValorMonetario valor, EnumTipoPedido tipo, FormaPagamento? forma, StringClob? motivo)
+    public Pedido(Evento evento, Pessoa pagador, IEnumerable<Inscricao> inscricoes, ValorMonetario valor, EnumTipoPedido tipo, FormaPagamento? forma, StringClob? motivo)
     {
+        Evento = evento ?? throw new Exception($"{nameof(evento)} não pode ser nulo.");
+
         if (!inscricoes.Any())
             throw new Exception($"{nameof(inscricoes)} não pode ser vazio.");
+
+        if (inscricoes.Any(i => i.Evento != evento))
+            throw new Exception("Todas as inscrições do pedido devem ser do mesmo evento.");
 
         if (inscricoes.Any(i => i.Situacao != EnumSituacaoInscricao.Limbo))
             throw new Exception($"Somente são aceitas inscrições que estejam no limbo");
@@ -27,7 +32,7 @@ public class Pedido : Entidade
         Tipo = tipo;
         FormaPagamento = forma;
 
-        Conta = new Conta(pagador, EnumTipoTransacao.Receita, valor, DateTime.Now);
+        Conta = new Conta(evento, pagador, EnumTipoTransacao.Receita, valor, DateTime.Now);
         m_Motivo = motivo;
     }
 
@@ -36,6 +41,7 @@ public class Pedido : Entidade
     }
 
     public virtual IEnumerable<Inscricao> Inscricoes => m_Inscricoes;
+    public virtual Evento Evento { get; protected set; }
     public virtual ValorMonetario Valor { get; protected set; }
     public virtual EnumTipoPedido Tipo { get; protected set; }
     public virtual FormaPagamento? FormaPagamento { get; protected set; }

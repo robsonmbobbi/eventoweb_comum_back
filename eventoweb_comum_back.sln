@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventoWeb.Comum.Testes", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventoWeb.Comum", "EventoWeb.Comum\EventoWeb.Comum.csproj", "{A462E189-F042-437E-6A95-8E23EA0048D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsaasClient", "external\asaas-sdk-net\AsaasClient\AsaasClient.csproj", "{1830BA8E-0410-46DA-809F-650654E087A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{A462E189-F042-437E-6A95-8E23EA0048D5}.Release|x64.Build.0 = Release|Any CPU
 		{A462E189-F042-437E-6A95-8E23EA0048D5}.Release|x86.ActiveCfg = Release|Any CPU
 		{A462E189-F042-437E-6A95-8E23EA0048D5}.Release|x86.Build.0 = Release|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Debug|x64.Build.0 = Debug|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Debug|x86.Build.0 = Debug|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Release|x64.ActiveCfg = Release|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Release|x64.Build.0 = Release|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Release|x86.ActiveCfg = Release|Any CPU
+		{1830BA8E-0410-46DA-809F-650654E087A4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,7 @@ using EventoWeb.Comum.Negocio.Entidades.IntegracaoFinanceira;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
 using EventoWeb.Comum.Negocio.Servicos;
+using EventoWeb.Comum.Negocio.Servicos.Notificacoes;
 using EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes;
 using EventoWeb.Comum.Negocio.Servicos.Notificacoes.Pedidos;
 
@@ -14,27 +15,32 @@ public class AppPedidoInclusao : AppBase
     private readonly IInscricoes m_Inscricoes;
     private readonly IPedidos m_Pedidos;
     private readonly IPessoas m_Pessoas;
+    private readonly IEventos m_Eventos;
     private readonly IFormasPagamento m_FormasPagamento;
     private readonly IIntegracaoFinanceiraPorFormasPagamentos m_Integracoes;
     private readonly IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> m_IntegracoesExternas;
     private readonly IRegistrosIntegracoesFinanceiras m_RegistrosIntegracao;
     private readonly IModelosMensagemNotificacao m_ModelosNotificacao;
     private readonly IMensagens m_Mensagens;
+    private readonly IEnvioNotificacao m_EnvioNotificacao;
 
     public AppPedidoInclusao(
-        IContexto contexto, 
+        IContexto contexto,
         IInscricoes inscricoes,
         IPedidos pedidos,
+        IEventos eventos,
         IFormasPagamento formasPagamento,
         IPessoas pessoas,
-        IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas, 
+        IDictionary<EnumIntegracaoExterna, IIntegracaoExterna> integracoesExternas,
         IIntegracaoFinanceiraPorFormasPagamentos integracoes,
         IRegistrosIntegracoesFinanceiras registrosIntegracao,
         IModelosMensagemNotificacao modelosNotificacao,
-        IMensagens mensagens) : base(contexto)
+        IMensagens mensagens,
+        IEnvioNotificacao envioNotificacao) : base(contexto)
     {
         m_Inscricoes = inscricoes;
         m_Pedidos = pedidos;
+        m_Eventos = eventos;
         m_Pessoas = pessoas;
         m_FormasPagamento = formasPagamento;
         m_IntegracoesExternas = integracoesExternas;
@@ -42,6 +48,7 @@ public class AppPedidoInclusao : AppBase
         m_RegistrosIntegracao = registrosIntegracao;
         m_ModelosNotificacao = modelosNotificacao;
         m_Mensagens = mensagens;
+        m_EnvioNotificacao = envioNotificacao;
     }
 
     public DTOResultadoPedido Incluir(DTOPedidoInclusao dtoPedido)
@@ -49,6 +56,9 @@ public class AppPedidoInclusao : AppBase
         DTOResultadoPedido? resultado = null;
         ExecutarSeguramente(() =>
         {
+            var evento = m_Eventos.Obter(dtoPedido.IdEvento) ??
+                throw new Exception($"Evento não encontrado com o id {dtoPedido.IdEvento}");
+
             var pessoa = GerenciarPessoa(dtoPedido);
             FormaPagamento? forma = null;
 
@@ -59,10 +69,14 @@ public class AppPedidoInclusao : AppBase
                     : throw new Exception("Forma de pagamento deve ser informada para pedidos do tipo débito.");
             }
             
+            var inscricoes = dtoPedido.IdsInscricoes.Select(id =>
+                    m_Inscricoes.Obter(id) ?? throw new Exception($"Inscrição não encontrada com o id {id}"))
+                .ToList();
+
             var pedido = new Pedido(
+                evento,
                 pessoa,
-                dtoPedido.IdsInscricoes.Select(id =>
-                    m_Inscricoes.Obter(id) ?? throw new Exception($"Inscrição não encontrada com o id {id}")),
+                inscricoes,
                 new ValorMonetario(dtoPedido.Valor),
                 dtoPedido.Tipo,
                 forma,
@@ -75,14 +89,15 @@ public class AppPedidoInclusao : AppBase
                 m_IntegracoesExternas,
                 m_Integracoes,
                 m_RegistrosIntegracao,
-                new SrvNotificacaoInscricao(m_ModelosNotificacao, m_Mensagens),
-                new SrvNotificacaoPedidoRealizado(m_ModelosNotificacao, m_Mensagens)
+                new SrvNotificacaoInscricao(m_ModelosNotificacao, m_Mensagens, m_EnvioNotificacao),
+                new SrvNotificacaoPedidoRealizado(m_ModelosNotificacao, m_Mensagens, m_EnvioNotificacao)
             );
             var resultadoIntegracao = servicoPedido.Incluir(pedido, dtoPedido.NumeroParcelas);
 
             resultado = new DTOResultadoPedido
             {
                 IdPedido = pedido.Id,
+                IdEvento = pedido.Evento.Id,
                 Valor = pedido.Valor.Valor,
                 Tipo = pedido.Tipo,
                 IdFormaPagamento = pedido.FormaPagamento?.Id

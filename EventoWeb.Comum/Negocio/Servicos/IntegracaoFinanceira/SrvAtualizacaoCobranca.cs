@@ -50,7 +50,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
                     registro.Concluir(transacao!.Transacao!);
                     m_RegistrosIntegracao.Atualizar(registro);
 
-                    m_SrvNotificacaoCobrancaRecebida.Notificar(registro, 1); // Todo: melhorar a questão do evento
+                    m_SrvNotificacaoCobrancaRecebida.Notificar(registro);
 
                     break;
                 case EnumStatusTransacao.Cancelada:

@@ -30,7 +30,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
                 throw new InvalidOperationException("A integração financeira só pode ser processada para pedidos do tipo Débito.");
             }
 
-            var integracao = m_Integracoes.ObterPorFormaPagamento(pedido.FormaPagamento!);
+            var integracao = m_Integracoes.ObterPorFormaPagamento(pedido.Evento.Id, pedido.FormaPagamento!.Id);
             var integradorExterno = m_IntegracoesExternas[integracao.Integrador.IntegracaoExterna];
 
             var retorno = integradorExterno
@@ -38,6 +38,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.IntegracaoFinanceira
                 .Result;
 
             var registroIntegracao = new RegistroIntegracaoFinanceira(
+                pedido.Evento,
                 integracao.Integrador,
                 pedido.Conta,
                 pedido.Valor,

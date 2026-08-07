@@ -2,16 +2,18 @@
 using EventoWeb.Comum.Negocio.Entidades.Notificacoes;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 using EventoWeb.Comum.Negocio.Repositorios;
+using EventoWeb.Comum.Negocio.Servicos.Notificacoes;
 using System.Text.Json;
 
 namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes
 {
     public enum EnumTipoNotificacaoInscricao { InscricaoRecebida, InscricaoAceita, InscricaoRejeitada }
 
-    public class SrvNotificacaoInscricao(IModelosMensagemNotificacao modelosNotificacao, IMensagens mensagens)
+    public class SrvNotificacaoInscricao(IModelosMensagemNotificacao modelosNotificacao, IMensagens mensagens, IEnvioNotificacao envioNotificacao)
     {
         private readonly IModelosMensagemNotificacao m_ModelosNotificacao = modelosNotificacao;
         private readonly IMensagens m_Mensagens = mensagens;
+        private readonly IEnvioNotificacao m_EnvioNotificacao = envioNotificacao;
 
         public void Notificar(IEnumerable<Inscricao> inscricoes, EnumTipoNotificacaoInscricao tipo)
         {
@@ -32,6 +34,7 @@ namespace EventoWeb.Comum.Negocio.Servicos.Notificacoes.Inscricoes
 
                     var mensagem = new MensagemNotificacao(modelo, new String500(destinatario), new StringClob(GerarVariaveis(inscricao)));
                     m_Mensagens.Incluir(mensagem);
+                    m_EnvioNotificacao.EnviarERegistrar(m_Mensagens, mensagem);
                 }
             }
         }

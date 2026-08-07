@@ -22,6 +22,13 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
                 });
             });
 
+            ManyToOne(x => x.Evento, m =>
+            {
+                m.Access(Accessor.Property);
+                m.Column("id_evento");
+                m.NotNullable(true);
+            });
+
             ManyToOne(x => x.ContaBancaria, m =>
             {
                 m.Column("id_conta_bancaria");

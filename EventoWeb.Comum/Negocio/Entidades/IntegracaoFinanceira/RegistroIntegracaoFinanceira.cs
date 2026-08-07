@@ -1,3 +1,4 @@
+using EventoWeb.Comum.Negocio.Entidades;
 using EventoWeb.Comum.Negocio.Entidades.Financeiro;
 using EventoWeb.Comum.Negocio.ObjetosValor;
 
@@ -9,10 +10,18 @@ public class RegistroIntegracaoFinanceira : Entidade
     private String1000 m_IdentificacaoNoIntegrador;
     private InteiroPositivo? m_NumeroParcelas;
 
-    public RegistroIntegracaoFinanceira(IntegradorFinanceiro integrador, Conta conta, ValorMonetario valor, EnumTipoPagamento tipo, String1000 identificacaoNoIntegrador, InteiroPositivo? numeroParcelas = null)
+    public RegistroIntegracaoFinanceira(Evento evento, IntegradorFinanceiro integrador, Conta conta, ValorMonetario valor, EnumTipoPagamento tipo, String1000 identificacaoNoIntegrador, InteiroPositivo? numeroParcelas = null)
     {
+        Evento = evento ?? throw new ArgumentNullException(nameof(evento));
         Integrador = integrador ??  throw new ArgumentNullException(nameof(integrador));
         Conta = conta ??  throw new ArgumentNullException(nameof(conta));
+
+        if (Integrador.Evento != Evento)
+            throw new ArgumentException("O integrador deve ser do mesmo evento do registro de integração.", nameof(integrador));
+
+        if (Conta.Evento != Evento)
+            throw new ArgumentException("A conta deve ser do mesmo evento do registro de integração.", nameof(conta));
+
         Valor = valor ?? throw new ArgumentNullException(nameof(valor));
         IdentificacaoNoIntegrador = identificacaoNoIntegrador ?? throw new ArgumentNullException(nameof(identificacaoNoIntegrador));
         Situacao = EnumSituacaoIntegracao.Pendente;
@@ -22,6 +31,8 @@ public class RegistroIntegracaoFinanceira : Entidade
     }
 
     protected RegistroIntegracaoFinanceira(){}
+
+    public virtual Evento Evento { get; protected set; }
 
     public virtual IntegradorFinanceiro Integrador { get; protected set; }
 
@@ -58,7 +69,11 @@ public class RegistroIntegracaoFinanceira : Entidade
     {
         ValidarSeConcluidoAbortado();
 
-        Transacao = transacao ?? throw new ArgumentNullException(nameof(transacao));        
+        Transacao = transacao ?? throw new ArgumentNullException(nameof(transacao));
+
+        if (Transacao.Evento != Evento)
+            throw new ArgumentException("A transação deve ser do mesmo evento do registro de integração.", nameof(transacao));
+
         DataConcluidoAbortado = DateTime.Now;
         Situacao = EnumSituacaoIntegracao.Concluido;
 

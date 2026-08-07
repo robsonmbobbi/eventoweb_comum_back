@@ -13,7 +13,7 @@ namespace EventoWeb.Comum.Negocio.Entidades.Notificacoes
             Modelo = modelo ?? throw new ArgumentNullException(nameof(modelo));
             Destinatario = destinatario ?? throw new ArgumentNullException(nameof(destinatario));
             VariaveisJson = variaveisJson;
-            Situacao = EnumSituacaoEnvioNotificacao.Pendente;
+            Situacao = EnumSituacaoEnvioNotificacao.EmFila;
         }
 
         protected MensagemNotificacao() { }
@@ -44,13 +44,20 @@ namespace EventoWeb.Comum.Negocio.Entidades.Notificacoes
         public virtual void RegistrarEnvio()
         {
             DataSituacao = DateTime.Now;
-            Situacao = EnumSituacaoEnvioNotificacao.Enviada;
+            Situacao = EnumSituacaoEnvioNotificacao.Enviado;
         }
 
-        public virtual void RegistrarErro(StringClob erro)
+        public virtual void RegistrarErroEnvio(StringClob erro)
         {
             DataSituacao = DateTime.Now;
-            Situacao = EnumSituacaoEnvioNotificacao.Error;
+            Situacao = EnumSituacaoEnvioNotificacao.EnvioErro;
+            Erro = erro;
+        }
+
+        public virtual void RegistrarErroFila(StringClob erro)
+        {
+            DataSituacao = DateTime.Now;
+            Situacao = EnumSituacaoEnvioNotificacao.FilaErro;
             Erro = erro;
         }
     }
