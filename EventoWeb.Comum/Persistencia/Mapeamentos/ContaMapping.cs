@@ -87,7 +87,7 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
             this.Component(x => x.ValorTotalTransacoes, c =>
             {
                 c.Property(o => o.Valor, m => {
-                    m.Access(Accessor.NoSetter);
+                    m.Access(Accessor.Property);
                     m.NotNullable(true);
                     m.Column("valor_total_transacoes");
                 });
@@ -96,7 +96,7 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
             this.Component(x => x.ValorTotalDesconto, c =>
             {
                 c.Property(o => o.Valor, m => {
-                    m.Access(Accessor.NoSetter);
+                    m.Access(Accessor.Property);
                     m.NotNullable(true);
                     m.Column("valor_total_desconto");
                 });
@@ -105,7 +105,7 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
             this.Component(x => x.ValorTotalJuros, c =>
             {
                 c.Property(o => o.Valor, m => {
-                    m.Access(Accessor.NoSetter);
+                    m.Access(Accessor.Property);
                     m.NotNullable(true);
                     m.Column("valor_total_juros");
                 });
@@ -114,7 +114,7 @@ namespace EventoWeb.Comum.Infraestrutura.Mapeamentos.Financeiro
             this.Component(x => x.ValorTotalMulta, c =>
             {
                 c.Property(o => o.Valor, m => {
-                    m.Access(Accessor.NoSetter);
+                    m.Access(Accessor.Property);
                     m.NotNullable(true);
                     m.Column("valor_total_multa");
                 });
